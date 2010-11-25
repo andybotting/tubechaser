@@ -1,0 +1,39 @@
+{% extends 'two-column.html' %} 
+{% block title %}Home{% endblock %}
+
+{% block page %}
+			<div id="page">
+				<div class="post type-post">
+					<h1 class="entry-title">Source Code</h1>
+					<div class="entry">
+						<p>Source code for Tube Chaser is available in <a href="https://github.com/andybotting/tubechaser">Github</a>.</p>
+						<p>Tube Chaser is licensed under the <a href="http://gplv3.fsf.org/">GNU Public License (Version 3)</a>.</p>
+						<p>If you're unsure about the GPL, take a look at the <a href="http://www.gnu.org/licenses/quick-guide-gplv3.html">quick guide to GPLv3</a> and the <a href="http://www.gnu.org/licenses/gpl-faq.html">GPLv3 Frequently asked questions</a>.</p>
+					</div>
+
+					<h1 class="entry-title">Contributing</h1>
+					<div class="entry">
+						<p>Tube Chaser is licensed under the GPLv3 to encourage contributions.</p>
+						<p>If you're like to contribute to Tube Chaser, please sign up to the <a href="http://groups.google.com/group/tubechaser">Tube Chaser Google Group</a> and send your emails to <a href="mailto://tubechaser@googlegroups.com">tubechaser@googlegroups.com</a>.</p>
+					</div>
+
+				</div><!-- post -->
+			</div><!-- page -->
+{% endblock %}
+
+
+				
+{% block sidebar %}
+			<div id="side-links">
+				<h5>Tube Chaser license</h5>
+                <p>Tube Chaser is licensed under the GPLv3</p>
+                <img class="centered" src={{ MEDIA_URL }}img/gplv3.png>
+			</div> <!-- side-links -->
+{% endblock %}
+
+{% block footer %}
+		<!-- Twitter -->
+		<script type="text/javascript" src="http://twitter.com/javascripts/blogger.js"></script>
+		<script text="text/javascript" src="http://twitter.com/statuses/user_timeline/tube_chaser.json?callback=twitterCallback2&count=3"></script>
+{% endblock %}
+

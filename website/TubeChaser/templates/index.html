@@ -1,0 +1,35 @@
+{% extends 'two-column.html' %} 
+{% block title %}Home{% endblock %}
+
+
+
+{% block page %}
+			<div id="page">
+								
+				<div class="post type-post">
+										
+					<h1 class="entry-title">Tube Chaser</h1>
+					<div class="entry">
+						<p>Tube Chaser is an open source Android application for the London Underground.</p>
+						<p>For details, try the <a href="/about">About</a> or <a href="/screenshots">Screenshots</a> pages for a feel of what the application can do.</p>
+						<p>If you're interested in looking at the code, or contributing to the application, see the <a href="/source">Source</a> page for details on accessing the source code and license.</p>
+						<p>If you'd like to file a bug or have a feature request, head over to our <a href="http://tubechaser.googlecode.com/">Google Code project site</a> or join the <a href="http://groups.google.com/group/tubechaser">Tube Chaser Google Group</a> and email us at <a href="mailto://tubechaser@googlegroups.com">tubechaser@googlegroups.com</a>.</p>
+
+					</div>
+				</div><!-- post -->
+			</div><!-- page -->
+{% endblock %}
+
+				
+{% block sidebar %}
+			<div id="side-links">
+				<img src="{{ MEDIA_URL }}img/nexusone.png">
+			</div> <!-- side-links -->
+{% endblock %}
+
+{% block footer %}
+		<!-- Twitter -->
+		<script type="text/javascript" src="http://twitter.com/javascripts/blogger.js"></script>
+		<script text="text/javascript" src="http://twitter.com/statuses/user_timeline/tube_chaser.json?callback=twitterCallback2&count=4"></script>
+{% endblock %}
+

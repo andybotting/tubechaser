@@ -1,0 +1,81 @@
+{% load tags %}
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <title>Tube Chaser :: {% block title %}{% endblock %}</title>
+    <link rel="stylesheet" type="text/css" media="all" href="{{ MEDIA_URL }}css/style.css">
+    <link rel="icon" type="image/png" href="{{ MEDIA_URL }}img/favicon.png" />
+
+        {% block css %}
+        {% endblock %}
+
+        {% block js %}
+        {% endblock %}
+
+        {% block extra-head %}{% endblock %}
+
+  <body class="home">
+{% if key %}
+    <body onunload="GUnload()">
+{% else %}
+    <body>
+{% endif %}
+    
+    <div id="header-wrap" class="clearfix">
+      <div id="header" class="clearfix">
+          <a href="/" title="Title" class="logo">
+           <img src="{{ MEDIA_URL }}img/logo_header.png">
+          </a>
+      </div><!-- header -->
+    </div><!-- header-wrap -->
+    
+    <div id="access-wrap">
+      <div id="access">
+        <ul id="menu-primary-navigation" class="menu">
+          <li class="menu-item {% active request "^/$" %}"><a title="Home" href="/">Home</a></li>
+          <li class="menu-item {% active request "^/about/$" %}"><a href="/about">About</a></li>
+          <li class="menu-item {% active request "^/news/" %}"><a href="/news">News</a></li>
+          <li class="menu-item {% active request "^/screenshots/" %}"><a href="/screenshots">Screenshots</a></li>
+          <li class="menu-item {% active request "^/install/" %}"><a href="/install">Install</a></li>
+          <li class="menu-item {% active request "^/source/" %}"><a href="/source">Source Code</a></li>
+          <li class="menu-item {% active request "^/stats/$" %}"><a href="/stats">Statistics</a></li>
+          <li class="menu-item {% active request "^/stats/chart/" %}"><a href="/stats/chart">Charts</a></li>
+          <li class="menu-item {% active request "^/stats/map/" %}"><a href="/stats/map">Heat Map</a></li>
+        </ul>
+      </div><!-- access -->
+    </div><!-- access-wrap -->
+
+{% block content %}{% endblock %}
+
+    <div id="footer-wrap">
+    
+      <div id="footer">
+
+          <div class="foot-box">
+			<p>
+                project created by <a href="http://www.andybotting.com">andy botting</a><br/>
+                for the <a href="http://www.android.com/">android</a> mobile operating system<br/>
+                to show <a href="http://www.tfl.gov.uk">london underground</a> tube status and departure information<br/>
+                got questions? ping <a href="http://twitter.com/andybotting">@andybotting</a> and <a href="http://twitter.com/tube_chaser">@tube_chaser</a> on twitter<br/>
+                want the code? go to the <a href="http://tubechaser.googlecode.com">project site</a><br/>
+                found a bug or want a new feature? file them at our <a href="http://code.google.com/p/tubechaser/issues/list">issue tracker</a><br/>
+            </p>
+          </div><!-- foot-box -->
+      </div><!-- footer -->
+    </div><!-- footer-wrap -->
+
+	{% block footer %}{% endblock %}
+
+    <script type="text/javascript">
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-362996-8']);
+      _gaq.push(['_trackPageview']);
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+
+</body>
+</html>

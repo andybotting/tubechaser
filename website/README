@@ -1,0 +1,7 @@
+This is the code for the Tube Chaser web site.
+
+It's written in Django and has been designed to be run on Google App Engine,
+but should be fairly easy to port to a standard Django with an SQL database.
+
+It includes the Heat Map code which originally came from the 
+http://www.wheredoyougo.net/ FourSquare Heat Map site.

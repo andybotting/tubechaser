@@ -1,0 +1,56 @@
+{% extends 'two-column.html' %} 
+
+{% block title %}About{% endblock %}
+
+{% block page %}
+			<div id="page">
+								
+				<div class="post type-post">
+										
+					<h1 class="entry-title">About</h1>
+					<div class="entry">
+						<p>Tube Chaser is an Android application for the London Underground.</p>
+						<p>It was created because there was a lack of good quality, free and open source apps for the Tube in the Android Market.</p>
+					</div>
+
+					<h1 class="entry-title">Current Features</h1>
+					<div class="entry">
+						<p>Tube Chaser aims to be as quick and clean as possible for getting to the data you want.</p>
+						<p>The main features of Tube Chaser are:
+							<ul>
+								<li>Quickly see tube line status</li>
+								<li>Browse or search for stations</li>
+						 		<li>Favorite (star) stations for quick reference</li>
+								<li>Find nearby stations by Android location services</li>
+								<li>Integrated search for stations throughout the app, utilising the 'Search' button on the device</li>
+								<li>See stations on Google Maps</li>
+								<li>Clean user interface based on Google recommended guidelines</li>
+								<li>Open Source available under a GPLv3 license</li>
+							</ul>
+						</p>
+					</div>
+
+					<h1 class="entry-title">Upcoming Features</h1>
+					<div class="entry">
+						<p>Some features that will be implemented in future versions:
+							<ul>
+								<li>Tube map</li>
+								<li>DLR support</li>
+								<li>Live departures/Tube status widget</li>
+								<li>Switch to XML feed to tube line status</li>
+								<li>This weekend information</li>
+							</ul>
+						</p>
+					</div>
+
+				</div><!-- post -->
+			</div><!-- page -->
+{% endblock %}
+
+{% block sidebar %}
+            <div id="side-links">
+                <img src="{{ MEDIA_URL }}img/nexusone.png">
+            </div> <!-- side-links -->
+{% endblock %}
+
+

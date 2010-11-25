@@ -1,0 +1,17 @@
+{% extends 'base.html' %} 
+
+{% block content %}
+    <div id="content-wrap">
+      <div id="content">
+
+       {% block page %}{% endblock %} 
+
+        <div id="sidebar">
+
+         {% block sidebar %}{% endblock %} 
+
+        </div><!-- sidebar -->
+            	
+      </div><!-- content -->
+    </div><!-- content-wrap -->
+{% endblock %}

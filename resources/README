@@ -1,0 +1,36 @@
+app-db-gen
+==========
+A helper script written in Python for generating the Tube
+Chaser initial database. 
+
+It pulls the Tube lines and stations from the TfL web site and generates
+an SQLite database in Android format which is then moved into place
+once the app is started for the first time.
+
+app-icons
+=========
+This folder contains the icons for the Android application.
+
+It also contains a gen_icons.sh shell script which generates HDPI, MDPI
+and LDPI sized-icons into the application.
+
+It requires Imagemagick for getting image dimensions and Inkscape for
+the icon generation from SVG to PNGs.
+
+web-resources
+=============
+This folder contains image resources for the web site and Android Market.
+
+website-db-gen
+==============
+This is a helper for generating data for the Tube Chaser App Engine site.
+
+It downloads Line/Station information and outputs it into a JSON format which
+is compatible with the Django models found on the web site.
+
+It also includes a list of mobile operators which was pulled from Wikipedia.
+
+This will eventually be used to map from the Mobile Network Code which is
+uploaded as part of the 'Send Usage Stats' in Tube Chaser to the actual
+mobile provider name for the chart.
+

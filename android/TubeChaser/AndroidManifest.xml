@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright 2010 Andy Botting <andy@andybotting.com>  
+    
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+     
+    This file is distributed in the hope that it will be useful, but  
+    WITHOUT ANY WARRANTY; without even the implied warranty of  
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU  
+    General Public License for more details.  
+     
+    You should have received a copy of the GNU General Public License  
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.  
+    
+    This file incorporates work covered by the following copyright and  
+    permission notice:
+
+    Copyright 2010 Google Inc.
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+         http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+-->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+	package="com.andybotting.tubechaser"
+	android:versionCode="1" 
+	android:versionName="0.1">
+
+    <uses-sdk android:minSdkVersion="3" 
+    	android:targetSdkVersion="4" />
+    
+    <supports-screens smallScreens="true" 
+    	normalScreens="true" 
+    	largeScreens="true" 
+    	android:anyDensity="true" />
+    
+    <!-- Permissions -->
+    <uses-permission android:name="android.permission.INTERNET" />
+	<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+	<uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
+	<uses-permission android:name="android.permission.READ_PHONE_STATE" />   
+
+	<!-- Application -->
+    <application android:icon="@drawable/icon" 
+    	android:label="@string/app_name"
+    	android:theme="@style/Theme.TubeChaserStyle">
+    
+    	<!-- Provider -->	
+    	<provider android:name=".provider.TubeChaserProvider" 
+    		android:authorities="com.andybotting.tubechaser"
+    		android:syncable="false" />
+    	
+  		<!-- Home Dashboard -->     	
+        <activity android:name=".activity.Home"
+			android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        
+  		<!-- Tube Overview -->     
+        <activity android:name=".activity.LineOverview" 
+			android:label="@string/app_name" 
+			android:configChanges="orientation|keyboardHidden">
+			<intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="vnd.android.cursor.dir/vnd.tubechaser.line" />
+            </intent-filter>
+		</activity>
+		
+		<!-- Line Detail -->	
+		<activity android:name=".activity.LineDetail" 
+			android:label="@string/app_name" 
+			android:configChanges="orientation|keyboardHidden">
+			<intent-filter>
+            	<action android:name="android.intent.action.VIEW" />
+            	<category android:name="android.intent.category.DEFAULT" />
+            	<data android:mimeType="vnd.android.cursor.item/vnd.tubechaser.line" />
+			</intent-filter>
+		</activity>		
+		
+		<!-- Station List -->	
+		<activity android:name=".activity.StationsList" 
+			  android:label="@string/app_name" 
+			  android:configChanges="orientation|keyboardHidden">
+			<intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.TAB" />
+				<data android:mimeType="vnd.android.cursor.dir/vnd.tubechaser.station" />
+            </intent-filter>
+		</activity>
+		
+		<!-- Station Detail -->		
+ 		<activity android:name=".activity.StationDetail" 
+			android:label="@string/app_name" 
+			android:configChanges="orientation|keyboardHidden">
+			<intent-filter>
+				<action android:name="android.intent.action.VIEW" />
+				<category android:name="android.intent.category.DEFAULT" />
+				<data android:mimeType="vnd.android.cursor.item/vnd.tubechaser.station" />
+			</intent-filter>
+		</activity>		
+
+		<!-- Nearby Stations -->
+		<activity android:name=".activity.StationsNearby" 
+			  android:label="@string/app_name" 
+			  android:configChanges="orientation|keyboardHidden">
+		</activity>
+
+		<!-- Station Google Map -->
+		<activity android:name=".activity.StationMap" 
+			android:label="@string/app_name" 
+			android:configChanges="orientation|keyboardHidden">
+		</activity>
+		
+		<!-- Tube Map -->
+		<activity android:name="com.andybotting.androidbigimage.AndroidBigImage" 
+			android:label="@string/app_name" 
+			android:configChanges="orientation|keyboardHidden">
+		</activity>
+		
+		<!-- Search -->
+		<activity android:name=".activity.Search"
+            android:label="@string/description_search"
+            android:launchMode="singleTop">
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <meta-data android:name="android.app.searchable" android:resource="@xml/searchable" />
+        </activity>
+        
+		<!-- Settings -->
+		<activity android:name=".activity.Settings" 
+			android:theme="@android:style/Theme.Light"
+			android:label="@string/title_settings" 
+			android:configChanges="orientation|keyboardHidden">
+		</activity>
+		
+	    <!-- declare the default searchable Activity for the whole app -->
+		<meta-data android:name="android.app.default_searchable" android:value=".activity.Search" />
+	
+
+	
+		<uses-library android:name="com.google.android.maps" />	
+    
+    </application>
+ 
+
+</manifest> 

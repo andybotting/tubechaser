@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright 2010 Andy Botting <andy@andybotting.com>  
+    
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+     
+    This file is distributed in the hope that it will be useful, but  
+    WITHOUT ANY WARRANTY; without even the implied warranty of  
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU  
+    General Public License for more details.  
+     
+    You should have received a copy of the GNU General Public License  
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.  
+    
+    This file incorporates work covered by the following copyright and  
+    permission notice:
+
+    Copyright 2010 Google Inc.
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+         http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+-->
+<resources>
+	<string-array name="defaultActivityEntries">
+		<item>Home</item>
+		<item>Favourite Stations</item>
+		<item>Nearby Stations</item>
+		<item>Tube Status</item>
+	</string-array>
+	
+	<string-array name="defaultActivityEntryValues">
+		<item>Home</item>
+		<item>Favourite</item>
+		<item>Nearby</item>
+		<item>Status</item>
+	</string-array>
+
+	<string-array name="welcomeMessages">
+		<item>Dude, wheres my tube?</item>
+		<item>My milkshakes bring all the tubes to the station</item>
+		<item>All your tube are belong to us</item>
+		<item>Frankly my dear, I dont give a tube</item>
+		<item>May the tube be with you</item>
+		<item>I love the smell of tube in the morning!</item>
+		<item>E.T. tube home</item>
+		<item>There\'s no tube like home</item>
+		<item>Say \'hello\' to my little tube</item>
+		<item>Open the tube bay doors, HAL</item>
+		<item>My tube, my precious</item>
+		<item>We\'ll always have tubes!</item>
+		<item>If you tube it, they will come</item>
+		<item>There is no tube</item>
+		<item>Here\'s looking at you, tube</item>
+		<item>Snakes on a tube!</item>
+		<item>I\'m on a tube</item>
+		<item>I see your tube is as late as mine</item>
+		<item>Tube-a-lama-ding-dong</item>
+		<item>I see tubes, they\'re everywhere...</item>
+		<item>I can haz my tubez time</item>
+		<item>Time stops for no tube</item>
+		<item>One small step for tubes</item>
+		<item>One small step for man, one giant leap for tube times</item>
+		<item>You can\'t handle the tube</item>
+		<item>Houston, we have a tube</item>
+		<item>Tube on, tube off</item>
+		<item>Who let the tubes out?</item>
+		<item>These are not the tubes you are looking for</item>
+		<item>If you catch my tube, all of your wildest dreams will come true</item>
+		<item>The first rule of tube club, dont talk about tube club</item>
+		<item>Stay away from her you tube!</item>
+		<item>Catch me if you can...</item>
+		<item>A tube for all seasons</item>
+		<item>We\'re going to need a bigger tube</item>
+		<item>Do or do not, there is no tube</item>
+		<item>Crikey it\'s a tube, I\'ll catch it if I can</item>
+		<item>Are the tubes still screaming</item>
+		<item>Silence of the tubes</item>
+		<item>Wham bam thank you tube</item>
+		<item>It ate my tube ticket, doh!</item>
+		<item>I\'m sorry inspector, I left my tube ticket at home</item>
+		<item>Shaken, not tubeed</item>
+		<item>Tube, James Tube</item>
+		<item>You dingin\' at me? Are you dingin\' at me?</item>
+		<item>I know what you\'re thinking, has he missed 6 tubes or only 5?</item>
+		<item>Toto I\'ve got a feeling were not on a tube anymore</item>
+		<item>What we have here, is a failure to catch a tube</item>
+		<item>Play it again tube</item>
+		<item>Please tube, I\'d like some more</item>
+		<item>I like dem french fried tubes, mmmmHHhhhmmmm</item>
+		<item>You call that a tube? Thats not a tube. This is tube!</item>
+		<item>It\'s going straight to the tube room</item>
+		<item>Will you take the red tube or the blue tube</item>
+		<item>Is that a tube I see before me?</item>
+		<item>I know tube fu</item>
+		<item>Never send a man to do a tubes job</item>
+		<item>Do you feel lucky, tube?</item>
+		<item>A good tube is hard to find</item>
+		<item>Can you do it on a tube, would you have green eggs and ham?</item>
+		<item>To the world you may be one tube, to one tube you may be the world</item>
+		<item>Give me liberty or give me tubes!</item>
+		<item>I am the tube king, I can do anything...</item>
+		<item>Absence makes the tube grow fonder</item>
+		<item>Float like a butterfly, ding like a tube</item>
+		<item>A tube, a tube, my kingdom for a tube</item>
+		<item>Hey boy, you\'re looking mighty cute in that tube</item>
+		<item>I pity the tube</item>
+		<item>All right, Mr. DeMille, I\'m ready for my tube</item>
+		<item>Luke, I am your tube</item>
+		<item>You\'ll never know the dark side of the tube</item>
+		<item>I ding, therefore I tube</item>
+		<item>I had a tube, where all men were created equal</item>
+		<item>I really shouldn\'t have written all of those tube programs</item>
+		<item>I\'m just a sweet tubesvestite from tubesilvania</item>
+		<item>Your daughter came into my yard and kicked my tube</item>
+		<item>I always relied on the kindness of passengers</item>
+		<item>Tubes like turtles</item>
+		<item>Loltube</item>
+		<item>Because we tube, tube, tube...</item>
+		<item>Tubeomenom... do doo do do do</item>
+		<item>If you cut me, do I not ding?</item>
+		<item>Everybody knows, those Tubes don\'t work on water</item>
+		<item>I\'d ride that for a dollar</item>
+		<item>Step away from the tube. You have 20 seconds to comply</item>
+		<item>Of all the tubes in all the world, you had to walk onto mine</item>
+		<item>Yes we tube</item>
+		<item>Shot through the heart, and you\'re to blame, you give tubes a bad name</item>
+		<item>He\'s not the messiah, he\'s a very naughty tube</item>
+		<item>Stop, Tubemer time</item>
+		<item>To tube or not to tube, that is the question</item>
+		<item>Tube with me if you want to live</item>
+		<item>Wham bam thank you tube</item>
+		<item>Yabba tubema doo!</item>
+		<item>Error 404. Tube not found</item>
+	</string-array>
+
+</resources>

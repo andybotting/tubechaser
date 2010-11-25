@@ -1,0 +1,20 @@
+{% extends 'two-column.html' %}
+{% block title %}Charts{% endblock %}
+
+{% block page %}
+            <div id="page">
+                <div class="post type-post">
+
+                    <h1 class="entry-title">Charts</h1>
+                    <div class="entry">
+						<p>This is a list of some charts what we are generating from some of the anonymous statistics from Tube Chaser.</p>
+							<ul>
+								{% for k,v in charts.items %}
+									<li><a href="{{ k }}">{{ v }}</a></li>
+								{% endfor %}
+							</ul>
+                    </div>
+                </div><!-- post -->
+            </div><!-- page -->
+{% endblock %}
+

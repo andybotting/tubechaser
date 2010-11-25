@@ -1,0 +1,8 @@
+This is the source code for the Tube Chaser Android Application.
+
+You can just import the TubeChaser folder as an Android project
+into Eclipse with the Android SDK installed.
+
+To generate a package, the secret key is required for it to match
+with the Tube Chaser in the Android Market. Also the Google Maps 
+API key will need to match for tiles to load.

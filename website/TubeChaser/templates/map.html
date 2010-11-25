@@ -1,0 +1,50 @@
+{% extends 'two-column.html' %}
+{% block title %}Heat Map{% endblock %}
+
+{% block js %}
+	{% if key %}<script src="http://maps.google.com/maps?file=api&v=2&sensor=false&key={{ key }}" type="text/javascript"></script>{% endif %}
+{% endblock %}
+
+{% block sidebar %}
+          <div id="side-links">
+			<h4>The Heat Map</h4>
+			<p>When Tube Chaser has the 'Send Anonymous Stats' setting enabled, it will send information to the Tube Chaser web server each time you request train departure information.</p>
+			<p>The location of the latest 1000 requests is represented graphically by this heat map.</p>
+			<p>At 3:00am, tiles are generated over the London area for a few zoom levels.</p>
+			<p>These generated tiles are then overlayed over Google Maps tiles for reference.</p>
+			<p>This heat map is based on some of the great work from the <a href="http://www.wheredoyougo.net/">Where Do You Go</a> project by <a href="http://lehrblogger.com/">Steven Lehrburger</a> and the <a href="http://code.google.com/p/gheat-ae">gheat-ae</a>/<a href="http://code.google.com/p/gheat/">gheat</a> Google Code projects.
+          </div> <!-- rockable -->
+{% endblock %}
+
+{% block page %}
+		<div id="page">
+			<div id="map-wrap">
+				<div id="map"></div>
+			</div>
+        </div><!-- page -->
+{% endblock %}
+
+{% block footer %}
+    <script src="{{ MEDIA_URL }}js/map.js" type="text/javascript" ></script>
+    <script type="text/javascript">
+
+		// Map bounds
+		bounds_north = {{ bounds_north }};
+		bounds_south = {{ bounds_south }};
+		bounds_east = {{ bounds_east }};
+		bounds_west = {{ bounds_west }};
+
+		// Map defaults
+		default_lat = {{ default_lat }};
+		default_lng = {{ default_lng }};
+		default_zoom = {{ default_zoom }};
+
+		// Zoom
+		max_zoom = {{ max_zoom }};
+		min_zoom = {{ min_zoom }};
+
+        if (document.getElementById("map")) {
+            showMap();
+        }
+    </script>
+{% endblock %}

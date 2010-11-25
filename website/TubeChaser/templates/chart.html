@@ -1,0 +1,37 @@
+{% extends 'two-column.html' %}
+{% block title %}Chart{% endblock %}
+
+{% block sidebar %}
+            <div id="side-links">
+				<p>This chart is showing 
+					{% if time != "all" %} 
+						<span class="bold">{{ name }}</span> for the last <span class="bold">{{ time }}</span>
+					{% else %}
+						all entries for <span class="bold">{{ name }}</span>
+					{% endif %}
+						as provided by Tube Chaser users.
+				</p>
+				<p>You can also see this chart, showing <a href="{{ base_url}}">all time</a>, <a href="{{ base_url}}/week">the last week </a> or <a href="{{ base_url}}/month">the last month</a>.</p>
+				<p>Maybe go back to the <a href="/stats/chart">list of charts</a>.</p>
+				<p>Interested in what <a href="/privacy">statistics</a> we're collecting, or our <a href="/privacy">privacy policy</a>?</p>
+            </div> <!-- side-links -->
+{% endblock %}
+
+
+{% block page %}
+            <div id="page">
+                <div class="post type-post">
+                    <h1 class="entry-title">
+		                {% if time != "all" %}
+							{{ name }} for the last {{ time }}
+                		{% else %}
+                    		{{ name }}
+		                {% endif %}
+					</h1>
+                    <div class="entry">
+						{{ chart.img|safe }}
+                    </div>
+                </div><!-- post -->
+            </div><!-- page -->
+{% endblock %}
+	

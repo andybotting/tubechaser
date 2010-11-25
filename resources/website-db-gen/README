@@ -1,0 +1,11 @@
+This is a helper for generating data for the Tube Chaser App Engine site.
+
+It downloads Line/Station information and outputs it into a JSON format which
+is compatible with the Django models found on the web site.
+
+It also includes a list of mobile operators which was pulled from Wikipedia.
+
+This will eventually be used to map from the Mobile Network Code which is
+uploaded as part of the 'Send Usage Stats' in Tube Chaser to the actual
+mobile provider name for the chart.
+

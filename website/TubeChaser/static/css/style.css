@@ -1,0 +1,374 @@
+/* Resets */
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, font, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  font-weight: inherit;
+  font-style: inherit;
+  font-size: 100%;
+  font-family: inherit;
+  vertical-align: baseline;
+}
+:focus {
+  outline: 0;
+}
+html {
+  overflow-y: scroll;
+}
+body {
+  color: #2b2828;
+  background: #2b2828;
+  font-family: Tahoma, Arial, serif;
+}
+ol, ul {
+  list-style: none;
+}
+blockquote:before, blockquote:after, q:before, q:after {
+  content: "";
+}
+blockquote, q {
+  quotes: "" "";
+}
+acronym {
+  cursor: help;
+  border-bottom: 1px dashed #333;
+}
+strong {
+  font-weight: bold;
+}
+em {
+  font-style: italic;
+}
+hr {
+  display: none;
+}
+.right {
+  float: right !important;
+}
+.left {
+  float: left !important;
+}
+.clear {
+  clear: both;
+}
+.clearfix:after {
+  content: ".";
+  display: block;
+  clear: both;
+  visibility: hidden;
+  line-height: 0;
+  height: 0;
+}
+.clearfix {
+  display: block;
+}
+html[xmlns] .clearfix {
+  display: block;
+}
+* html .clearfix {
+  height: 1%;
+}
+/* Link Styles */
+a:link, a:visited {
+  color: #c72a27;
+  text-decoration: none;
+}
+a:hover {
+  color: #c72a27;
+  text-decoration: underline;
+}
+a:active {
+  color: #c72a27;
+  text-decoration: underline;
+}
+  /* Title Link */
+  .entry-title a {
+    color: #2b2828;
+    text-decoration: none;
+    /* CSS3 */
+    text-shadow: 0 1px 0 #fff;
+  }
+  .entry-title a:hover {
+    color: #c72a27;
+  }
+/* Headings */
+h1, h2, h3, h4, h5, h6 {
+  line-height: 1.2em;
+  padding-bottom: 10px;
+}
+h1 {
+  font-size: 2em;
+  letter-spacing: -0.04em;
+}
+h2 {
+  font-size: 1.8em;
+  letter-spacing: -0.03em;
+}
+h3 {
+  font-size: 1.6em;
+  letter-spacing: -0.02em;
+}
+h4 {
+  font-size: 1.4em;
+  letter-spacing: -0.02em;
+}
+h5 {
+  font-size: 1.2em;
+  letter-spacing: -0.02em;
+}
+h6 {
+}
+/* Shared Defaults */
+#header-wrap,
+#access-wrap,
+#featured-wrap,
+#content-wrap,
+#footer-wrap {
+  min-width: 1000px;
+  overflow: hidden;
+  position: relative;
+}
+/* Wraps */
+#header-wrap {
+  background: #c2110e;
+  overflow: visible;
+  z-index: -99;
+}
+#access-wrap {
+  background: #fff;
+  border-bottom: 1px solid #eee;
+}
+#content-wrap {
+  min-height: 400px;
+  background: #f7f7f7;
+  border-bottom: 1px solid #fff;
+}
+#footer-wrap {
+
+}
+/* Shared Defaults */
+#header,
+#access,
+#featured,
+#content,
+#footer {
+  margin: 0 auto;
+  overflow: hidden;
+  position: relative;
+  width: 980px;
+  padding: 0 10px;
+}
+/* Header */
+#header {
+  overflow: visible;
+}
+html>body #header {
+  height: 70px;
+}
+
+#map-wrap {
+  background-color: #cdcdcd;
+  width: 640px;
+  height: 480px;
+}
+
+#map {
+  width: 640px;
+  height: 480px;
+}
+
+          
+/* Access (Navigation) */
+#access {
+  padding: 6px 10px;
+  position: relative;
+  left: -6px;
+  }
+    #access ul {
+      font-family: Tahoma, Helvetica, Arial, sans-serif;
+      font-size: 16px;
+      line-height: 22px;
+    }
+      #access ul li {
+        display: block;
+        float: left;
+      }
+        #access ul li a {
+          color: #7e7e75;
+          display: block;
+          float: left;
+          text-decoration: none;
+          padding: 5px 6px;
+          margin-right: 26px;
+        }
+        #access ul li a:hover,
+        #access ul li.active a {
+          color: #c2110e; 
+        }
+/* Content */
+#content {
+  padding: 20px 10px;
+  padding-bottom: 20px;
+}
+  /* Page */
+  #page {
+    float: left;
+    width: 630px;
+  }
+    .post {
+      padding-bottom: 40px;
+    }
+      .entry {
+        padding-bottom: 20px;
+      }
+      .page-title {
+        padding-bottom: 10px;
+      }
+      .post-title {
+        top: -9px;
+        position: relative;
+        margin-bottom: -9px;
+      }
+      .entry h3 {
+        padding-top: 10px;
+      }
+      .message {
+        display: block;
+        margin-bottom: 20px;
+        padding: 12px 15px;
+        color: #2b2828;
+        font-size: 15px;
+        line-height: 15px;
+        background: #fffbcd;
+        border: 1px solid #f0e788;
+      }
+
+      .entry ul {
+			margin-left: 30px;
+		}
+			.entry ul li {
+				list-style: circle;
+			}
+			.entry ol {
+				margin-left: 30px;
+			}
+			.entry ol li {
+				list-style: decimal;
+			}
+			p {
+		    	padding: 5px;
+			}
+			blockquote {
+				position: relative;
+				padding: 0 0 0 35px;
+				margin-bottom: 10px;
+				font-style: italic;
+				color: #484848;
+				font-size: 18px;
+				line-height: 28px;
+			}
+            .entry img {
+				background: #fff;
+				border: 1px solid #e5e5dd;
+				padding: 5px;
+				max-width: 618px !important;
+            }
+
+			img.centered {
+				display: block;
+				margin-left: auto;
+				margin-right: auto;
+			}	
+			img.alignright {
+				margin: 0 0 8px 16px;
+				display: inline;
+			}			
+			img.alignleft {
+				margin: 0 16px 8px 0;
+				display: inline;
+			}			
+			.alignright {
+				float: right;
+			}			
+			.alignleft {
+				float: left
+			}
+			.aligncenter,
+			div.aligncenter {
+				display: block;
+				margin-left: auto;
+				margin-right: auto;
+			}
+            .screenshot-box {
+				float:left;
+				margin: 10px;
+			}
+			.wp-smiley { 
+		    border: none; 
+		    padding: 0; 
+		  }
+
+  /* Sidebar */
+  #sidebar {
+    float: right;
+    width: 320px;
+  }
+
+    #rockable,#side-links {
+      margin-bottom: 20px;
+      margin-left: 20px;
+      position: relative;
+      padding:10px;
+    }
+
+    #rockable {
+      background: #ececec;
+      border: 1px solid #dbdbdb;
+      color: #7e7e75;
+    }
+      #rockable h5 {
+        color: #000;
+      }
+    #side-links {
+      background: #fff;
+      border: 1px solid #eee;
+    }
+/* Footer */
+#footer {
+  color: #888;
+  position: relative;
+  padding: 20px 0 80px 0;
+  font-size: 0.8em;
+}
+    .foot-box {
+      float: left;
+      width: 400px;
+    }
+      .foot-box .foot-title {
+        color: #fff;
+      }
+    .center-box {
+      margin: 0 30px 0 30px;
+    }
+      #site-links {
+        font-size: 1.2em;
+      }
+        #site-links a {
+          color: #888;
+          font-family: Tahoma, Helvetica, Arial, sans-serif;
+          text-decoration: none;
+        }
+        #site-links a:hover {
+          color: #fff;
+        }
+      #twitter_update_list {
+        color: #888;
+      }
+        #twitter_update_list li {
+          margin-bottom: 10px;
+        }
+          #twitter_update_list li span {
+            display: block;
+            font-family: Tahoma, Helvetica, Arial, sans-serif;
+          }

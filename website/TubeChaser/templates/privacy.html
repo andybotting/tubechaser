@@ -1,0 +1,72 @@
+{% extends 'full-column.html' %}
+{% block title %}Statistics and Privacy{% endblock %}
+
+{% block page %}
+        <div id="page" role="main">
+
+          <div class="post type-post">
+
+            <h1 class="entry-title">Statistics</h2>
+            <div class="entry">
+
+	<p>As part of making Tube Chaser more useful, we've added an Anonymous Statistics collection system.</p>
+	<p>This is an opt-in system, therefore you need to specifically enable the Send Usage Statistics option in the Settings menu for it to work.
+	<p>We're collecting information in two areas:
+		<ol>
+			<li>Application and Device information</li>
+			<li>Requested stop and location information</li>
+		</ol>
+	</p>
+          </div><!-- post -->
+
+            <h1 class="entry-title">Application and Device information</h1>
+            <div class="entry">
+	<p>At a maximum of once per week, Tube Chaser will report to us with:
+	<ul>
+		<li>Device ID (Your IMEI number, MD5 hashed for privacy)</li>
+		<li>Version of the applicaion</li>
+		<li>Your currently selected action on first launch</li>
+		<li>Your version of Android</li>
+		<li>The device language currently in use</li>
+		<li>Mobile country (Most likely to be in the UK)</li>
+		<li>Mobile network number (Identify between O2, 3, Vodaphone, etc)</li>
+		<li>Mobile network type (e.g. 2G, 3G)</li>
+	</ul>
+
+	<p>We're looking to get an understanding of which features of Tube Chaser are popular, so we can target development in these areas. The version of Android is important for targeting of code, and Android API changes.</p>
+	<p>Mobile network information will give us an idea of which networks people are using.</p>
+	<p>When we have collected enough data, our intention is to provide this information back to the users in charts and graphs, mainly for interest sake.</p>
+          </div><!-- post -->
+
+
+            <h1 class="entry-title">Requested Departure and Location information</h1>
+            <div class="entry">
+	<p>When you request train departure information, Tube Chaser will report to us with:</p>
+	<ul>
+		<li>Device ID (Your IMEI number, MD5 hashed for privacy)</li>
+		<li>The Station and Line you're requesting information for</li>
+		<li>Your coarse location information, and accuracy of that location</li>
+	</ul>
+
+	<p>We'd like to build up a profile of which stops (or areas) are most popular and approximate distances between the user and the station.</p>
+	<p>When we reach a point where there is enough information, we would like to build some heat or cluster maps of London showing hotspots of activity.</p>
+	<p>These maps will be published to the web site for anyone to view.</p>
+          </div><!-- post -->
+
+
+            <h1 class="entry-title">Privacy</h1>
+            <div class="entry">
+	<p>We have made steps to reduce the sensitivity of this information (e.g. use coarse network location, hash the IMEI number), but if you have any concerns about releasing this data to us, then you can disable the setting. This is off by default, anyway.</p>
+	<p>This information will only be sent to us if you have specifically allowed it, and the raw information will not be shared to anyone, with the exception of us producing graphs and maps with the aggregate information.</p>
+	<p>Let us know if you have any concerns or suggestions. </p>
+
+            </div>
+
+          </div><!-- post -->
+
+
+        </div><!-- page -->
+
+
+{% endblock %}
+

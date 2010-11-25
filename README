@@ -1,0 +1,23 @@
+This is the source code for _Tube Chaser_!
+
+All of the source code in this repository is licensed under 
+the GNU Public License version 3, except for some Android
+example code which is licensed under an Apache 2.0 license.
+
+The directories listed here are:
+
+* Android
+  This is the code for the Android Applicaion which is
+  currently in the Android Market. It can be imported into
+  Eclipse and build with the Android SDK.
+
+* Resources
+  This contains all the helper scripts and icons which are
+  required for the Android application and the web site.
+
+* Website
+  This is the Django web site which is set up for running in
+  Google App Engine. It includes code from the django-appengine
+  project, but could ported to vanilla Django with an SQL db
+  without too much trouble.
+
