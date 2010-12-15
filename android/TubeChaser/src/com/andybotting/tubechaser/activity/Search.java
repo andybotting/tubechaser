@@ -65,6 +65,15 @@ public class Search extends ListActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
+        
+		// Home button
+		findViewById(R.id.btn_title_home).setOnClickListener(new View.OnClickListener() {
+		    public void onClick(View v) {       
+		    	UIUtils.goHome(Search.this);
+		    }
+		});	
+        
+        
         mContext = getApplicationContext();
         onNewIntent(getIntent());
         
@@ -92,16 +101,6 @@ public class Search extends ListActivity {
         }
         
         
-    }
-    
-    /** Handle "home" title-bar action. */
-    public void onHomeClick(View v) {
-        UIUtils.goHome(this);
-    }
-	
-    /** Handle "search" title-bar action. */
-    public void onSearchClick(View v) {
-        UIUtils.goSearch(this);
     }
     
     protected void onListItemClick(ListView l, View v, int position, long id) {

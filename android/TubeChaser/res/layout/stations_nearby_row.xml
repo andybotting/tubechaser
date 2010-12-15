@@ -51,19 +51,12 @@
     	android:layout_alignParentLeft="true"
 		style="@style/ListTitle"
 		android:layout_toRightOf="@+id/station_distance" />		
-		
-	<View
-		class="com.andybotting.tubechaser.utils.CompassView"
-		android:id="@+id/compass_view"
-		android:layout_width="50dip"
-		android:layout_height="50dip" />	
 			
 	<TextView xmlns:android="http://schemas.android.com/apk/res/android"
 		android:id="@+id/lines_list"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_below="@+id/station_name"
-		style="@style/ListSubtitle"
-		android:layout_toRightOf="@+id/station_compass" />
+		style="@style/ListSubtitle" />
 		
 </RelativeLayout>

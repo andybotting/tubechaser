@@ -112,14 +112,6 @@ public class TfLTubeProvider {
 	            // <div class="message">
 	            //  <p>Suspended between blah blah.</p>
 	        	String statusDesc = line.select("div.message").select("p").toString();
-
-	        	// We just remove all newlines first, then make the </p> a new line
-	        	// or we get a \n before the first line
-	        	statusDesc = statusDesc.replaceAll("\n", "");
-	        	statusDesc = statusDesc.replaceAll("<p>", "");
-	        	statusDesc = statusDesc.replaceAll("</p>", "");
-	        	statusDesc = statusDesc.replaceAll("<br />", "\n");
-	        	statusDesc = statusDesc.replaceAll("&nbsp;", " ");
         	
 	        	for (Line thisLine : mLines) {
 	        		// Use contains() to we can match hammersmith (db) to hammersmithandcity (tfl)

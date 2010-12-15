@@ -46,6 +46,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.View;
 import android.widget.TabHost;
 import android.widget.TextView;
@@ -63,6 +64,20 @@ public class LineDetail extends TabActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_line_detail);
+        
+		// Home button
+		findViewById(R.id.btn_title_home).setOnClickListener(new View.OnClickListener() {
+		    public void onClick(View v) {       
+		    	UIUtils.goHome(LineDetail.this);
+		    }
+		});	
+		
+		// Search button
+		findViewById(R.id.btn_title_search).setOnClickListener(new View.OnClickListener() {
+		    public void onClick(View v) {
+		    	UIUtils.goSearch(LineDetail.this);
+		    }
+		});
 
         Uri uri = getIntent().getData();
         
@@ -91,22 +106,13 @@ public class LineDetail extends TabActivity {
         	getTabHost().setCurrentTabByTag(TAB_STATIONS);
         }
         else {
-        	((TextView) findViewById(R.id.line_status)).setText(mLine.getStatusDesc());
+        	((TextView) findViewById(R.id.line_status)).setText(Html.fromHtml(mLine.getStatusDesc()));
         	getTabHost().setCurrentTabByTag(TAB_STATUS);
         }
         
     }
 
-	/** Handle "home" title-bar action. */
-    public void onHomeClick(View v) {
-        UIUtils.goHome(this);
-    }
-    
-    
-    /** Handle "search" title-bar action. */
-    public void onSearchClick(View v) {
-        UIUtils.goSearch(this);
-    }
+
 
     private void setupStatusTab() {
         final TabHost host = getTabHost();

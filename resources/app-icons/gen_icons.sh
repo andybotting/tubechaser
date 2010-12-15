@@ -1,8 +1,15 @@
 #!/bin/bash
 
-WORKSPACE="~/usr/android/workspace/TubeChaser"
+WORKSPACE="/home/andy/usr/tubechaser/android/TubeChaser"
 
-for ICON in `ls *.svg`; do
+if [ "$1" ]; then
+    ICONS=$1
+else
+    ICONS=`ls *.svg`
+fi
+
+for ICON in $ICONS; do
+
 	NAME=`basename ${ICON} .svg`
 
 	DIMENS=`identify ${ICON} | awk '{print $3}'`

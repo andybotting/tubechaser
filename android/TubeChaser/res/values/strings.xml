@@ -48,6 +48,7 @@
     <string name="description_search">Search</string>
     <string name="description_map">Map</string>
     <string name="description_refresh">Refresh</string>
+    <string name="description_myloc">My Location</string>
     <string name="description_star">Star</string>
 	<string name="description_status">Status</string>
 	<string name="description_departures">Departures</string>

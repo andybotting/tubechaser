@@ -83,7 +83,7 @@ import android.widget.TextView;
 public class Home extends Activity {
     
     private static final String TAG = "Home";
-    private static final boolean LOGV = Log.isLoggable(TAG, Log.DEBUG);
+    private static final boolean LOGV = Log.isLoggable(TAG, Log.INFO);
     
 	// Menu items
 	private static final int MENU_ABOUT = 0;
@@ -91,7 +91,9 @@ public class Home extends Activity {
 	private static final int MENU_SETTINGS = 2;
 	
     private static final int UPDATE_MINS = 10;
-
+    private static final int INFO_CHANGE_TIME = 10;
+	private static final int MAX_ERRORS = 3;
+	
 	private PreferenceHelper mPreferenceHelper;
 	private List<Line> mLines;
 	private TubeChaserProvider mProvider;
@@ -99,17 +101,11 @@ public class Home extends Activity {
 	
     private View mInfoLoadingView;
     private View mInfoWindowView;
+    List<View> mInfoWindows = new ArrayList<View>();
     private int mInfoWindowId = 0;
-    
-    // Seconds between Info Window changes
-    private static final int INFO_CHANGE_TIME = 10;
-    
     private volatile Thread mRefreshThread;
-    
-	private String mErrorMessage;    
+    private String mErrorMessage;    
 	private int mErrorRetry = 0;
-	private final int MAX_ERRORS = 3;
-
 	
     // Handler for Info Window update
     Handler UpdateHandler = new Handler() {
@@ -126,13 +122,71 @@ public class Home extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         
+		// Refresh button
+		findViewById(R.id.btn_title_refresh).setOnClickListener(new View.OnClickListener() {
+		    public void onClick(View v) {       
+		    	new GetTubeStatus().execute();
+		    }
+		});	
+		
+		// Search button
+		findViewById(R.id.btn_title_search).setOnClickListener(new View.OnClickListener() {
+		    public void onClick(View v) {
+		    	UIUtils.goSearch(Home.this);
+		    }
+		});	
+		
+		// Overview
+		findViewById(R.id.home_btn_overview).setOnClickListener(new View.OnClickListener() {
+		    public void onClick(View v) {
+		    	startActivity(new Intent(Home.this, LineOverview.class));
+		    }
+		});
+
+		// Browse
+		findViewById(R.id.home_btn_stations).setOnClickListener(new View.OnClickListener() {
+		    public void onClick(View v) {
+		    	startActivity(new Intent(Home.this, StationsList.class));
+		    }
+		});
+		
+		// Nearby
+		findViewById(R.id.home_btn_nearby).setOnClickListener(new View.OnClickListener() {
+		    public void onClick(View v) {
+		    	startActivity(new Intent(Home.this, StationsNearby.class));
+		    }
+		});
+		
+		// Starred
+		findViewById(R.id.home_btn_starred).setOnClickListener(new View.OnClickListener() {
+		    public void onClick(View v) {
+		    	startActivity(new Intent(Intent.ACTION_VIEW, Stations.buildStarredUri()));
+		    }
+		});
+		
+		// Search
+		findViewById(R.id.home_btn_search).setOnClickListener(new View.OnClickListener() {
+		    public void onClick(View v) {
+		    	UIUtils.goSearch(Home.this);
+		    }
+		});
+
+
+		// Settings
+		findViewById(R.id.home_btn_settings).setOnClickListener(new View.OnClickListener() {
+		    public void onClick(View v) {
+		    	startActivity(new Intent(Home.this, Settings.class));
+		    }
+		});
+        
+        
         mInfoLoadingView = findViewById(R.id.info_window_loading);
         
         mContext = this.getBaseContext();
 		mPreferenceHelper = new PreferenceHelper(this);	
         mProvider = new TubeChaserProvider();
         
-        // Try to get lines to stop a FC
+        // Try to get lines to stop a FC on first load
 		try {
 			mLines = mProvider.getLines(mContext);
 		} catch (Exception e) {
@@ -146,23 +200,27 @@ public class Home extends Activity {
 			showAbout();
 		
 		long lastUpdate = mPreferenceHelper.getLastUpdateTimestamp();
-        //Date lastUpdate = mProvider.getUpdateTimestamp(this);
         long timeDiff = UIUtils.dateDiff(lastUpdate);
 
-        if (LOGV) Log.v(TAG, "Last tube status update " + timeDiff + "ms ago");
+        if (LOGV) Log.v(TAG, "Last tube status update: " + timeDiff/1000 + "sec");
+        
+        mInfoWindows.add(makeUpdateInfoWindow());
+		changeInfoWindow();
+
+		// Kick off an update
         if (timeDiff > UPDATE_MINS * 60000) {
-            // 10 minutes ago
         	new GetTubeStatus().execute();
         }
         else {
-        	// Start the thread for updating our info window
-        	startRefreshThread();
+			getInfoWindows();
+			changeInfoWindow();        	
         }
+        	
+   		startRefreshThread();
 
 		// If we're started by the launcher, then try the default activity
 		if (getIntent().hasCategory(Intent.CATEGORY_LAUNCHER))
-        	goDefaultLaunchActivity();
-				
+        	goDefaultLaunchActivity();		
     }
     
     
@@ -176,63 +234,7 @@ public class Home extends Activity {
 		super.onResume();
 		startRefreshThread();
 	}
-    
-    
-    /**
-     * Start the search activity
-     */
-    public void onSearchClick(View v) {
-        UIUtils.goSearch(this);
-    }
 
-    /**
-     * Start the 'Tube Overview' activity from the info window
-     */
-    public void onTubeStatusClick(View v) {
-        // Launch overview
-        startActivity(new Intent(this, LineOverview.class));
-    }
-    
-    /**
-     * Start the 'Tube Overview' activity
-     */
-    public void onOverviewClick(View v) {
-        // Launch overview
-        startActivity(new Intent(this, LineOverview.class));
-    }
-
-    /**
-     * Start the 'Browse Stations' activity
-     */
-    public void onStationsClick(View v) {
-        // Launch stations
-        startActivity(new Intent(this, StationsList.class));
-    }
-
-    /**
-     * Start the 'Nearby Stations' activity
-     */
-    public void onNearbyClick(View v) {
-        // Launch stations
-        startActivity(new Intent(this, StationsNearby.class));
-    }
-
-    /**
-     * Start the 'Favourite' stations activity
-     */
-    public void onStarredClick(View v) {
-        // List of favourite stations
-        startActivity(new Intent(Intent.ACTION_VIEW, Stations.buildStarredUri()));
-    }
-
-    /**
-     * Start the 'Settings' activity
-     */
-    public void onSettingsClick(View v) {
-        // List of favourite stations
-        startActivity(new Intent(this, Settings.class));
-    }
-    
 
     /**
      * Create the options menu
@@ -324,35 +326,37 @@ public class Home extends Activity {
 		dialogBuilder.setIcon(R.drawable.icon);
 		dialogBuilder.show();
 	}
-
-    /**
-     * Reload tube status data
-     */
-    public void onRefreshClick(View v) {
-    	new GetTubeStatus().execute();
-    }
     
-    
-    public synchronized void startRefreshThread(){
-    	if(mRefreshThread == null){
-    		if (LOGV) Log.v(TAG, "Starting refresh thread");
+	/**
+	 * 
+	 */
+    public synchronized void startRefreshThread() {
+		if (LOGV) Log.v(TAG, "Starting refresh thread");
+		// Start update status timer, if not already running
+		if(mRefreshThread == null){
             mRefreshThread = new Thread(new InfoWindowTimer());
             mRefreshThread.setDaemon(true);
     		mRefreshThread.start();
     	}
     }
 
+    /**
+     * 
+     */
     public synchronized void stopRefreshThread(){
     	if(mRefreshThread != null){
     		if (LOGV) Log.v(TAG, "Stopping refresh thread");
-    		Thread moribund = mRefreshThread;
+    		Thread killThread = mRefreshThread;
     		mRefreshThread = null;
-    		moribund.interrupt();
+    		killThread.interrupt();
     	}
     }
 
-    
-    
+    /**
+     *     
+     * @author andy
+     *
+     */
     private class InfoWindowTimer implements Runnable {
         public void run() {
         	while(!Thread.currentThread().isInterrupted()){
@@ -369,24 +373,10 @@ public class Home extends Activity {
         }
 	}
  
-    public List<View> getInfoWindows() {
-    	mLines = mProvider.getLines(mContext);
-    	InfoWindow infoWindow = new InfoWindow(this); 
-		return infoWindow.getInfoWindows(mLines);
-    }
-    
-    
-    public void changeInfoWindow() {
-    	List<View> infoWindows = getInfoWindows();
-    	if (infoWindows.size() > 0) {
-    		if (mInfoWindowId == infoWindows.size()-1)
-    			mInfoWindowId = 0;
-    		else
-    			mInfoWindowId++;
-    		setInfoWindow(infoWindows.get(mInfoWindowId));
-    	}
-    }
-    
+    /**
+     * 
+     * @return
+     */
     public View makeErrorInfoWindow() {
 		View infoView = getLayoutInflater().inflate(R.layout.info_window, null);
 		((TextView) infoView.findViewById(R.id.info_window_title)).setText("Tube Status");
@@ -395,7 +385,44 @@ public class Home extends Activity {
 		return infoView;
     }
     
+    /**
+     * 
+     * @return
+     */
+    public View makeUpdateInfoWindow() {
+		View infoView = getLayoutInflater().inflate(R.layout.info_window, null);
+		((TextView) infoView.findViewById(R.id.info_window_title)).setText("Tube Status");
+		((TextView) infoView.findViewById(R.id.info_window_subtitle)).setText("Hit refresh to update Tube Line status.");
+		((ImageButton) infoView.findViewById(R.id.info_window_icon)).setImageResource(R.drawable.info_window_weekend);
+		return infoView;
+    }
     
+    /**
+     * 
+     */
+    public void getInfoWindows() {
+    	mLines = mProvider.getLines(mContext);
+    	   	
+    	InfoWindow infoWindow = new InfoWindow(this); 
+    	mInfoWindows = infoWindow.getInfoWindows(mLines);
+    	if (LOGV) Log.v(TAG, "Getting info windows. Lines Size=" + mLines.size());
+    }
+    
+    /**
+     * 
+     */
+    public void changeInfoWindow() {
+    	if (LOGV) Log.v(TAG, "Changing info windows. Size=" + mInfoWindows.size());
+    	
+    	if (mInfoWindows.size() > 0) {
+    		if (mInfoWindowId == mInfoWindows.size()-1)
+    			mInfoWindowId = 0;
+    		else
+    			mInfoWindowId++;
+    		setInfoWindow(mInfoWindows.get(mInfoWindowId));
+    	}
+    }
+
     /**
      * Make a status window
      */
@@ -406,7 +433,7 @@ public class Home extends Activity {
         
         ViewGroup homeRoot = (ViewGroup) findViewById(R.id.home_root);
         
-        mInfoWindowView = findViewById(R.id.info_window);
+        //mInfoWindowView = findViewById(R.id.info_window);
         if (mInfoWindowView != null) {
             homeRoot.removeView(mInfoWindowView);
             mInfoWindowView = null;
@@ -418,21 +445,22 @@ public class Home extends Activity {
         		LayoutParams.FILL_PARENT,
                 (int) getResources().getDimension(R.dimen.info_window_height)));
       
-        mInfoWindowView.setVisibility(View.VISIBLE);  
-        mInfoLoadingView.setVisibility(View.GONE);
+//        mInfoWindowView.setVisibility(View.VISIBLE);  
+//        mInfoLoadingView.setVisibility(View.GONE);
     }
 
     /**
      * Change UI widgets when updating status data
      */
     private void updateRefreshStatus(boolean isRefreshing) {
-        if (mInfoWindowView != null) {
-        	mInfoWindowView.setVisibility(isRefreshing ? View.GONE : View.VISIBLE);
-        	mInfoLoadingView.setVisibility(isRefreshing ? View.VISIBLE : View.GONE);
-        }
-
         findViewById(R.id.btn_title_refresh).setVisibility(isRefreshing ? View.GONE : View.VISIBLE);
         findViewById(R.id.title_refresh_progress).setVisibility(isRefreshing ? View.VISIBLE : View.GONE);
+        
+    	if (mInfoLoadingView != null) {
+    		mInfoWindowView.setVisibility(isRefreshing ? View.GONE : View.VISIBLE);
+    		mInfoLoadingView.setVisibility(isRefreshing ? View.VISIBLE : View.GONE);
+    	}
+       	
     }
     
     /**
@@ -470,11 +498,8 @@ public class Home extends Activity {
         		mErrorMessage = null;
         		mErrorRetry++;
         	}
-        	else {
-        		// Start update status timer, if not already running
-        		startRefreshThread();
-        	}
-        	
+    		getInfoWindows();
+    		changeInfoWindow();
         	updateRefreshStatus(false);
         }
     }

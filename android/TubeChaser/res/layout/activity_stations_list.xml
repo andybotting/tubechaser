@@ -38,21 +38,24 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
 
-    <LinearLayout style="@style/TitleBar">
-        <ImageButton style="@style/TitleBarAction"
-            android:contentDescription="@string/description_home"
-            android:src="@drawable/ic_title_home"
-            android:onClick="onHomeClick" />
+	<LinearLayout style="@style/TitleBar">
+		<ImageButton android:id="@+id/btn_title_home"
+			style="@style/TitleBarAction"
+			android:contentDescription="@string/description_home"
+			android:src="@drawable/ic_title_home" />
 
-        <ImageView style="@style/TitleBarSeparator" />
-        <TextView style="@style/TitleBarText" />
+		<ImageView style="@style/TitleBarSeparator" />
+        
+		<TextView style="@style/TitleBarText" />
 
-        <ImageView style="@style/TitleBarSeparator" />
-        <ImageButton style="@style/TitleBarAction"
-            android:contentDescription="@string/description_search"
-            android:src="@drawable/ic_title_search"
-            android:onClick="onSearchClick" />
-    </LinearLayout>
+		<ImageView style="@style/TitleBarSeparator" />
+    
+		<ImageButton android:id="@+id/btn_title_search"
+			style="@style/TitleBarAction"
+			android:contentDescription="@string/description_search"
+			android:src="@drawable/ic_title_search" />
+            
+	</LinearLayout>
 
 	<!-- Empty -->
 	<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"

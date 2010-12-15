@@ -86,6 +86,27 @@ public class LineOverview extends ListActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_line_overview);
+
+		// Home button
+		findViewById(R.id.btn_title_home).setOnClickListener(new View.OnClickListener() {
+		    public void onClick(View v) {       
+		    	UIUtils.goHome(LineOverview.this);
+		    }
+		});	
+		
+		// Refresh button
+		findViewById(R.id.btn_title_refresh).setOnClickListener(new View.OnClickListener() {
+		    public void onClick(View v) {       
+		    	new GetTubeStatus().execute();
+		    }
+		});	
+        		
+		// Search button
+		findViewById(R.id.btn_title_search).setOnClickListener(new View.OnClickListener() {
+		    public void onClick(View v) {
+		    	UIUtils.goSearch(LineOverview.this);
+		    }
+		});
      
         mContext = this.getBaseContext();
         mPreferenceHelper = new PreferenceHelper(this);
@@ -111,21 +132,7 @@ public class LineOverview extends ListActivity {
         long timeDiff = UIUtils.dateDiff(lastUpdate);
         ((TextView) findViewById(R.id.title_text)).setText(UIUtils.timeString(timeDiff));
     }
-    
-	/** Handle "home" title-bar action. */
-    public void onHomeClick(View v) {
-        UIUtils.goHome(this);
-    }
-    
-    /** Handle "refresh" title-bar action. */
-    public void onRefreshClick(View v) {
-    	new GetTubeStatus().execute();
-    }
-    
-    /** Handle "search" title-bar action. */
-    public void onSearchClick(View v) {
-        UIUtils.goSearch(this);
-    }
+
     
     private void updateRefreshStatus(boolean isRefreshing) {
     	findViewById(R.id.btn_title_refresh).setVisibility(isRefreshing ? View.GONE : View.VISIBLE);

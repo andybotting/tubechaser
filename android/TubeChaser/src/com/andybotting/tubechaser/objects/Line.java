@@ -152,6 +152,8 @@ public class Line {
 			return STATUS_MINOR;
 		else if (status.contains("Part suspended"))
 			return STATUS_MINOR;
+		else if (status.contains("Special service"))
+			return STATUS_MINOR;
 		
 		// Good
 		else if (status.contains("Good service"))

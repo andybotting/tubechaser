@@ -48,22 +48,21 @@
 
         <ImageView style="@style/TitleBarSeparator" />
     
-        <ImageButton style="@style/TitleBarAction"
-            android:id="@+id/btn_title_refresh"
-            android:contentDescription="@string/description_refresh"
-            android:src="@drawable/ic_title_refresh"
-            android:onClick="onRefreshClick" />
+		<ImageButton android:id="@+id/btn_title_refresh"
+			style="@style/TitleBarAction"
+			android:contentDescription="@string/description_refresh"
+			android:src="@drawable/ic_title_refresh" />
     
-        <ProgressBar style="@style/TitleBarProgressIndicator"
-            android:id="@+id/title_refresh_progress"
-            android:visibility="gone" />
+		<ProgressBar android:id="@+id/title_refresh_progress"
+			style="@style/TitleBarProgressIndicator"
+			android:visibility="gone" />
 
-        <ImageView style="@style/TitleBarSeparator" />
+		<ImageView style="@style/TitleBarSeparator" />
     
-        <ImageButton style="@style/TitleBarAction"
-            android:contentDescription="@string/description_search"
-            android:src="@drawable/ic_title_search"
-            android:onClick="onSearchClick" />
+		<ImageButton android:id="@+id/btn_title_search"
+			style="@style/TitleBarAction"
+			android:contentDescription="@string/description_search"
+			android:src="@drawable/ic_title_search" />
             
     </LinearLayout>
 
@@ -73,68 +72,61 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:padding="6dip">
-        
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1">
-            
+
             <Button android:id="@+id/home_btn_overview"
                 style="@style/HomeButton"
-                android:onClick="onOverviewClick"
                 android:text="@string/btn_overview"
                 android:drawableTop="@drawable/home_btn_overview"/>
                 
             <Button android:id="@+id/home_btn_stations"
                 style="@style/HomeButton"
-                android:onClick="onStationsClick"
                 android:text="@string/btn_stations"
                 android:drawableTop="@drawable/home_btn_stations"/>
-            
-		</LinearLayout>
 
+        </LinearLayout>
+    
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1">
-            
+                        
             <Button android:id="@+id/home_btn_nearby"
                 style="@style/HomeButton"
-                android:onClick="onNearbyClick"
                 android:text="@string/btn_nearby"
                 android:drawableTop="@drawable/home_btn_nearby"/>
-
+            
             <Button android:id="@+id/home_btn_starred"
                 style="@style/HomeButton"
-                android:onClick="onStarredClick"
                 android:text="@string/btn_starred"
-                android:drawableTop="@drawable/home_btn_starred"/>
-                
-        </LinearLayout>
+                android:drawableTop="@drawable/home_btn_starred"/>            
 
+        </LinearLayout>
+    
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1">             
-            
+            android:layout_weight="1">
+
             <Button android:id="@+id/home_btn_search"
                 style="@style/HomeButton"
-                android:onClick="onSearchClick"
                 android:text="@string/btn_search"
                 android:drawableTop="@drawable/home_btn_search"/>
                 
             <Button android:id="@+id/home_btn_settings"
                 style="@style/HomeButton"
-                android:onClick="onSettingsClick"
                 android:text="@string/btn_settings"
                 android:drawableTop="@drawable/home_btn_settings"/>
                 
         </LinearLayout>
-
-    </LinearLayout>
+        
+	</LinearLayout>
 
 
     <LinearLayout

@@ -41,12 +41,15 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.TextView;
 
 import com.andybotting.tubechaser.R;
 import com.andybotting.tubechaser.objects.Station;
 import com.andybotting.tubechaser.provider.TubeChaserProvider;
+import com.andybotting.tubechaser.ui.BalloonItemizedOverlay;
+import com.andybotting.tubechaser.utils.UIUtils;
 import com.google.android.maps.GeoPoint;
-import com.google.android.maps.ItemizedOverlay;
 import com.google.android.maps.MapActivity;
 import com.google.android.maps.MapController;
 import com.google.android.maps.MapView;
@@ -69,18 +72,19 @@ public class StationMap extends MapActivity {
 
     /** Called when the activity is first created. */
     @Override
-    public void onCreate(Bundle savedInstanceState)
-    {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_station_map);
-        
+                
         final Uri stationUri = getIntent().getParcelableExtra(EXTRA_STATION);
         
         mContext = this.getBaseContext();
         TubeChaserProvider provider = new TubeChaserProvider();
         
         mStation = provider.getStation(mContext, stationUri);
-
+        
+        ((TextView) findViewById(R.id.title_text)).setText(mStation.getName());
+        
        	mMapView = (MapView) findViewById(R.id.mapView);
        	mMapView.setBuiltInZoomControls(true);
        	
@@ -93,44 +97,65 @@ public class StationMap extends MapActivity {
         mMapView.setClickable(true);
         mMapView.setEnabled(true);
         
+		// Home button
+		findViewById(R.id.btn_title_home).setOnClickListener(new View.OnClickListener() {
+		    public void onClick(View v) {       
+		    	UIUtils.goHome(StationMap.this);
+		    }
+		});	
+		
+		// My Location button
+		findViewById(R.id.btn_title_myloc).setOnClickListener(new View.OnClickListener() {
+		    public void onClick(View v) {       
+		    	mMapView.getController().animateTo(mMyLocationOverlay.getMyLocation());
+		    }
+		});	
+        
+        
         displayStation(mStation);
     }
         
 
-	@SuppressWarnings("unchecked")
-	public class MapItemizedOverlay extends ItemizedOverlay {
-		
-		private ArrayList<OverlayItem> mOverlays = new ArrayList<OverlayItem>();
-		
-		public MapItemizedOverlay(Drawable defaultMarker) {
-			super(boundCenterBottom(defaultMarker));
-		}
+	public class MyItemizedOverlay extends BalloonItemizedOverlay<OverlayItem> {
 
-		public void addOverlay(OverlayItem overlay) {
-		    mOverlays.add(overlay);
-		    populate();
-		}
-		
-		@Override
-		protected OverlayItem createItem(int i) {
-		  return mOverlays.get(i);
-		}
+	    private ArrayList<OverlayItem> m_overlays = new ArrayList<OverlayItem>();
 
-		@Override
-		public int size() {
-			return mOverlays.size();
-		}
-	
+	    public MyItemizedOverlay(Drawable defaultMarker, MapView mapView) {
+	        super(boundCenter(defaultMarker), mapView);
+	    }
+
+	    public void addOverlay(OverlayItem overlay) {
+	        m_overlays.add(overlay);
+	        populate();
+	    }
+
+	    @Override
+	    protected OverlayItem createItem(int i) {
+	        return m_overlays.get(i);
+	    }
+
+	    @Override
+	    public int size() {
+	        return m_overlays.size();
+	    }
+
+	    @Override
+	    protected boolean onBalloonTap(int index) {
+	        return true;
+	    }
+
 	}
 
     private void displayStation(Station mStation) {
     	
     	Drawable drawable = this.getResources().getDrawable(R.drawable.map_marker);
-    	MapItemizedOverlay itemizedOverlay = new MapItemizedOverlay(drawable);
+    	MyItemizedOverlay itemizedOverlay = new MyItemizedOverlay(drawable, mMapView);
     	mMapOverlays.add(itemizedOverlay);
 	
 		GeoPoint point = mStation.getGeoPoint();
-    	OverlayItem overlayitem = new OverlayItem(point, String.valueOf(mStation.getName()), null);
+		String title = mStation.getName();
+		String snippet = mStation.getLinesString();
+		OverlayItem overlayitem = new OverlayItem(point, title, snippet);
     	itemizedOverlay.addOverlay(overlayitem);
 	    
 	    mMapController.setZoom(17);

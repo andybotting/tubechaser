@@ -10,8 +10,8 @@
    xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="24"
-   height="36"
+   width="32"
+   height="42"
    id="svg2"
    version="1.1"
    inkscape:version="0.48.0 r9654"
@@ -1055,9 +1055,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="11.2"
-     inkscape:cx="-20.510164"
-     inkscape:cy="19.797303"
+     inkscape:zoom="5.6"
+     inkscape:cx="-50.174404"
+     inkscape:cy="15.960735"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -1082,17 +1082,17 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(-3.2718684,-1034.3107)">
+     transform="translate(-3.2718684,-1028.3107)">
     <g
        id="g3173"
-       transform="matrix(0.97259508,0,0,0.96829195,2.379992,31.483394)">
+       transform="matrix(1.3440652,0,0,1.3381186,1.4336121,-357.6068)">
       <g
          transform="matrix(0.68925195,0,0,0.68925195,-8.6980422,1026.7666)"
          id="g2971">
         <path
            inkscape:connector-curvature="0"
-           sodipodi:nodetypes="cccccc"
-           d="m 34.89648,60.75526 c 0.0767,-7.40556 0.0506,-27.59731 0.0506,-27.59731 l -5.72662,0.006 c 0,0 -0.0494,19.63276 0.12162,27.41084 l 2.89211,5.910807 c -0.338669,0.565987 2.395981,-3.963825 2.66229,-5.730337 z"
+           sodipodi:nodetypes="ccccc"
+           d="m 34.743643,57.982067 c 0.0767,-7.40556 0.203437,-24.824117 0.203437,-24.824117 l -5.72662,0.006 c 0,0 -0.0494,17.115763 0.12162,24.893843 0.795776,0.02048 4.430833,0.02994 5.401563,-0.07573 z"
            id="path2144"
            style="fill:#f0f0f0;fill-opacity:1;fill-rule:nonzero;stroke:#888a85;stroke-width:0.79659092;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible"
            inkscape:export-filename="/home/andy/usr/workspace/tramhunter-trunk/res/drawable/map_marker.png"
@@ -1100,8 +1100,8 @@
            inkscape:export-ydpi="52.477196" />
         <path
            inkscape:connector-curvature="0"
-           sodipodi:nodetypes="ccccccc"
-           d="m 34.15287,60.38638 c -0.005,-4.04694 -0.0447,-22.03745 -0.0447,-22.03745 l -4.07123,10e-4 0.0424,22.3961 2.20831,4.487297 c -0.211844,0.451874 1.85884,-3.840555 1.86524,-4.847057 l -2e-5,1.1e-4 z"
+           sodipodi:nodetypes="ccccc"
+           d="m 33.873712,57.30414 c -0.005,-4.04694 0.234458,-18.95521 0.234458,-18.95521 l -4.07123,10e-4 -0.0316,18.995082 c 1.746583,-0.0023 3.049823,0.01083 3.868369,-0.04087 z"
            id="path3085"
            style="opacity:0.53977272;fill:none;stroke:url(#linearGradient3959);stroke-width:0.79659092;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible"
            inkscape:export-filename="/home/andy/usr/workspace/tramhunter-trunk/res/drawable/map_marker.png"

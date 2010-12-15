@@ -101,8 +101,23 @@ public class StationsNearby extends ListActivity implements LocationListener {
 
 		// Set the nearby stops layout
 		setContentView(R.layout.activity_stations_list);
+		
+		// Home button
+		findViewById(R.id.btn_title_home).setOnClickListener(new View.OnClickListener() {
+		    public void onClick(View v) {       
+		    	UIUtils.goHome(StationsNearby.this);
+		    }
+		});	
+        		
+		// Search button
+		findViewById(R.id.btn_title_search).setOnClickListener(new View.OnClickListener() {
+		    public void onClick(View v) {
+		    	UIUtils.goSearch(StationsNearby.this);
+		    }
+		});
+		
 		mListView = (ListView) findViewById(android.R.id.list);
-
+		
 		// Get stations
 		mContext = getApplicationContext();
 		
@@ -131,14 +146,6 @@ public class StationsNearby extends ListActivity implements LocationListener {
 	  	    }
 	  	    
 	  	}
-	  	
-	  	
-//	  	else{
-//    		// TODO: This should a nicer dialog explaining that no location services
-//    		UIUtils.popToast(this, "Unable to determine location!");			
-//			// Finish the activity, and go back to the main menu
-//			this.finish();
-//    	}
 	
 	}
 	
@@ -198,16 +205,7 @@ public class StationsNearby extends ListActivity implements LocationListener {
     	stopLocationListening();
     }
 	
-	
-    /** Handle "home" title-bar action. */
-    public void onHomeClick(View v) {
-        UIUtils.goHome(this);
-    }
-	
-    /** Handle "search" title-bar action. */
-    public void onSearchClick(View v) {
-        UIUtils.goSearch(this);
-    }
+
 
 
     protected void onListItemClick(ListView l, View v, int position, long id) {
@@ -233,6 +231,7 @@ public class StationsNearby extends ListActivity implements LocationListener {
 			if (mShowBusy) {
 				// Show the dialog window
 				mListView.setVisibility(View.GONE);
+				findViewById(android.R.id.empty).setVisibility(View.GONE);
 				findViewById(R.id.loading).setVisibility(View.VISIBLE);
 				mShowBusy = false;
 			}
@@ -271,12 +270,12 @@ public class StationsNearby extends ListActivity implements LocationListener {
 		// Can use UI thread here
 		protected void onPostExecute(final ArrayList<Station> sortedStations) {
 		
-			if(mRefreshListOnly){
+			if (mRefreshListOnly) {
 				// Just update the list
 				StationsListAdapter stationsListAdapter = (StationsListAdapter)getListAdapter();
 				stationsListAdapter.updateStationList(sortedStations, mLocation);
 			}
-			else{
+			else {
 				// Refresh the entire list
 				mAdapter = new StationsListAdapter(sortedStations, mLocation);
 				setListAdapter(mAdapter);	

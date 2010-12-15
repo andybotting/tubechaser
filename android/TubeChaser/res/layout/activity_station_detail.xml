@@ -37,35 +37,35 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
 
-    <LinearLayout style="@style/TitleBar">
-        <ImageButton style="@style/TitleBarAction"
-            android:contentDescription="@string/description_home"
-            android:src="@drawable/ic_title_home"
-            android:onClick="onHomeClick" />
+	<LinearLayout style="@style/TitleBar">
+		<ImageButton android:id="@+id/btn_title_home"
+			style="@style/TitleBarAction"
+			android:contentDescription="@string/description_home"
+			android:src="@drawable/ic_title_home" />
 
-        <ImageView style="@style/TitleBarSeparator" />
-        
-        <TextView style="@style/TitleBarText" />
-        
 		<ImageView style="@style/TitleBarSeparator" />
         
-        <ImageButton style="@style/TitleBarAction"
-            android:id="@+id/btn_title_refresh"
-            android:contentDescription="String2"
-            android:src="@drawable/ic_title_refresh"
-            android:onClick="onRefreshClick" />
-            
-        <ProgressBar style="@style/TitleBarProgressIndicator"
-            android:id="@+id/title_refresh_progress"
-            android:visibility="gone" />
-
-        <ImageView style="@style/TitleBarSeparator" />
+		<TextView style="@style/TitleBarText" />
         
-        <ImageButton style="@style/TitleBarAction"
-            android:contentDescription="@string/description_map"
-            android:src="@drawable/ic_title_map"
-            android:onClick="onMapClick" />
-    </LinearLayout>
+		<ImageView style="@style/TitleBarSeparator" />
+
+        <ImageButton android:id="@+id/btn_title_refresh"
+			style="@style/TitleBarAction"
+			android:contentDescription="@string/description_refresh"
+			android:src="@drawable/ic_title_refresh" />
+    
+		<ProgressBar android:id="@+id/title_refresh_progress"
+			style="@style/TitleBarProgressIndicator"
+			android:visibility="gone" />
+
+		<ImageView style="@style/TitleBarSeparator" />
+    
+		<ImageButton android:id="@+id/btn_title_map"
+			style="@style/TitleBarAction"
+			android:contentDescription="@string/description_map"
+			android:src="@drawable/ic_title_map" />
+            
+	</LinearLayout>
     
     
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"

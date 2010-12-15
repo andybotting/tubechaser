@@ -38,10 +38,11 @@
     android:layout_height="fill_parent">
 
     <LinearLayout style="@style/TitleBar">
-        <ImageButton style="@style/TitleBarAction"
+    
+        <ImageButton android:id="@+id/btn_title_home"
+        	style="@style/TitleBarAction"
             android:contentDescription="@string/description_home"
-            android:src="@drawable/ic_title_home"
-            android:onClick="onHomeClick" />
+            android:src="@drawable/ic_title_home" />
 
         <ImageView style="@style/TitleBarSeparator" />
         
@@ -49,10 +50,10 @@
         
 		<ImageView style="@style/TitleBarSeparator" />
         
-        <ImageButton style="@style/TitleBarAction"
+        <ImageButton android:id="@+id/btn_title_search"
+        	style="@style/TitleBarAction"
             android:contentDescription="@string/description_search"
-            android:src="@drawable/ic_title_search"
-            android:onClick="onSearchClick" />
+            android:src="@drawable/ic_title_search" />
             
     </LinearLayout>
 

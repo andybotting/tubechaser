@@ -188,7 +188,30 @@ public class StationDetail extends ExpandableListActivity {
     private void displayStation() {
 
         setContentView(R.layout.activity_station_detail);
-    	
+        
+		// Home button
+		findViewById(R.id.btn_title_home).setOnClickListener(new View.OnClickListener() {
+		    public void onClick(View v) {       
+		    	UIUtils.goHome(StationDetail.this);
+		    }
+		});	
+		
+		// Refresh button
+		findViewById(R.id.btn_title_refresh).setOnClickListener(new View.OnClickListener() {
+		    public void onClick(View v) {       
+		    	new GetDepartures().execute();
+		    }
+		});	
+        		
+		// Map button
+		findViewById(R.id.btn_title_map).setOnClickListener(new View.OnClickListener() {
+		    public void onClick(View v) {
+	        	final Intent intent = new Intent(StationDetail.this, StationMap.class);
+	        	intent.putExtra(StationMap.EXTRA_STATION, mStation.getUri());
+	        	startActivityForResult(intent, 1);
+		    }
+		});
+        
         // Set up our list
         mListAdapter = new DepartureListAdapter();
 				
@@ -315,34 +338,19 @@ public class StationDetail extends ExpandableListActivity {
         	mListView.expandGroup(i);
         }
     }
-    
-	/**
-	 * On home icon click
-	 */
-    public void onHomeClick(View v) {
-        UIUtils.goHome(this);
-    }
 
-    /**
-     * On refresh icon click
-     */
-    public void onRefreshClick(View v) {
-    	new GetDepartures().execute();
-    }
-
-    /**
-     * On map icon click
-     */
-    public void onMapClick(View v) {
-    	final Intent intent = new Intent(this, StationMap.class);
-    	intent.putExtra(StationMap.EXTRA_STATION, mStation.getUri());
-    	startActivityForResult(intent, 1);
-    }
 
     /**
      * Update refresh status icon/views
      */
 	private void updateRefreshStatus(boolean isRefreshing) {
+		
+		if (mListAdapter.getGroupCount() == 0)
+			mListView.getEmptyView().setVisibility(isRefreshing ? View.GONE : View.VISIBLE);
+		else
+			mListView.setVisibility(isRefreshing ? View.GONE : View.VISIBLE);
+		
+		
 		mListView.setVisibility(isRefreshing ? View.GONE : View.VISIBLE);
 		findViewById(R.id.departures_loading).setVisibility(isRefreshing ? View.VISIBLE : View.GONE);
 		
@@ -416,7 +424,7 @@ public class StationDetail extends ExpandableListActivity {
 	 * Departures list adapter
 	 */
     public class DepartureListAdapter extends BaseExpandableListAdapter {
-        
+    	
         public Object getChild(int groupPosition, int childPosition) {
             return mDepartureBoard.getPlatform(groupPosition).getDeparture(childPosition);
         }

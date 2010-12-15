@@ -89,6 +89,21 @@ public class StationsList extends ListActivity {
         	// Show non-tab layout
         	setContentView(R.layout.activity_stations_list);
         	
+    		// Home button
+    		findViewById(R.id.btn_title_home).setOnClickListener(new View.OnClickListener() {
+    		    public void onClick(View v) {       
+    		    	UIUtils.goHome(StationsList.this);
+    		    }
+    		});	
+            		
+    		// Search button
+    		findViewById(R.id.btn_title_search).setOnClickListener(new View.OnClickListener() {
+    		    public void onClick(View v) {
+    		    	UIUtils.goSearch(StationsList.this);
+    		    }
+    		});
+    		
+    		
         	// If starred
         	if (mStationsUri.equals(Stations.buildStarredUri())) {
         		mStations = provider.getStarredStations(mContext);
@@ -100,20 +115,14 @@ public class StationsList extends ListActivity {
                 mLineUri = getIntent().getParcelableExtra(EXTRA_LINE);  
         		((TextView) findViewById(R.id.title_text)).setText("All Stations");
         	}
+        		
         }
-        
+                
         ListAdapter adapter = new StationsListAdapter();
         this.setListAdapter(adapter);
 	
 	}
 
-    public void onHomeClick(View v) {
-        UIUtils.goHome(this);
-    }
-	
-    public void onSearchClick(View v) {
-        UIUtils.goSearch(this);
-    }
 	
     protected void onListItemClick(ListView l, View v, int position, long id) {
         final Uri stationUri = mStations.get(position).getUri();	

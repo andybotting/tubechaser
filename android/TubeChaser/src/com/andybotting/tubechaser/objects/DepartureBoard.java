@@ -73,7 +73,7 @@ public class DepartureBoard {
 	public Platform getPlatform(int location) {
 		return platforms.get(location);
 	}
-	
+
 	public String toString() {
 		return String.format("DepartureBoard %s", platforms);
 	}
