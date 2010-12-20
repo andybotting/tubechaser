@@ -64,7 +64,7 @@ import android.util.Log;
 public class TubeChaserProvider extends ContentProvider {
 
     private static final String TAG = "TubeChaserProvider";
-    private static final boolean LOGV = Log.isLoggable(TAG, Log.DEBUG);
+    private static final boolean LOGV = Log.isLoggable(TAG, Log.INFO);
     
     private SQLiteDatabase mDB;
 
@@ -122,11 +122,14 @@ public class TubeChaserProvider extends ContentProvider {
 	    map.put(BaseColumns._ID, 			Tables.LINES + "." + BaseColumns._ID);
 	    map.put(LinesColumns.NAME, 			Tables.LINES + "." + LinesColumns.NAME);
 	    map.put(LinesColumns.SHORTNAME, 	Tables.LINES + "." + LinesColumns.SHORTNAME);
+	    map.put(LinesColumns.TFL_ID, 		Tables.LINES + "." + LinesColumns.TFL_ID);
 	    map.put(LinesColumns.CODE, 			Tables.LINES + "." + LinesColumns.CODE);
 	    map.put(LinesColumns.TYPE, 			Tables.LINES + "." + LinesColumns.TYPE);
 	    map.put(LinesColumns.COLOUR, 		Tables.LINES + "." + LinesColumns.COLOUR);
 	    map.put(LinesColumns.STATUS, 		Tables.LINES + "." + LinesColumns.STATUS);
+	    map.put(LinesColumns.STATUS_CODE, 	Tables.LINES + "." + LinesColumns.STATUS_CODE);
 	    map.put(LinesColumns.STATUS_DESC, 	Tables.LINES + "." + LinesColumns.STATUS_DESC);
+	    map.put(LinesColumns.STATUS_CLASS, 	Tables.LINES + "." + LinesColumns.STATUS_CLASS);
 	    sLinesProjection = map;
 
 	    // Stations
@@ -138,7 +141,9 @@ public class TubeChaserProvider extends ContentProvider {
 	    map.put(StationsColumns.TFL_ID,		Tables.STATIONS + "." + StationsColumns.TFL_ID);	    
 	    map.put(StationsColumns.LATITUDE, 	Tables.STATIONS + "." + StationsColumns.LATITUDE);
 	    map.put(StationsColumns.LONGITUDE, 	Tables.STATIONS + "." + StationsColumns.LONGITUDE);
-	    map.put(StationsColumns.NEWS, 		Tables.STATIONS + "." + StationsColumns.NEWS);
+	    map.put(StationsColumns.STATUS, 	Tables.STATIONS + "." + StationsColumns.STATUS);
+	    map.put(StationsColumns.STATUS_CODE,Tables.STATIONS + "." + StationsColumns.STATUS_CODE);
+	    map.put(StationsColumns.STATUS_DESC,Tables.STATIONS + "." + StationsColumns.STATUS_DESC);
 	    map.put(StationsColumns.STEPFREE, 	Tables.STATIONS + "." + StationsColumns.STEPFREE);
 	    sStationsProjection = map;
 
@@ -255,9 +260,9 @@ public class TubeChaserProvider extends ContentProvider {
 	        }
 	        case STATIONS_SEARCH: {
 	        	String query = null;
-                if (uri.getPathSegments().size() > 1) {
+                if (uri.getPathSegments().size() > 1)
                     query = uri.getLastPathSegment().toLowerCase();
-                }
+
 	        	qb.setTables(Tables.STATIONS);
 	        	qb.setProjectionMap(sStationsProjection);
 	            qb.appendWhere(Stations.NAME + " LIKE '%" + query +"%'");
@@ -342,24 +347,30 @@ public class TubeChaserProvider extends ContentProvider {
     	int col_id = c.getColumnIndexOrThrow(LinesColumns.ID);
 		int col_name = c.getColumnIndexOrThrow(LinesColumns.NAME);
 		int col_code = c.getColumnIndexOrThrow(LinesColumns.CODE);
+		int col_tfl_id = c.getColumnIndexOrThrow(LinesColumns.TFL_ID);
 		int col_short_name = c.getColumnIndexOrThrow(LinesColumns.SHORTNAME);
 		int col_colour = c.getColumnIndexOrThrow(LinesColumns.COLOUR);
 		int col_type = c.getColumnIndexOrThrow(LinesColumns.TYPE);
 		int col_status = c.getColumnIndexOrThrow(LinesColumns.STATUS);
+		int col_status_code = c.getColumnIndexOrThrow(LinesColumns.STATUS_CODE);
 		int col_status_desc = c.getColumnIndexOrThrow(LinesColumns.STATUS_DESC);
+		int col_status_class = c.getColumnIndexOrThrow(LinesColumns.STATUS_CLASS);
 		
-		Line tubeLine = new Line();
+		Line line = new Line();
 		
-		tubeLine.setId(c.getInt(col_id));
-		tubeLine.setName(c.getString(col_name));
-		tubeLine.setShortName(c.getString(col_short_name));
-		tubeLine.setCode(c.getString(col_code));
-		tubeLine.setColour(c.getString(col_colour));
-		tubeLine.setType(c.getString(col_type));
-		tubeLine.setStatus(c.getString(col_status));
-		tubeLine.setStatusDesc(c.getString(col_status_desc));
+		line.setId(c.getInt(col_id));
+		line.setName(c.getString(col_name));
+		line.setShortName(c.getString(col_short_name));
+		line.setCode(c.getString(col_code));
+		line.setTfLID(c.getString(col_tfl_id));
+		line.setColour(c.getString(col_colour));
+		line.setType(c.getString(col_type));
+		line.setStatus(c.getString(col_status));
+		line.setStatusCode(c.getString(col_status_code));
+		line.setStatusDesc(c.getString(col_status_desc));
+		line.setStatusClass(c.getString(col_status_class));
 
-		return tubeLine;
+		return line;
     }
     
     
@@ -372,25 +383,29 @@ public class TubeChaserProvider extends ContentProvider {
 		int col_name = c.getColumnIndexOrThrow(StationsColumns.NAME);
 		int col_code = c.getColumnIndexOrThrow(StationsColumns.CODE);
 		int col_lines = c.getColumnIndexOrThrow(StationsColumns.LINES);
-		int col_tflid = c.getColumnIndexOrThrow(StationsColumns.TFL_ID);
+		int col_tfl_id = c.getColumnIndexOrThrow(StationsColumns.TFL_ID);
 		int col_latitude = c.getColumnIndexOrThrow(StationsColumns.LATITUDE);
 		int col_longitude = c.getColumnIndexOrThrow(StationsColumns.LONGITUDE);
-		int col_news = c.getColumnIndexOrThrow(StationsColumns.NEWS);
+		int col_status = c.getColumnIndexOrThrow(StationsColumns.STATUS);
+		int col_status_code = c.getColumnIndexOrThrow(StationsColumns.STATUS_CODE);
+		int col_status_desc = c.getColumnIndexOrThrow(StationsColumns.STATUS_DESC);
 		int col_stepfree = c.getColumnIndexOrThrow(StationsColumns.STEPFREE);
 
-		Station tubeStation = new Station();
+		Station station = new Station();
 	
-		tubeStation.setId(c.getInt(col_id));
-		tubeStation.setName(c.getString(col_name));
-		tubeStation.setCode(c.getString(col_code));
-		tubeStation.setTflId(c.getString(col_tflid));
-		tubeStation.setLinesString(c.getString(col_lines));
-		tubeStation.setLatitude(c.getDouble(col_latitude));
-		tubeStation.setLongitude(c.getDouble(col_longitude));
-		tubeStation.setNews(c.getString(col_news));
-		tubeStation.setStepFree(c.getInt(col_stepfree));
+		station.setId(c.getInt(col_id));
+		station.setName(c.getString(col_name));
+		station.setCode(c.getString(col_code));
+		station.setTflId(c.getString(col_tfl_id));
+		station.setLinesString(c.getString(col_lines));
+		station.setLatitude(c.getDouble(col_latitude));
+		station.setLongitude(c.getDouble(col_longitude));
+		station.setStatus(c.getString(col_status));
+		station.setStatusCode(c.getString(col_status_code));
+		station.setStatusDesc(c.getString(col_status_desc));
+		station.setStepFree(c.getInt(col_stepfree));
 
-		return tubeStation;
+		return station;
     }
     
 

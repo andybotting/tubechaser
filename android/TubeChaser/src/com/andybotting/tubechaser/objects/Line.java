@@ -50,12 +50,16 @@ public class Line {
 	private String name;
 	private String shortName;
 	private String code;
+	private String tflid;
 	private String type;
 	private String colour;
-
+	
+	private String status = "";      // "Good Service"
+	private String statusCode = "";  // "GS" or "MD"
+	private String statusClass = ""; // "GoodService" or "DisruptedService"
+	private String statusDesc = "";  // "Due to an earlier Police investigation at Hammersmith. "
 	private Date fetchedTime;
-	private String status = "Unknown";
-	private String statusDesc;
+
 	
 	public int getId() {
 		return id;
@@ -95,6 +99,14 @@ public class Line {
 		this.code = code;
 	}
 	
+	public void setTfLID(String tflid) {
+		this.tflid = tflid;
+	}
+
+	public String getTfLID() {
+		return tflid;
+	}
+	
 	public String getType() {
 		return type;
 	}
@@ -116,12 +128,9 @@ public class Line {
 	}
 
 	public String getStatus() {
-		if (status != null) {
-			return status;
-		}
-		else {
+		if (status == null)
 			return "Unknown";
-		}
+		return status;
 	}
 
 	public void setStatusDesc(String statusDesc) {
@@ -129,7 +138,29 @@ public class Line {
 	}
 
 	public String getStatusDesc() {
+		if (statusDesc == null)
+			return "Unknown";
 		return statusDesc;
+	}
+	
+	public void setStatusCode(String statusCode) {
+		this.statusCode = statusCode;
+	}
+
+	public String getStatusCode() {
+		if (statusCode == null)
+			return "NA";
+		return statusCode;
+	}
+
+	public void setStatusClass(String statusClass) {
+		this.statusClass = statusClass;
+	}
+
+	public String getStatusClass() {
+		if (statusClass == null)
+			return "Unknown";
+		return statusClass;
 	}
 	
 	public int getStatusLevel() {
@@ -138,7 +169,7 @@ public class Line {
 		// Severe
 		if (status.contains("Severe"))
 			return STATUS_SEVERE;
-		else if (status.contains("Planned closure"))
+		else if (status.contains("Planned Closure"))
 			return STATUS_SEVERE;
 		else if (status.contains("Closed"))
 			return STATUS_SEVERE;
@@ -146,17 +177,17 @@ public class Line {
 			return STATUS_SEVERE;
 
 		// Minor
-		else if (status.contains("Minor"))
+		else if (status.contains("Minor Delays"))
 			return STATUS_MINOR;
-		else if (status.contains("Part closure"))
+		else if (status.contains("Part Closure"))
 			return STATUS_MINOR;
-		else if (status.contains("Part suspended"))
+		else if (status.contains("Part Suspended"))
 			return STATUS_MINOR;
-		else if (status.contains("Special service"))
+		else if (status.contains("Special Service"))
 			return STATUS_MINOR;
 		
 		// Good
-		else if (status.contains("Good service"))
+		else if (status.contains("Good Service"))
 			return STATUS_GOOD;
 		
 		// Unknown
@@ -207,7 +238,6 @@ public class Line {
     public Uri getUri() {
         return Uri.withAppendedPath(Lines.CONTENT_URI, "" + id);
     }
-
 
 
 

@@ -38,6 +38,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+
+import com.andybotting.tubechaser.utils.PreferenceHelper;
+
 import android.content.Context;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
@@ -49,7 +52,7 @@ import android.util.Log;
 public class TubeChaserDatabase extends SQLiteOpenHelper {
 	
     private static final String TAG = "TubeChaserDatabase";
-    private static final boolean LOGV = Log.isLoggable(TAG, Log.DEBUG);
+    private static final boolean LOGV = Log.isLoggable(TAG, Log.INFO);
 
 	private static final String AUTHORITY = "com.andybotting.tubechaser";
 	private static final String DATABASE_NAME = "tubechaser.db";
@@ -59,7 +62,7 @@ public class TubeChaserDatabase extends SQLiteOpenHelper {
 	// E.g. 
 	// 	App Version v0.1 = DB Version 1
 	// 	App Version v1.2 = DB Version 12
-	private static final int DATABASE_VERSION = 1;
+	private static final int DATABASE_VERSION = 2;
 	
 	private SQLiteDatabase db; 
 	private Context context;
@@ -165,6 +168,12 @@ public class TubeChaserDatabase extends SQLiteOpenHelper {
 	 * This is done by transfering bytestream.
 	 * */
 	private void copyDataBase() throws IOException {
+		
+		if (LOGV) Log.v(TAG, "Resetting last fetched timestamp");
+		
+		// Reset out last fetched status date
+		PreferenceHelper preferenceHelper = new PreferenceHelper(context);
+		preferenceHelper.resetLastUpdateTimestamp();
 		
 		if (LOGV) Log.v(TAG, "Copying packaged database into position");
 		

@@ -38,7 +38,7 @@
     android:layout_height="fill_parent"
     android:layout_weight="1"
     android:gravity="center"
-    android:textSize="14sp"
+    android:textSize="@dimen/text_size_small"
     android:textStyle="bold"
     android:minHeight="38dp"
     android:background="@drawable/minitab" />

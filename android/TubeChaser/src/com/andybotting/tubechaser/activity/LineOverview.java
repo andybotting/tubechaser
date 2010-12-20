@@ -56,7 +56,7 @@ import android.widget.TextView;
 
 import com.andybotting.tubechaser.R;
 import com.andybotting.tubechaser.objects.Line;
-import com.andybotting.tubechaser.provider.TfLTubeProvider;
+import com.andybotting.tubechaser.provider.TfLTubeLineStatus;
 import com.andybotting.tubechaser.provider.TubeChaserProvider;
 import com.andybotting.tubechaser.provider.TubeChaserContract.Lines;
 import com.andybotting.tubechaser.utils.PreferenceHelper;
@@ -147,10 +147,10 @@ public class LineOverview extends ListActivity {
         }
 
         protected Void doInBackground(Void... unused) {
-        	TfLTubeProvider tubeProvider = new TfLTubeProvider();
+        	TfLTubeLineStatus tubeLineStatus = new TfLTubeLineStatus();
         	try {
                 if (LOGV) Log.v(TAG, "Updating Tube Status");
-				tubeProvider.updateTubeStatus(mContext);
+                tubeLineStatus.updateTubeStatus(mContext);
 			} catch (TubeChaserProviderException e) {
 			    mErrorMessage = e.getMessage();
 			}
@@ -221,19 +221,19 @@ public class LineOverview extends ListActivity {
                 pv = convertView;
             }
             
-            Line thisLine = (Line) mLines.get(position);
+            Line line = (Line) mLines.get(position);
             
-            ((TextView)pv.findViewById(R.id.line_name)).setText(thisLine.getLineName());
+            ((TextView)pv.findViewById(R.id.line_name)).setText(line.getLineName());
             
 			// Parse our 6-char hex value into an int for android
-			int colour = Color.parseColor("#" + thisLine.getColour());
+			int colour = Color.parseColor("#" + line.getColour());
 			((View)pv.findViewById(R.id.line_colour)).setBackgroundColor(colour);
 
 			// Status message e.g. Good service
-            ((TextView)pv.findViewById(R.id.line_status)).setText(thisLine.getStatus());
+            ((TextView)pv.findViewById(R.id.line_status)).setText(line.getStatus());
             
             // Set the green/orange/red/gray status icon
-            int imageID = getResources().getIdentifier(thisLine.getStatusImage(), "drawable", "com.andybotting.tubechaser");
+            int imageID = getResources().getIdentifier(line.getStatusImage(), "drawable", "com.andybotting.tubechaser");
             ((ImageView)pv.findViewById(R.id.line_status_image)).setImageResource(imageID);
             
             return pv;

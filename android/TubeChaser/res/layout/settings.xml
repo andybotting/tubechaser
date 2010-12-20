@@ -40,6 +40,13 @@
 		android:entries="@array/defaultActivityEntries" 
 		android:entryValues="@array/defaultActivityEntryValues">
 	</ListPreference>
+	
+	<ListPreference android:key="numberOfDepartures" 
+		android:title="Number of Departures"
+		android:defaultValue="3" 
+		android:entries="@array/numberOfDeparturesEntries" 
+		android:entryValues="@array/numberOfDeparturesEntryValues">
+	</ListPreference>
 
 	<CheckBoxPreference android:key="sendUsageStats"
 		android:title="Send Usage Stats" 

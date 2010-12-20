@@ -126,8 +126,7 @@
         android:layout_height="@dimen/info_window_height"
         android:orientation="horizontal"
         android:background="#eee"
-        android:gravity="center"
-        android:visibility="gone">
+        android:gravity="center">
         
         <ProgressBar
             style="?android:attr/progressBarStyleSmall"

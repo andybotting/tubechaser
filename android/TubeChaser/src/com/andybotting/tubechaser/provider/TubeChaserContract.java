@@ -58,10 +58,13 @@ public class TubeChaserContract {
 		String NAME = "name";
 		String SHORTNAME = "shortname";
 		String CODE = "code";
+		String TFL_ID = "tfl_id";
 		String TYPE = "type";
 		String COLOUR = "colour";
 		String STATUS = "status";
 		String STATUS_DESC = "status_desc";
+		String STATUS_CODE = "status_code";
+		String STATUS_CLASS = "status_class";
 	}
 	 
 	interface StationsColumns {
@@ -69,10 +72,12 @@ public class TubeChaserContract {
 		String NAME = "name";
 		String CODE = "code";
 		String LINES = "lines";
-		String TFL_ID = "tflid";
+		String TFL_ID = "tfl_id";
 		String LATITUDE = "latitude";
 		String LONGITUDE = "longitude";
-		String NEWS = "news";
+		String STATUS = "status";
+		String STATUS_CODE = "status_code";
+		String STATUS_DESC = "status_desc";
 		String STEPFREE = "stepfree";
 	 }
 	 

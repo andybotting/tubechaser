@@ -46,13 +46,16 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
-import android.text.Html;
+import android.util.Log;
 import android.view.View;
 import android.widget.TabHost;
 import android.widget.TextView;
 
 public class LineDetail extends TabActivity {
 
+    private static final String TAG = "Home";
+    private static final boolean LOGV = Log.isLoggable(TAG, Log.INFO);
+	
 	// Tab definitions
 	public static final String TAB_STATUS = "status";
     public static final String TAB_STATIONS = "stations";
@@ -102,24 +105,30 @@ public class LineDetail extends TabActivity {
         String statusDesc = mLine.getStatusDesc();
 
         if ( (statusDesc == null) || (statusDesc.length() < 2) ) {
-        	((TextView) findViewById(R.id.line_status)).setText(mLine.getStatus());
+        	((TextView) findViewById(R.id.line_status_title)).setText(mLine.getStatus());
+        	((TextView) findViewById(R.id.line_status)).setText("For the entire " + mLine.getName() + " Line");
         	getTabHost().setCurrentTabByTag(TAB_STATIONS);
         }
         else {
-        	((TextView) findViewById(R.id.line_status)).setText(Html.fromHtml(mLine.getStatusDesc()));
+        	((TextView) findViewById(R.id.line_status_title)).setText(mLine.getStatus());
+        	((TextView) findViewById(R.id.line_status)).setText(mLine.getStatusDesc());
         	getTabHost().setCurrentTabByTag(TAB_STATUS);
         }
         
     }
 
-
-
     private void setupStatusTab() {
         final TabHost host = getTabHost();
-        // 
+        
+//       	// Android 1.5
+//       	if (LOGV) Log.v(TAG, "Special tabs for Android 1.5");
+//       	host.addTab(host.newTabSpec(TAB_STATUS).setIndicator("Status").setContent(R.id.tab_line_status));
+
+       	// Android 1.6 or higher
         host.addTab(host.newTabSpec(TAB_STATUS)
-                .setIndicator(buildIndicator(R.string.description_status)) 
-                .setContent(R.id.tab_line_status));
+        		.setIndicator(buildIndicator(R.string.description_status)) 
+        		.setContent(R.id.tab_line_status));
+        
     }
     
     private void setupStationsTab() {
@@ -131,10 +140,15 @@ public class LineDetail extends TabActivity {
         final Intent intent = new Intent(Intent.ACTION_VIEW, stationsUri);
         intent.putExtra(StationsList.EXTRA_LINE, lineUri);
         intent.addCategory(Intent.CATEGORY_TAB);
+        
+//       	// Android 1.5
+//       	if (LOGV) Log.v(TAG, "Special tabs for Android 1.5");
+//       	host.addTab(host.newTabSpec(TAB_STATIONS).setIndicator("Stations").setContent(intent));
 
-        host.addTab(host.newTabSpec(TAB_STATIONS)
-                .setIndicator(buildIndicator(R.string.description_stations))
-                .setContent(intent));
+         // Android 1.6 or higher
+       	host.addTab(host.newTabSpec(TAB_STATIONS)
+       			.setIndicator(buildIndicator(R.string.description_stations))
+       			.setContent(intent));
     }
     
     private View buildIndicator(int textRes) {

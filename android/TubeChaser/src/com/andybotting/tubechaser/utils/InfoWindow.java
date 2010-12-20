@@ -38,10 +38,10 @@ public class InfoWindow {
 		
 		
     	for (Line line : lines) {
-    		if (line.getStatus().contains("Severe delays")) {
+    		if (line.getStatusCode().contains("SD")) {
     			severeDelays.add(line);
     		}
-    		else if (line.getStatus().contains("Minor delays")) {
+    		else if (line.getStatusCode().contains("MD")) {
     			minorDelays.add(line);
     		}
     		else if (line.getStatus().contains("closure")) {
@@ -50,7 +50,7 @@ public class InfoWindow {
     		else if (line.getStatus().contains("Closed")) {
     			closures.add(line);
     		}
-    		else if (line.getStatus().contains("Good service")) {
+    		else if (line.getStatusCode().contains("GS")) {
     			goodService.add(line);
     		}
     	} 

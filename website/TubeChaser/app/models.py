@@ -104,3 +104,6 @@ class MobileOperator(models.Model):
 	class Admin:
 		pass
 	
+	def getCode(self):
+		code = "%s%s" % (self.mmc, self.mnc)
+		return (code, self.operator)

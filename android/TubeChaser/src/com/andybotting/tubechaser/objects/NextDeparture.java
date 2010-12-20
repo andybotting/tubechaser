@@ -34,15 +34,12 @@
 
 package com.andybotting.tubechaser.objects;
 
-public class NextDeparture {
 
-//	1. Tower Hill / At Platform / 
-//	2. Upminster / Between Hammersmith and Barons Court / 2 mins
-//	3. District Line / At Stamford Brook Platform 3 / 7 mins
+public class NextDeparture implements Comparable <NextDeparture> {
 
 	private String destination;
 	private String location;
-	private String time;
+	private int time;
 
 	public void setDestination(String destination) {
 		this.destination = destination;
@@ -58,12 +55,54 @@ public class NextDeparture {
 		return location;
 	}
 	
-	public void setTime(String time) {
-		this.time = time;
+	public void setTime(int seconds) {
+		this.time = seconds;
 	}
-	public String getTime() {
+	
+	public int getTime() {
 		return time;
 	}
+	
+	/**
+	 * Generate a human friendly string representing time to departure
+	 * @return String
+	 */
+	public String humanMinutesAway() {
+	
+		if (time < 0) {
+			return "Err";
+		}
+		else if (time < 60) {
+			return "Now";
+		}
+		else {
+			int mins = time/60;
+			
+			if (mins > 1)
+				return mins + " mins";
+			else
+				return mins + " min";
+		}
+	}
+
+	/**
+	 * Comparison method for sorting a list of NextDepartures
+	 */
+	public int compareTo(NextDeparture otherDeparture) {
+
+		int thisTramMinutes = this.time;
+		int otherTramMinutes = otherDeparture.getTime();
+		
+		// Test the difference between this, and the given NextTram obj
+		if(thisTramMinutes < otherTramMinutes) {
+			return -1;
+		} 
+		else if(thisTramMinutes > otherTramMinutes) {
+			return 1;
+		}
+		return 0; 
+	}
+
 	
 	public String toString() {
 		return String.format("Departure %s in %s", destination, time);

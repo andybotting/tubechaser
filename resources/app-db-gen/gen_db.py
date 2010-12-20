@@ -5,6 +5,10 @@ import urllib2
 import csv
 import sqlite3
 
+import urllib2
+from xml.dom import minidom
+
+
 lines = []
 stations = []
 line_stations = []
@@ -15,7 +19,7 @@ class Line(object):
     self.name = ''
     self.shortname = ''
     self.code = ''
-    self.tflid = ''
+    self.tfl_id = -1 
     self.type = 'tube'
     self.colour = ''
 
@@ -31,7 +35,7 @@ class Station(object):
     self.name = ''
     self.code = ''
     self.lines = ''
-    self.tflid = -1
+    self.tfl_id = -1
     self.lat = -1
     self.lng = -1
     self.stepfree = 0
@@ -54,77 +58,88 @@ def create_lines():
   newline = Line()
   newline.name = 'Bakerloo'
   newline.shortname = 'bakerloo'
-  newline.code = '01BAK'
+  newline.code = 'B'
+  newline.tfl_id = 1
   newline.colour = '996633'
   lines.append(newline)
 
   newline = Line()
   newline.name = 'Central'
   newline.shortname = 'central'
-  newline.code = '01CEN'
+  newline.code = 'C'
+  newline.tfl_id = 2
   newline.colour = 'CC3333'
   lines.append(newline)
    
   newline = Line()
   newline.name = 'Circle'
   newline.shortname = 'circle'
-  newline.code = '01CIR'
+  newline.code = 'H'
+  newline.tfl_id = 7
   newline.colour = 'FFCC00'
   lines.append(newline)
    
   newline = Line()
   newline.name = 'District'
   newline.shortname = 'district'
-  newline.code = '01DIS'
+  newline.code = 'D'
+  newline.tfl_id = 9
   newline.colour = '006633'
   lines.append(newline)
    
   newline = Line()
   newline.name = 'Hammersmith & City'
   newline.shortname = 'hammersmith'
-  newline.code = '01HAM'
+  newline.code = 'H'
+  newline.tfl_id = 8
   newline.colour = 'CC9999'
   lines.append(newline)
    
   newline = Line()
   newline.name = 'Jubilee'
   newline.shortname = 'jubilee'
-  newline.code = '01JUB'
+  newline.code = 'J'
+  newline.tfl_id = 4
   newline.colour = '868F98'
   lines.append(newline)
    
   newline = Line()
   newline.name = 'Metropolitan'
   newline.shortname = 'metropolitan'
-  newline.code = '01MET'
+  newline.code = 'M'
+  newline.tfl_id = 11
   newline.colour = '660066'
   lines.append(newline)
    
   newline = Line()
   newline.name = 'Northern'
   newline.shortname = 'northern'
-  newline.code = '01NTN'
+  newline.code = 'N'
+  newline.tfl_id = 5
   newline.colour = '000000'
   lines.append(newline)
    
   newline = Line()
   newline.name = 'Piccadilly'
   newline.shortname = 'piccadilly'
-  newline.code = '01PIC'
+  newline.code = 'P'
+  newline.tfl_id = 6
   newline.colour = '000099'
   lines.append(newline)
 
   newline = Line()
   newline.name = 'Victoria'
   newline.shortname = 'victoria'
-  newline.code = '01VIC'
+  newline.code = 'V'
+  newline.tfl_id = 3
   newline.colour = '0099CC'
   lines.append(newline)
 
   newline = Line()
   newline.name = 'Waterloo & City'
   newline.shortname = 'waterlooandcity'
-  newline.code = '01WAC'
+  newline.code = 'W'
+  newline.tfl_id = 12
   newline.colour = '66CCCC'
   lines.append(newline)
 
@@ -172,7 +187,12 @@ def process_data():
   create_lines()
 
   stations_latlng = read_csv('stations_latlng.csv')
-  stations_tflcode = read_csv('stations_tflcode.csv')
+
+  # Match TfL ID from list of stations - done after the name changes
+  url = "http://cloud.tfl.gov.uk/TrackerNet/StationStatus"
+  index = urllib2.urlopen(urllib2.Request(url, None)).read()
+  dom = minidom.parseString(index)
+
 
   for line in lines:
     newline = line
@@ -220,10 +240,35 @@ def process_data():
         if newstation.name == "Totteridge and Whetstone":
           newstation.name = "Totteridge & Whetstone"
 
-        # Match TfL ID from list of stations - done after the name changes
-        for match in stations_tflcode:
-          if newstation.name == match['name']:
-            newstation.tflid = match['code']
+		# Get the TfL ID
+        for node in dom.getElementsByTagName('StationStatus'):
+            stationID = node.getAttribute('ID')
+            stationElement = node.getElementsByTagName('Station')[0]
+            stationName = stationElement.getAttribute('Name')
+
+            # Name fixes so the list from the TfL Departures pages
+            # match the names from the TrackerNet feed
+            if stationName == "Edgware Road (Bak)":
+                stationName = "Edgware Road (Bakerloo)"
+
+            if stationName == "Harrow-on-the-Hill":
+                stationName = "Harrow on the Hill"
+
+            if stationName == "Hammersmith (H&C)":
+                stationName = "Hammersmith (Circle and H&C)"
+
+            if stationName == "Hammersmith (Dis)":
+                stationName = "Hammersmith (District and Picc)"
+
+            if stationName == "Kensington (Olympia)":
+                stationName = "Olympia"
+
+            if stationName == "Shepherd's Bush (Cen)":
+                stationName = "Shepherds Bush (Central Line)"
+
+            if stationName == newstation.name:
+                newstation.tfl_id = stationID	
+
 
         # Remove the (Line) part from the Name
         newstation.name = newstation.name.split(" (")[0]
@@ -289,38 +334,34 @@ def do_sql():
   sql_transaction(c,"CREATE TABLE 'android_metadata' ('locale' TEXT DEFAULT 'en_US');")
   sql_transaction(c,"INSERT INTO 'android_metadata' VALUES('en_US');")
 
-  sql_transaction(c,"CREATE TABLE 'lines' (_id INTEGER PRIMARY KEY, name VARCHAR, shortname VARCHAR, code VARCHAR, type VARCHAR, colour VARCHAR, status TEXT, status_desc TEXT);")
-  sql_transaction(c,"CREATE TABLE 'stations' (_id INTEGER PRIMARY KEY, name VARCHAR, code VARCHAR, lines TEXT, tflid INTEGER, latitude REAL, longitude REAL, news TEXT, stepfree INTEGER);")
-  sql_transaction(c,"CREATE TABLE 'lines_stations' (_id INTEGER PRIMARY KEY, line_id INTEGER, station_id INTEGER, starred INTEGER);")
-  #sql_transaction(c,"CREATE TABLE 'last_update' (_id INTEGER PRIMARY KEY, val INTEGER);")
-  #sql_transaction(c,"CREATE TABLE 'first_launch' (_id INTEGER PRIMARY KEY, val INTEGER);")
-  #sql_transaction(c,"CREATE TABLE 'stats_timestamp' (_id INTEGER PRIMARY KEY, val INTEGER);")
+  # Lines table
+  sql_transaction(c,"CREATE TABLE 'lines' (_id INTEGER PRIMARY KEY, name VARCHAR, shortname VARCHAR, code VARCHAR, tfl_id INTEGER, type VARCHAR, colour VARCHAR, status TEXT, status_desc TEXT, status_code VARCHAR, status_class VARCHAR);")
 
+  # Stations table
+  sql_transaction(c,"CREATE TABLE 'stations' (_id INTEGER PRIMARY KEY, name VARCHAR, code VARCHAR, lines TEXT, tfl_id INTEGER, latitude REAL, longitude REAL, status TEXT, status_desc TEXT, status_code VARCHAR, stepfree INTEGER);")
+
+  # Line-Stations table
+  sql_transaction(c,"CREATE TABLE 'lines_stations' (_id INTEGER PRIMARY KEY, line_id INTEGER, station_id INTEGER);")
 
   # Lines
   print "Writing lines... %s" % len(lines)
   for line in lines:
-    sql_transaction(c,"""INSERT INTO lines(_id, name, shortname, code, type, colour) VALUES ("%s","%s","%s","%s","%s","%s");""" %
-      (line._id, line.name, line.shortname, line.code, line.type, line.colour))
+    sql_transaction(c,"""INSERT INTO lines(_id, name, shortname, code, tfl_id, type, colour) VALUES ("%s","%s","%s","%s","%s","%s","%s");""" %
+      (line._id, line.name, line.shortname, line.code, line.tfl_id, line.type, line.colour))
 
 
   # Stations
   print "Writing stations... %s" % len(stations)
   for station in stations:
-    sql_transaction(c,"""INSERT INTO stations(_id, name, code, lines, tflid, latitude, longitude, stepfree) VALUES ("%s","%s","%s","%s","%s","%s","%s","%s");""" %
-      (station._id, station.name, station.code, station.lines, station.tflid, station.lat, station.lng, station.stepfree))
+    sql_transaction(c,"""INSERT INTO stations(_id, name, code, lines, tfl_id, latitude, longitude, stepfree) VALUES ("%s","%s","%s","%s","%s","%s","%s","%s");""" %
+      (station._id, station.name, station.code, station.lines, station.tfl_id, station.lat, station.lng, station.stepfree))
 
 
   # Line Stations
   print "Writing line_stations... (%s)" % len(line_stations)
   for line_station in line_stations:
-    sql_transaction(c,"""INSERT INTO lines_stations (_id, line_id, station_id, starred) VALUES ("%s","%s","%s", 0);""" %
+    sql_transaction(c,"""INSERT INTO lines_stations (_id, line_id, station_id) VALUES ("%s","%s","%s");""" %
       (line_station._id, line_station.line, line_station.station))
-
-  # Start with a 0 timestamp
-  #sql_transaction(c,"""INSERT INTO last_update (_id, val) VALUES (0, 0)""");
-  #sql_transaction(c,"""INSERT INTO first_launch (_id, val) VALUES (0, 0)""");
-  #sql_transaction(c,"""INSERT INTO stats_timestamp (_id, val) VALUES (0, 0)""");
 
   # Commit the changes and close everything.
   conn.commit()

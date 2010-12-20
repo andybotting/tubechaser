@@ -36,6 +36,7 @@ package com.andybotting.tubechaser.activity;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.apache.http.HttpResponse;
@@ -50,8 +51,9 @@ import com.andybotting.tubechaser.R;
 import com.andybotting.tubechaser.objects.DepartureBoard;
 import com.andybotting.tubechaser.objects.NextDeparture;
 import com.andybotting.tubechaser.objects.Line;
+import com.andybotting.tubechaser.objects.Platform;
 import com.andybotting.tubechaser.objects.Station;
-import com.andybotting.tubechaser.provider.TfLTubeProvider;
+import com.andybotting.tubechaser.provider.TfLTubeStationDepartures;
 import com.andybotting.tubechaser.provider.TubeChaserProvider;
 import com.andybotting.tubechaser.provider.TubeChaserProviderException;
 import com.andybotting.tubechaser.provider.TubeChaserContract.Stations;
@@ -87,7 +89,7 @@ import android.widget.TextView;
 
 public class StationDetail extends ExpandableListActivity {
 	private static final String TAG = "StationDetail";
-    private static final boolean LOGV = Log.isLoggable(TAG, Log.DEBUG);
+    private static final boolean LOGV = Log.isLoggable(TAG, Log.INFO);
     
 	public static final String EXTRA_LINE = "extra_line";
 	
@@ -107,7 +109,7 @@ public class StationDetail extends ExpandableListActivity {
 	private CompoundButton mStarredButton;
 
 	private DepartureBoard mDepartureBoard;
-	private TfLTubeProvider mTfLTubeProvider;
+	private TfLTubeStationDepartures mTfLTubeStationDepartures;
 	
 	private String mErrorMessage;
 	private int mErrorRetry = 0;
@@ -127,7 +129,7 @@ public class StationDetail extends ExpandableListActivity {
         mProvider = new TubeChaserProvider();
         
         mStation = mProvider.getStation(mContext, stationUri);
-        mTfLTubeProvider = new TfLTubeProvider();
+        mTfLTubeStationDepartures = new TfLTubeStationDepartures();
         mDepartureBoard = new DepartureBoard(); // just so it's not null
 
         // Get the line, if given in last activity
@@ -276,17 +278,14 @@ public class StationDetail extends ExpandableListActivity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		super.onCreateOptionsMenu(menu);
 		
-		menu.add(0, MENU_REFRESH, 0, "Refresh");
-		MenuItem menuItem1 = menu.findItem(MENU_REFRESH);
-		menuItem1.setIcon(R.drawable.ic_menu_refresh);
-
-		menu.add(0, MENU_STAR, 0, ""); // Title set in onMenuOpened()
-		MenuItem menuItem2 = menu.findItem(MENU_STAR);
-		menuItem2.setIcon(R.drawable.ic_menu_star);
+		menu.add(0, MENU_REFRESH, 0, R.string.menu_item_refresh)
+			.setIcon(R.drawable.ic_menu_refresh);
+	
+		menu.add(0, MENU_STAR, 0, "") // Set in onMenuOpened
+			.setIcon(R.drawable.ic_menu_star);
 		
-		menu.add(0, MENU_MAP, 0, "Map");
-		MenuItem menuItem3 = menu.findItem(MENU_MAP);
-		menuItem3.setIcon(R.drawable.ic_menu_mapmode);
+		menu.add(0, MENU_MAP, 0, R.string.menu_item_map)
+			.setIcon(R.drawable.ic_menu_mapmode);
 		
 		return true;
 	}
@@ -333,10 +332,8 @@ public class StationDetail extends ExpandableListActivity {
     	setListAdapter(mListAdapter);
     	
 		// Expand groups
-        int size = mListAdapter.getGroupCount();
-        for( int i=0; i<size; i++) {
+        for (int i=0; i<mListAdapter.getGroupCount(); i++)
         	mListView.expandGroup(i);
-        }
     }
 
 
@@ -372,7 +369,7 @@ public class StationDetail extends ExpandableListActivity {
 		@Override
 		protected DepartureBoard doInBackground(final DepartureBoard... params) {
 			try {
-				mDepartureBoard = mTfLTubeProvider.getNextDepartures(mLine.getShortName(), mStation.getCode());
+				mDepartureBoard = mTfLTubeStationDepartures.getNextDepartures(mLine.getCode(), mStation.getCode());
 			} 
 			catch (TubeChaserProviderException e) {
 				// Retry a couple of times before error
@@ -384,6 +381,7 @@ public class StationDetail extends ExpandableListActivity {
 				else {
 					// Save the error message for the toast
 					mErrorMessage = e.getMessage();
+					e.printStackTrace();
 				}
 			}
 			return mDepartureBoard;
@@ -393,12 +391,35 @@ public class StationDetail extends ExpandableListActivity {
 		protected void onPostExecute(DepartureBoard mDepartureBoard) {
         	if (mErrorRetry == MAX_ERRORS) {
             	// Display a toast with the error
-        		String error = "Error downloading departure information (" + mErrorMessage + ")";
-        		UIUtils.popToast(mContext, error);
+        		UIUtils.popToast(mContext, "Error downloading departure information (" + mErrorMessage + ")");
         		mErrorMessage = null;
         		mErrorRetry = 0;
         	}
         	else {
+        		
+				List<Platform> platforms = mDepartureBoard.getPlatforms();
+				int numberOfDeparturesToShow = mPreferenceHelper.numberOfDepartures();
+				
+				for (Platform platform : platforms) {
+					List<NextDeparture> nextDepartures = platform.getNextDepartures();
+					int numberOfDepartures = nextDepartures.size(); 
+					Collections.sort(nextDepartures);
+					
+					if (LOGV) Log.v(TAG, "Platforms size pre-removal:" + platform.getNextDepartures().size());
+						
+				    while (nextDepartures.size() > numberOfDeparturesToShow) {
+				    	nextDepartures.remove(nextDepartures.size()-1);
+				    }
+					
+				}
+				
+				
+				for (Platform platform : platforms) {
+					if (LOGV) Log.v(TAG, "Platforms size post-removal:" + platform.getNextDepartures().size());
+				}
+
+				
+				
         		updateDeparturesList();
 
         		// Upload stats
@@ -451,7 +472,7 @@ public class StationDetail extends ExpandableListActivity {
             
             ((TextView) pv.findViewById(R.id.departure_destination)).setText(nextDeparture.getDestination());
         	((TextView) pv.findViewById(R.id.departure_location)).setText(nextDeparture.getLocation());
-            ((TextView) pv.findViewById(R.id.departure_time)).setText(nextDeparture.getTime());
+            ((TextView) pv.findViewById(R.id.departure_time)).setText(nextDeparture.humanMinutesAway());
 
 			return pv;
         }

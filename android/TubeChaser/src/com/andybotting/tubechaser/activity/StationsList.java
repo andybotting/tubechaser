@@ -42,8 +42,10 @@ import com.andybotting.tubechaser.provider.TubeChaserProvider;
 import com.andybotting.tubechaser.provider.TubeChaserContract.Stations;
 import com.andybotting.tubechaser.utils.UIUtils;
 
+import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -106,14 +108,17 @@ public class StationsList extends ListActivity {
     		
         	// If starred
         	if (mStationsUri.equals(Stations.buildStarredUri())) {
+        		((TextView) findViewById(R.id.title_text)).setText(R.string.title_favourite_stations);
         		mStations = provider.getStarredStations(mContext);
-        		((TextView) findViewById(R.id.title_text)).setText("Favourite Stations");
+        		if (mStations.size() == 0) {
+        			alertNoFavourites();
+        		}
         	}
         	else {
         		// If browsing all stations
                 mStations = provider.getStations(mContext, mStationsUri);
                 mLineUri = getIntent().getParcelableExtra(EXTRA_LINE);  
-        		((TextView) findViewById(R.id.title_text)).setText("All Stations");
+        		((TextView) findViewById(R.id.title_text)).setText(R.string.title_all_stations);
         	}
         		
         }
@@ -121,6 +126,32 @@ public class StationsList extends ListActivity {
         ListAdapter adapter = new StationsListAdapter();
         this.setListAdapter(adapter);
 	
+	}
+	
+	
+	private void alertNoFavourites() {
+		AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+		dialogBuilder.setMessage(R.string.dialog_no_favourites)
+			.setCancelable(false)
+			.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int id) {
+					// Action for 'Yes' Button				
+					UIUtils.goSearch(StationsList.this);
+				}
+			})
+			.setNegativeButton("No", new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int id) {
+					//  Action for 'NO' Button
+					dialog.cancel();				
+					// TODO: getParent() instead?
+					finish();
+				}
+			});
+		
+		AlertDialog alert = dialogBuilder.create();
+		alert.setTitle("No Favourite Stops");
+		alert.setIcon(R.drawable.appicon);
+		alert.show();
 	}
 
 	

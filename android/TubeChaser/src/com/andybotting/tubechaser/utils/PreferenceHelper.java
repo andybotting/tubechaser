@@ -68,6 +68,23 @@ public class PreferenceHelper {
 	}
 	
     /**
+     * Return an integer representing the number of departures to show 
+     */
+	public int numberOfDepartures() {
+		
+		String val = preferences.getString(Settings.KEY_NUMBER_OF_DEPARTURES, "3");
+		
+		if (val.matches("All")) {
+			return 99;
+		}
+		else {
+			return Integer.parseInt(val);
+		}
+		
+	}
+		
+	
+    /**
      * Return a boolean for whether stats sending is enabled
      */
 	public boolean isSendStatsEnabled() {
@@ -105,6 +122,15 @@ public class PreferenceHelper {
 		Date now = new Date();
 		SharedPreferences.Editor editor = preferences.edit();	
 		editor.putLong(KEY_LAST_UPDATE, now.getTime());
+		editor.commit();
+	}
+	
+    /**
+     * Reset the last stats send date
+     */	
+	public void resetLastUpdateTimestamp() {
+		SharedPreferences.Editor editor = preferences.edit();	
+		editor.putLong(KEY_LAST_UPDATE, 0);
 		editor.commit();
 	}	
 	

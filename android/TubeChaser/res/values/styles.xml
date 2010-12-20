@@ -130,21 +130,21 @@
     </style>
 
     <style name="TextHeader">
-        <item name="android:textSize">18sp</item>
+        <item name="android:textSize">@dimen/text_size_large</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@android:color/primary_text_light</item>
     </style>
 
     <style name="TextHeaderTwo">
-        <item name="android:textSize">15sp</item>
+        <item name="android:textSize">@dimen/text_size_medium</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@android:color/primary_text_light</item>
     </style>
 
     <style name="TextBody">
-        <item name="android:textSize">15sp</item>
-        <item name="android:lineSpacingMultiplier">1.1</item>
+        <item name="android:textSize">@dimen/text_size_small</item>
         <item name="android:textColor">@android:color/secondary_text_light</item>
+        <item name="android:lineSpacingMultiplier">1.1</item>
     </style>
     
     <style name="TitleNotBold">

@@ -46,6 +46,7 @@ public class Platform {
 	public void setPlatformNumber(String platformNumber) {
 		this.platformNumber = platformNumber;
 	}
+	
 	public String getPlatformNumber() {
 		return platformNumber;
 	}
@@ -53,6 +54,7 @@ public class Platform {
 	public void setDirection(String direction) {
 		this.direction = direction;
 	}
+	
 	public String getDirection() {
 		return direction;
 	}
@@ -60,6 +62,7 @@ public class Platform {
 	public void addNextDeparture(NextDeparture nextDeparture) {
 		this.nextDepartures.add(nextDeparture);
 	}
+	
 	public List<NextDeparture> getNextDepartures() {
 		return nextDepartures;
 	}
@@ -70,6 +73,10 @@ public class Platform {
 
 	public NextDeparture getDeparture(int position) {
 		return nextDepartures.get(position);
+	}
+	
+	public void removeDeparture(int position) {
+		nextDepartures.remove(position);
 	}
 	
 	public String toString() {

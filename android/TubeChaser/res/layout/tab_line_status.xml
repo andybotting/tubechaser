@@ -40,10 +40,18 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:padding="10dp">
+        
+		<TextView
+            android:id="@+id/line_status_title"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            style="@style/TextHeaderTwo" />
+
         <TextView
             android:id="@+id/line_status"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             style="@style/TextBody" />
+            
     </LinearLayout>
 </ScrollView>

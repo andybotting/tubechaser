@@ -51,7 +51,9 @@ public class Station {
 	private double latitude;
 	private double longitude;
 	private Location location;
-	private String news;
+	private String status;
+	private String statusCode;
+	private String statusDesc;
 	private boolean stepFree = false;
 	private List<Line> lines;
 	
@@ -129,14 +131,30 @@ public class Station {
 		}
 	}	
 	
-	public void setNews(String news) {
-		this.news = news;
+	public void setStatus(String status) {
+		this.status = status;
 	}
 	
-	public String getNews() {
-		return news;
+	public String getStatus() {
+		return status;
 	}	
 	
+	public void setStatusCode(String statusCode) {
+		this.statusCode = statusCode;
+	}
+	
+	public String getStatusCode() {
+		return statusCode;
+	}	
+	
+	public void setStatusDesc(String statusDesc) {
+		this.statusDesc = statusDesc;
+	}
+	
+	public String getStatusDesc() {
+		return statusDesc;
+	}	
+		
 	public void setStepFree(int stepFree) {
 		if (stepFree == 1)
 			this.stepFree = true;

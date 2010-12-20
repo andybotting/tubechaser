@@ -10,7 +10,7 @@
  * WITHOUT ANY WARRANTY; without even the implied warranty of  
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU  
  * General Public License for more details.  
- *  
+ *  changeInfoWindow
  * You should have received a copy of the GNU General Public License  
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.  
  *  
@@ -48,7 +48,7 @@ import org.apache.http.message.BasicNameValuePair;
 
 import com.andybotting.tubechaser.R;
 import com.andybotting.tubechaser.objects.Line;
-import com.andybotting.tubechaser.provider.TfLTubeProvider;
+import com.andybotting.tubechaser.provider.TfLTubeLineStatus;
 import com.andybotting.tubechaser.provider.TubeChaserProvider;
 import com.andybotting.tubechaser.provider.TubeChaserProviderException;
 import com.andybotting.tubechaser.provider.TubeChaserContract.Stations;
@@ -86,9 +86,10 @@ public class Home extends Activity {
     private static final boolean LOGV = Log.isLoggable(TAG, Log.INFO);
     
 	// Menu items
-	private static final int MENU_ABOUT = 0;
+	private static final int MENU_REFRESH = 0;	
 	private static final int MENU_SEARCH = 1;
 	private static final int MENU_SETTINGS = 2;
+	private static final int MENU_ABOUT = 3;
 	
     private static final int UPDATE_MINS = 10;
     private static final int INFO_CHANGE_TIME = 10;
@@ -103,6 +104,8 @@ public class Home extends Activity {
     private View mInfoWindowView;
     List<View> mInfoWindows = new ArrayList<View>();
     private int mInfoWindowId = 0;
+    private boolean mInfoWindowFirstUpdate = true;
+    
     private volatile Thread mRefreshThread;
     private String mErrorMessage;    
 	private int mErrorRetry = 0;
@@ -110,7 +113,10 @@ public class Home extends Activity {
     // Handler for Info Window update
     Handler UpdateHandler = new Handler() {
     	public void handleMessage(Message msg) {
-    		changeInfoWindow();
+    		if (!mInfoWindowFirstUpdate)
+    			changeInfoWindow();
+    		else
+    			mInfoWindowFirstUpdate = false;
     	}
 	};
 	
@@ -201,26 +207,22 @@ public class Home extends Activity {
 		
 		long lastUpdate = mPreferenceHelper.getLastUpdateTimestamp();
         long timeDiff = UIUtils.dateDiff(lastUpdate);
-
+        
         if (LOGV) Log.v(TAG, "Last tube status update: " + timeDiff/1000 + "sec");
         
-        mInfoWindows.add(makeUpdateInfoWindow());
-		changeInfoWindow();
-
 		// Kick off an update
         if (timeDiff > UPDATE_MINS * 60000) {
         	new GetTubeStatus().execute();
         }
         else {
 			getInfoWindows();
-			changeInfoWindow();        	
+			changeInfoWindow();
+			startRefreshThread();
         }
-        	
-   		startRefreshThread();
 
 		// If we're started by the launcher, then try the default activity
 		if (getIntent().hasCategory(Intent.CATEGORY_LAUNCHER))
-        	goDefaultLaunchActivity();		
+			goDefaultLaunchActivity();		
     }
     
     
@@ -242,6 +244,9 @@ public class Home extends Activity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		super.onCreateOptionsMenu(menu);
 		
+		menu.add(0, MENU_REFRESH, 0, R.string.menu_item_refresh)
+			.setIcon(R.drawable.ic_menu_refresh);
+		
 		menu.add(0, MENU_ABOUT, 0, R.string.menu_item_about)
 			.setIcon(android.R.drawable.ic_menu_help);
 
@@ -261,6 +266,9 @@ public class Home extends Activity {
      */
 	public boolean onOptionsItemSelected(final MenuItem item) {
 		switch (item.getItemId()) {
+		case MENU_REFRESH:
+			new GetTubeStatus().execute();
+			return true;		
 		case MENU_ABOUT:
 			showAbout();
 			return true;
@@ -323,7 +331,7 @@ public class Home extends Activity {
 				}
 			});
 		dialogBuilder.setCancelable(false);
-		dialogBuilder.setIcon(R.drawable.icon);
+		dialogBuilder.setIcon(R.drawable.appicon);
 		dialogBuilder.show();
 	}
     
@@ -331,12 +339,13 @@ public class Home extends Activity {
 	 * 
 	 */
     public synchronized void startRefreshThread() {
-		if (LOGV) Log.v(TAG, "Starting refresh thread");
 		// Start update status timer, if not already running
-		if(mRefreshThread == null){
+		if(mRefreshThread == null) {
+			if (LOGV) Log.v(TAG, "Starting refresh thread");
             mRefreshThread = new Thread(new InfoWindowTimer());
             mRefreshThread.setDaemon(true);
     		mRefreshThread.start();
+    		mInfoWindowFirstUpdate = true;
     	}
     }
 
@@ -349,6 +358,7 @@ public class Home extends Activity {
     		Thread killThread = mRefreshThread;
     		mRefreshThread = null;
     		killThread.interrupt();
+    		mInfoWindowFirstUpdate = true;
     	}
     }
 
@@ -402,10 +412,17 @@ public class Home extends Activity {
      */
     public void getInfoWindows() {
     	mLines = mProvider.getLines(mContext);
-    	   	
-    	InfoWindow infoWindow = new InfoWindow(this); 
-    	mInfoWindows = infoWindow.getInfoWindows(mLines);
+    	
     	if (LOGV) Log.v(TAG, "Getting info windows. Lines Size=" + mLines.size());
+    	   	
+    	InfoWindow infoWindow = new InfoWindow(this);
+    	
+    	if (LOGV) Log.v(TAG, "infoWindow=" + infoWindow);
+    	
+    	mInfoWindows = infoWindow.getInfoWindows(mLines);
+    	
+    	if (LOGV) Log.v(TAG, "mInfoWindows=" + mInfoWindows);
+    	
     }
     
     /**
@@ -433,7 +450,7 @@ public class Home extends Activity {
         
         ViewGroup homeRoot = (ViewGroup) findViewById(R.id.home_root);
         
-        //mInfoWindowView = findViewById(R.id.info_window);
+        mInfoWindowView = findViewById(R.id.info_window);
         if (mInfoWindowView != null) {
             homeRoot.removeView(mInfoWindowView);
             mInfoWindowView = null;
@@ -444,23 +461,26 @@ public class Home extends Activity {
         homeRoot.addView(infoView, new LayoutParams(
         		LayoutParams.FILL_PARENT,
                 (int) getResources().getDimension(R.dimen.info_window_height)));
-      
-//        mInfoWindowView.setVisibility(View.VISIBLE);  
-//        mInfoLoadingView.setVisibility(View.GONE);
+        
+   		mInfoLoadingView.setVisibility(View.GONE);        
+   		mInfoWindowView.setVisibility(View.VISIBLE);
     }
 
     /**
      * Change UI widgets when updating status data
      */
     private void updateRefreshStatus(boolean isRefreshing) {
-        findViewById(R.id.btn_title_refresh).setVisibility(isRefreshing ? View.GONE : View.VISIBLE);
+    	findViewById(R.id.btn_title_refresh).setVisibility(isRefreshing ? View.GONE : View.VISIBLE);
         findViewById(R.id.title_refresh_progress).setVisibility(isRefreshing ? View.VISIBLE : View.GONE);
-        
-    	if (mInfoLoadingView != null) {
-    		mInfoWindowView.setVisibility(isRefreshing ? View.GONE : View.VISIBLE);
-    		mInfoLoadingView.setVisibility(isRefreshing ? View.VISIBLE : View.GONE);
-    	}
-       	
+
+        if (mInfoWindowView != null) {
+        	mInfoWindowView.setVisibility(isRefreshing ? View.GONE : View.VISIBLE);
+        	mInfoLoadingView.setVisibility(isRefreshing ? View.VISIBLE : View.GONE);
+        }
+        else {
+        	if (LOGV) Log.v(TAG, "mInfoWindowView is null");
+        }
+        	
     }
     
     /**
@@ -469,14 +489,15 @@ public class Home extends Activity {
     private class GetTubeStatus extends AsyncTask<Void, Void, Void> {
 
         protected void onPreExecute() {
+        	stopRefreshThread();
         	updateRefreshStatus(true);
         }
 
         protected Void doInBackground(Void... unused) {
-        	TfLTubeProvider tubeProvider = new TfLTubeProvider();
+        	TfLTubeLineStatus tubeLineStatus = new TfLTubeLineStatus();
         	try {
                 if (LOGV) Log.v(TAG, "Updating Tube Status");
-				tubeProvider.updateTubeStatus(mContext);
+                tubeLineStatus.updateTubeStatus(mContext);
 			} catch (TubeChaserProviderException e) {
 			    mErrorMessage = e.getMessage();
 			}
@@ -487,20 +508,26 @@ public class Home extends Activity {
         	// Display a toast with the error
         	if (mErrorMessage != null) {
         		if (mErrorRetry == MAX_ERRORS) {
+        			if (LOGV) Log.v(TAG, "Maximum errors reached!");
         			setInfoWindow(makeErrorInfoWindow());
+        			updateRefreshStatus(false);
         			mErrorMessage = null;
         			mErrorRetry = 0;
         		}
         		else {
+        			if (LOGV) Log.v(TAG, "Error number: " + mErrorRetry);
         			new GetTubeStatus().execute();
         		}
         		// Increment error
         		mErrorMessage = null;
         		mErrorRetry++;
         	}
-    		getInfoWindows();
-    		changeInfoWindow();
-        	updateRefreshStatus(false);
+        	else {
+        		getInfoWindows();
+        		changeInfoWindow();
+        		startRefreshThread();
+        		updateRefreshStatus(false);
+        	}
         }
     }
     

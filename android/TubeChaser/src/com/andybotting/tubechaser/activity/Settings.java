@@ -45,11 +45,13 @@ import android.preference.PreferenceActivity;
 
 public class Settings extends PreferenceActivity implements OnSharedPreferenceChangeListener {
 	public static final String KEY_DEFAULT_LAUNCH_ACTIVITY = "defaultLaunchActivity";
+	public static final String KEY_NUMBER_OF_DEPARTURES = "numberOfDepartures";
 	
 	public static final String KEY_SEND_STATS = "sendUsageStats";
 	public static final boolean KEY_SEND_STATS_DEFAULT_VALUE = false;
 	
 	private ListPreference mDefaultLaunchActivity;
+	private ListPreference mNumberOfDepartures;
 	private CheckBoxPreference mSendStats;
 	
     @Override
@@ -61,6 +63,7 @@ public class Settings extends PreferenceActivity implements OnSharedPreferenceCh
         // Get a reference to the preferences
         mDefaultLaunchActivity = (ListPreference)getPreferenceScreen().findPreference(KEY_DEFAULT_LAUNCH_ACTIVITY);
         mSendStats = (CheckBoxPreference)getPreferenceScreen().findPreference(KEY_SEND_STATS);
+        mNumberOfDepartures = (ListPreference)getPreferenceScreen().findPreference(KEY_NUMBER_OF_DEPARTURES);
     }
     
     @Override
@@ -69,6 +72,7 @@ public class Settings extends PreferenceActivity implements OnSharedPreferenceCh
 
         // Setup the initial values
         setPreferenceSummary(getPreferenceScreen().getSharedPreferences(), KEY_DEFAULT_LAUNCH_ACTIVITY);
+        setPreferenceSummary(getPreferenceScreen().getSharedPreferences(), KEY_NUMBER_OF_DEPARTURES);
         setPreferenceSummary(getPreferenceScreen().getSharedPreferences(), KEY_SEND_STATS);
         
         // Set up a listener whenever a key changes            
@@ -78,7 +82,6 @@ public class Settings extends PreferenceActivity implements OnSharedPreferenceCh
     @Override
     protected void onPause() {
         super.onPause();
-
         // Unregister the listener whenever a key changes            
         getPreferenceScreen().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);    
     }
@@ -88,13 +91,26 @@ public class Settings extends PreferenceActivity implements OnSharedPreferenceCh
 		setPreferenceSummary(sharedPreferences, key);
 	}
     
-    private void setPreferenceSummary(SharedPreferences sharedPreferences, String key){
+    private void setPreferenceSummary(SharedPreferences sharedPreferences, String key) {
+    	
 		if(key.equals(KEY_DEFAULT_LAUNCH_ACTIVITY)){
-			mDefaultLaunchActivity.setSummary("Open " + getFriendlyDefaultActivityName(sharedPreferences) + " on launch");
+			// Default launch activity
+			mDefaultLaunchActivity.setSummary("Open " + getFriendlyDefaultActivityName(sharedPreferences) + " on launch.");
 		}
-		else if(key.equals(KEY_SEND_STATS)){
+		else if (key.equals(KEY_NUMBER_OF_DEPARTURES)) {
+			// Number of departures
+			String val = sharedPreferences.getString(KEY_NUMBER_OF_DEPARTURES, "3");
+			if (val.matches("All")) {
+				mNumberOfDepartures.setSummary("Showing all available departures.");
+			}
+			else {
+				mNumberOfDepartures.setSummary("Show a maxiumum of " + sharedPreferences.getString(KEY_NUMBER_OF_DEPARTURES, "3") + " departures per platform.");
+			}
+		}
+		else if(key.equals(KEY_SEND_STATS)) {
+			// Send Stats
 			mSendStats.setSummary(sharedPreferences.getBoolean(key, KEY_SEND_STATS_DEFAULT_VALUE) ? 
-					"Send anonymous usage statistics" : "Don't send anonymous usage statistics");
+					"Send anonymous usage statistics." : "Don't send anonymous usage statistics.");
 		}   
     }
     

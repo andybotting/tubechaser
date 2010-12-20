@@ -8,6 +8,8 @@ from django.views.decorators.csrf import csrf_exempt
 from google.appengine.runtime import DeadlineExceededError
 
 from datetime import date,timedelta,datetime
+import re
+import logging
 from GChartWrapper import Pie3D,Note
 from gheatae import tile
 
@@ -17,9 +19,8 @@ import forms
 import models
 import tile_utils
 import chart_utils
+import utils
 
-import re
-import logging
 
 """ Index page
 """
@@ -58,12 +59,24 @@ def departure_stat_send(request):
 	if request.method == 'POST':
 		form = forms.DepartureStatForm(request.POST)
 		if form.is_valid():
+
+			# Get any previous entries from this device
+			previous_stats = models.DepartureStat.objects.filter(device_id=form.data['device_id'])
+			now = datetime.now()
+			for prev in previous_stats:
+				time_diff = now - prev.timestamp
+				if time_diff < timedelta(minutes=10):
+					# Last update is less than 10 mins ago, we return and not save
+					logging.info("Form error: last entry was less 10 mins ago (%s)" % utils.elapsed_time(time_diff.seconds))
+					return HttpResponse("ERR\n", status=405)
+				
+			# No entries less an 1 hour old, so save this one
 			stat = form.save()
 			logging.info("Form OK: %s" % form.data)
 			return HttpResponse("OK\n")
 		else:
 			logging.info("Form error: %s" % form.errors)
-			return HttpResponse("ERR\n")
+			return HttpResponse("ERR\n", status=405)
 
 	return HttpResponse("")
 
@@ -180,14 +193,21 @@ def make_chart(request, type, days=None):
 		days = "all"
 
 	# Build chart
-	chart_data = chart_utils.make_gchart_data(app_stats, type)
+	labels = None
+	if type == 'mobile_network_number':
+		mobile_ops = models.MobileOperator.objects.all()
+		labels = []
+		for op in mobile_ops:
+			labels.append(op.getCode())	
+
+	chart_data = chart_utils.make_gchart_data(app_stats, type, labels)
 
 	if len(chart_data['data']) < 1:
 		chart = Note('note_title','pinned_c',1,'000000','l', "No Results") 
 	else:
 		chart = Pie3D(chart_data['data'])
 		chart.color(*chart_data['colours'])
-		chart.size(500,300)
+		chart.size(600,300)
 		chart.legend(*chart_data['labels'])
 
 	return render_to_response('chart.html', {

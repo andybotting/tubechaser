@@ -46,17 +46,6 @@
 		<ImageView style="@style/TitleBarSeparator" />
         
 		<TextView style="@style/TitleBarText" />
-        
-		<ImageView style="@style/TitleBarSeparator" />
-
-        <ImageButton android:id="@+id/btn_title_refresh"
-			style="@style/TitleBarAction"
-			android:contentDescription="@string/description_refresh"
-			android:src="@drawable/ic_title_refresh" />
-    
-		<ProgressBar android:id="@+id/title_refresh_progress"
-			style="@style/TitleBarProgressIndicator"
-			android:visibility="gone" />
 
 		<ImageView style="@style/TitleBarSeparator" />
     
@@ -68,21 +57,21 @@
 	</LinearLayout>
     
  	<!--  Export key -->
-<!--    <com.google.android.maps.MapView -->
-<!--        android:id="@+id/mapView"-->
-<!--        android:layout_width="fill_parent"-->
-<!--        android:layout_height="fill_parent"-->
-<!--        android:enabled="true"-->
-<!--        android:clickable="true"-->
-<!--        android:apiKey="0srPkV4tljqUqqo3XSMeuXCcHOSbthBD8bdBh-g" />-->
-
-	<!--  Debugging key -->
-	<com.google.android.maps.MapView
+    <com.google.android.maps.MapView 
         android:id="@+id/mapView"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:enabled="true"
         android:clickable="true"
-		android:apiKey="0srPkV4tljqUhXPwRfsf4RPYYX2ZFeAYwH_1Htw" />
+        android:apiKey="0srPkV4tljqUqqo3XSMeuXCcHOSbthBD8bdBh-g" />
+
+	<!--  Debugging key -->
+<!--	<com.google.android.maps.MapView-->
+<!--        android:id="@+id/mapView"-->
+<!--        android:layout_width="fill_parent"-->
+<!--        android:layout_height="fill_parent"-->
+<!--        android:enabled="true"-->
+<!--        android:clickable="true"-->
+<!--		android:apiKey="0srPkV4tljqUhXPwRfsf4RPYYX2ZFeAYwH_1Htw" />-->
 
 </LinearLayout>
