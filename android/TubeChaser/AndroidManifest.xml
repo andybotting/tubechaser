@@ -55,7 +55,8 @@
 	<!-- Application -->
     <application android:icon="@drawable/appicon" 
     	android:label="@string/app_name"
-    	android:theme="@style/Theme.TubeChaserStyle">
+    	android:theme="@style/Theme.TubeChaserStyle"
+    	android:installLocation="auto">
     
     	<!-- Provider -->	
     	<provider android:name=".provider.TubeChaserProvider" 
