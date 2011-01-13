@@ -34,6 +34,7 @@
 
 package com.andybotting.tubechaser.provider;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -46,6 +47,7 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.Environment;
 import android.util.Log;
 
 
@@ -56,18 +58,24 @@ public class TubeChaserDatabase extends SQLiteOpenHelper {
 
 	private static final String AUTHORITY = "com.andybotting.tubechaser";
 	private static final String DATABASE_NAME = "tubechaser.db";
-	private static final String DATABASE_PATH = "/data/data/"+ AUTHORITY + "/databases/";
+	private static final String DATABASE_INTERNAL_PATH = "/data/data/"+ AUTHORITY + "/databases/";
     
-	// Update this with the App Version (App Version x 10)
+	// Update this with the App Version Code (App Version x 100)
 	// E.g. 
-	// 	App Version v0.1 = DB Version 1
-	// 	App Version v1.2 = DB Version 12
-	private static final int DATABASE_VERSION = 2;
+	// 	App Version v0.1.00 = DB Version 100
+	//  App Version v0.2.92 = DB Version 292
+	// 	App Version v1.2.0 = DB Version 1200
+	private static final int DATABASE_VERSION = 292;
 	
-	private SQLiteDatabase db; 
-	private Context context;
+	
+	private SQLiteDatabase mDB = null;
+	private Context mContext;
+	private boolean mIsInitializing = false;
 
-	
+	// Are we using the internal database?
+	private boolean mIsDBInternal = true;
+
+
     interface Tables {
     	String LINES = "lines";
     	String STATIONS = "stations";
@@ -81,7 +89,7 @@ public class TubeChaserDatabase extends SQLiteOpenHelper {
 
     public TubeChaserDatabase(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
-		this.context = context;
+		mContext = context;
 		if (LOGV) Log.v(TAG, "Instantiating TubeChaser database");
 	}	
 	
@@ -89,51 +97,122 @@ public class TubeChaserDatabase extends SQLiteOpenHelper {
 	public SQLiteDatabase getDatabase() {
 		SQLiteDatabase db;  
 		
+		if (LOGV) Log.v(TAG, "Getting DB");
+		db = getExternalStorageDB();
+		if (db == null) {
+			if (LOGV) Log.v(TAG, "DB from SD Card failed, using internal");
+			db = getInternalStorageDB();
+		}
+
+		return db;
+	}
+
+	/**
+	 * Return the SQL Database from the internal device storage
+	 * @return
+	 */
+	private SQLiteDatabase getInternalStorageDB() {
+		if (LOGV) Log.v(TAG, "Getting DB from device internal storage");
+
+		SQLiteDatabase db = null;
+		String dbFile = DATABASE_INTERNAL_PATH + DATABASE_NAME;
+
 		try {		 	
-			this.createDataBase();
+			this.createDB(dbFile);
 		} 
 		catch (IOException ioe) {
-			throw new Error("Unable to create database");
+			throw new Error("Unable to create database:" + ioe);
 		}
-	
+
 		try {
-			this.openDataBase();
+			this.openDB(dbFile);
 		}
 		catch(SQLException sqle){
 			throw sqle;
 		}
 
-		db = this.getWritableDatabase();
+		mIsDBInternal = true;
+		db = getWritableDatabase(dbFile);
 		return db;
 	}
-	
-	public void createDataBase() throws IOException{
+
+
+	/**
+	 * Return the SQL Database from external storage
+	 */
+	private SQLiteDatabase getExternalStorageDB() {
+		if (LOGV) Log.v(TAG, "Getting DB from external storage (SD Card)");
+
+		SQLiteDatabase db = null;
+
+        if (!Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED))
+            return null;
+
+        // Build the directory on the SD Card, if it doesn't exist
+        File appDbDir = new File(Environment.getExternalStorageDirectory(), "Android/data/" + AUTHORITY + "/files");
+        if (!appDbDir.exists()) {
+        	if (LOGV) Log.v(TAG, "Making dirs");
+        	appDbDir.mkdirs();
+        }
+
+        // Our dbFile at /mnt/sdcard/Android/data/com.andybotting.tubechaser/files/tubechaser.db
+        File dbFileObj = new File(appDbDir, DATABASE_NAME);
+        String dbFile = dbFileObj.getAbsolutePath();
+        
+		try {	 	
+			this.createDB(dbFile);
+		} 
+		catch (IOException ioe) {
+			throw new Error("Unable to create database:" + ioe);
+		}
+
+		try {
+			this.openDB(dbFile);
+		}
+		catch(SQLException sqle){
+			throw sqle;
+		}
+
+		mIsDBInternal = false;
+		db = getWritableDatabase(dbFile);
+		return db;
+	}
+
+	/**
+	 * Create the initial database at a given file path
+	 * @param dbFile - a String representing the absolute file name
+	 * @throws IOException
+	 */
+	public void createDB(String dbFile) throws IOException{
+
+		boolean dbExist = checkDB(dbFile);
  
-		boolean dbExist = checkDataBase();
- 
-		if(dbExist){
-			String myPath = DATABASE_PATH + DATABASE_NAME;
-			db = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READONLY);
-			int thisDBVersion = db.getVersion();
-			db.close();
+		if (dbExist) {
+			if (LOGV) Log.v(TAG, "Found existing DB at " + dbFile);
+
+			mDB = SQLiteDatabase.openDatabase(dbFile, null, SQLiteDatabase.OPEN_READONLY);
+			int thisDBVersion = mDB.getVersion();
+			mDB.close();
 			
+			if (LOGV) Log.v(TAG, "Current DB Version: v" + thisDBVersion + " - Shipped DB Version is v" + DATABASE_VERSION);
 			if (thisDBVersion < DATABASE_VERSION) {							
 				try {
-					copyDataBase();
+					copyDB(dbFile);
 				} catch (IOException e) {
 					throw new Error("Error copying database");
 				}
 			}	
 		}
-		else{
+		else {
+			if (LOGV) Log.v(TAG, "Creating a new DB at " + dbFile);
 			// By calling this method and empty database will be created into the default system path
 			// of your application so we are gonna be able to overwrite that database with our database.
-			this.getReadableDatabase();
- 
+			mDB = getReadableDatabase(dbFile);
+			
 			try {
-				copyDataBase();
+				copyDB(dbFile);
 			} catch (IOException e) {
-				throw new Error("Error copying database");
+				throw new Error("Error copying database: " + e);
 			}
 		}
 	}
@@ -143,21 +222,19 @@ public class TubeChaserDatabase extends SQLiteOpenHelper {
 	 * Check if the database already exist to avoid re-copying the file each time you open the application.
 	 * @return true if it exists, false if it doesn't
 	 */
-	private boolean checkDataBase(){
- 
-		SQLiteDatabase checkDB = null;
- 
+	private boolean checkDB(String dbFile){
+ 		SQLiteDatabase checkDB = null;
+ 		if (LOGV) Log.v(TAG, "Checking for an existing DB at " + dbFile);
+ 		
 		try {
-			String myPath = DATABASE_PATH + DATABASE_NAME;
-			checkDB = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READONLY);
+			checkDB = SQLiteDatabase.openDatabase(dbFile, null, SQLiteDatabase.OPEN_READONLY);
 		}
 		catch(SQLiteException e){
 			//database does't exist yet.
 		}
  
-		if(checkDB != null){
+		if(checkDB != null)
 			checkDB.close();
-		}
  
 		return checkDB != null ? true : false;
 	}
@@ -167,65 +244,166 @@ public class TubeChaserDatabase extends SQLiteOpenHelper {
 	 * system folder, from where it can be accessed and handled.
 	 * This is done by transfering bytestream.
 	 * */
-	private void copyDataBase() throws IOException {
+//	private void copyDB(String dbFile) throws IOException {
+	private void copyDB(String dbFile) throws IOException {
 		
 		if (LOGV) Log.v(TAG, "Resetting last fetched timestamp");
 		
 		// Reset out last fetched status date
-		PreferenceHelper preferenceHelper = new PreferenceHelper(context);
+		PreferenceHelper preferenceHelper = new PreferenceHelper(mContext);
 		preferenceHelper.resetLastUpdateTimestamp();
 		
-		if (LOGV) Log.v(TAG, "Copying packaged database into position");
+		if (LOGV) Log.v(TAG, "Copying packaged DB to " + dbFile);
 		
 		// Open your local db as the input stream
-		InputStream myInput = context.getAssets().open(DATABASE_NAME);
+		InputStream is = mContext.getAssets().open(DATABASE_NAME);
 
-		// Path to the just created empty db
-		String outFileName = DATABASE_PATH + DATABASE_NAME;
- 
 		// Open the empty db as the output stream
-		OutputStream myOutput = new FileOutputStream(outFileName);
- 
+		OutputStream os = new FileOutputStream(dbFile);
+		
 		// Transfer bytes from the inputfile to the outputfile
 		byte[] buffer = new byte[1024];
 		int length;
-		while ( (length = myInput.read(buffer) ) > 0) {
-			myOutput.write(buffer, 0, length);
+		while ( (length = is.read(buffer) ) > 0) {
+			os.write(buffer, 0, length);
 		}
- 
+
 		// Close the streams
-		myOutput.flush();
-		myOutput.close();
-		myInput.close();
+		os.flush();
+		os.close();
+		is.close();
+		
+		if (LOGV) Log.v(TAG, "DB copying completed");
 	}
 
-	
-	public void openDataBase() throws SQLException {
+	public void openDB(String dbFile) throws SQLException {
 	 	// Open the database
-		String myPath = DATABASE_PATH + DATABASE_NAME;
-		db = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READONLY);
+		mDB = SQLiteDatabase.openDatabase(dbFile, null, SQLiteDatabase.OPEN_READONLY);
 		// Close the DB to prevent a leak
-		db.close();
+		mDB.close();
 	}
- 
+
 	@Override
 	public synchronized void close() {
-		if(db != null)
-			db.close();
+		if(mDB != null)
+			mDB.close();
 		super.close();
 	}
  
 	@Override
 	public void onCreate(SQLiteDatabase db) {
+		if (LOGV) Log.v(TAG, "DB onCreate() called");
 		// Do nothing here
 	}
  
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+		if (LOGV) Log.v(TAG, "DB onUpgrade() called");
 		// Do nothing here
 	}
-    
-    
-}
+	
 
+	public synchronized SQLiteDatabase getReadableDatabase(String dbFile) {
+		if(mIsDBInternal) {
+			return super.getReadableDatabase();
+		}
+		
+		
+		if (mDB != null && mDB.isOpen()) {
+			return mDB; // The database is already open for business
+		}
+
+		if (mIsInitializing) {
+			throw new IllegalStateException("getReadableDatabase called recursively");
+		}
+
+		try {
+			return getWritableDatabase();
+		} catch (SQLiteException e) {
+			Log.e(TAG, "Couldn't open " + DATABASE_NAME + " for writing (will try read-only):", e);
+		}
+
+		SQLiteDatabase db = null;
+		try {
+			mIsInitializing = true;
+			db = SQLiteDatabase.openDatabase(dbFile, null, SQLiteDatabase.OPEN_READONLY);
+			if (db.getVersion() != DATABASE_VERSION) {
+				throw new SQLiteException("Can't upgrade read-only database from version " + db.getVersion() + " to " + DATABASE_VERSION + ": " + dbFile);
+			}
+
+			onOpen(db);
+			if (LOGV) Log.v(TAG, "Opened " + DATABASE_NAME + " in read-only mode");
+			mDB = db;
+			return mDB;
+		} finally {
+			mIsInitializing = false;
+			if (db != null && db != mDB)
+				db.close();
+		}
+	}
+
+
+	public synchronized SQLiteDatabase getWritableDatabase(String dbFile) {
+		if(mIsDBInternal) {
+			return super.getWritableDatabase();
+		}
+		if (mDB != null && mDB.isOpen() && !mDB.isReadOnly()) {
+			return mDB; // The database is already open for business
+		}
+
+		if (mIsInitializing) {
+			throw new IllegalStateException("getWritableDatabase called recursively");
+		}
+
+		// If we have a read-only database open, someone could be using it
+		// (though they shouldn't), which would cause a lock to be held on
+		// the file, and our attempts to open the database read-write would
+		// fail waiting for the file lock. To prevent that, we acquire the
+		// lock on the read-only database, which shuts out other users.
+
+		boolean success = false;
+		SQLiteDatabase db = null;
+		// if (mDatabase != null) mDatabase.lock(); //can't call the locks for
+		// some reason. beginTransaction does lock it though
+		try {
+			mIsInitializing = true;
+			db = SQLiteDatabase.openOrCreateDatabase(dbFile, null);
+			int version = db.getVersion();
+			if (version != DATABASE_VERSION) {
+				db.beginTransaction();
+				try {
+					if (version == 0) {
+						onCreate(db);
+					} else {
+						onUpgrade(db, version, DATABASE_VERSION);
+					}
+					db.setVersion(DATABASE_VERSION);
+					db.setTransactionSuccessful();
+				} finally {
+					db.endTransaction();
+				}
+			}
+
+			onOpen(db);
+			success = true;
+			return db;
+		} finally {
+			mIsInitializing = false;
+			if (success) {
+				if (mDB != null) {
+					try {
+						mDB.close();
+					} catch (Exception e) {
+					}
+					// mDatabase.unlock();
+				}
+				mDB = db;
+			} else {
+				// if (mDatabase != null) mDatabase.unlock();
+				if (db != null)
+					db.close();
+			}
+		}
+	}
+}
 
