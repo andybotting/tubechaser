@@ -34,8 +34,10 @@
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
 	package="com.andybotting.tubechaser"
-	android:installLocation="auto" android:versionCode="394" android:versionName="0.4-test4">
-	
+	android:installLocation="auto" 
+	android:versionCode="394" 
+	android:versionName="0.4-test4">
+
     <uses-sdk android:minSdkVersion="4" 
     	android:targetSdkVersion="4" />
     
