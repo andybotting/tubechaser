@@ -1,6 +1,0 @@
-This isi a helper script written in Python for generating the Tube
-Chaser initial database. 
-
-It pulls the Tube lines and stations from the TfL web site and generates
-an SQLite database in Android format which is then moved into place
-once the app is started for the first time.

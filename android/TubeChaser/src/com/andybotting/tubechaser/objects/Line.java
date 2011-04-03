@@ -41,17 +41,37 @@ import com.andybotting.tubechaser.provider.TubeChaserContract.Lines;
 
 public class Line {
 	
+	// Line status
     public static final int STATUS_GOOD = 0;
     public static final int STATUS_MINOR = 1;
     public static final int STATUS_SEVERE = 2;  
     public static final int STATUS_UNKNOWN = 3;  
-	
+    
+    // Line types
+    public static final int TYPE_TUBE = 0;
+    public static final int TYPE_DLR = 1;
+    public static final int TYPE_OVERGROUND = 2;
+    public static final int TYPE_NATIONAL_RAIL = 3;
+    
+    // Tube lines
+    public static final int LINE_BAKERLOO = 0;
+    public static final int LINE_CENTRAL = 1;
+    public static final int LINE_CIRCLE = 2;
+    public static final int LINE_DISTRICT = 3;
+    public static final int LINE_HAMMERSMITH_AND_CITY = 4;
+    public static final int LINE_JUBILEE = 5;
+    public static final int LINE_METROPOLITAN = 6;
+    public static final int LINE_NORTHERN = 7;
+    public static final int LINE_PICCADILLY = 8;
+    public static final int LINE_VICTORIA = 9;
+    public static final int LINE_WATERLOO_AND_CITY = 10;
+        
 	private int id;
 	private String name;
 	private String shortName;
 	private String code;
 	private String tflid;
-	private String type;
+	private int type;
 	private String colour;
 	
 	private String status = "";      // "Good Service"
@@ -74,7 +94,7 @@ public class Line {
 	}
 	
 	public String getLineName() {
-		if (type.matches("tube"))
+		if (type == TYPE_TUBE)
 			return name + " Line";
 		return name;
 	}
@@ -107,11 +127,11 @@ public class Line {
 		return tflid;
 	}
 	
-	public String getType() {
+	public int getType() {
 		return type;
 	}
 
-	public void setType(String type) {
+	public void setType(int type) {
 		this.type = type;
 	}
 	

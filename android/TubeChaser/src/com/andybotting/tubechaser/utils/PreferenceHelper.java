@@ -37,34 +37,40 @@ package com.andybotting.tubechaser.utils;
 import java.util.ArrayList;
 import java.util.Date;
 
+import com.andybotting.tubechaser.TubeChaser;
 import com.andybotting.tubechaser.activity.Settings;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
 public class PreferenceHelper {
 	
     private static final String TAG = "PreferenceHelper";
-    private static final boolean LOGV = Log.isLoggable(TAG, Log.DEBUG);
+    private static final boolean LOGV = Log.isLoggable(TAG, Log.INFO);
     
 	private static final String KEY_STARRED_STATIONS_STRING = "starred_stations_string";
-	private static final String KEY_FIRST_LAUNCH = "first_launch";
+	private static final String KEY_FIRST_LAUNCH_VERSION = "first_launch_version";
 	private static final String KEY_LAST_UPDATE = "last_update";
 	private static final String KEY_STATS_TIMESTAMP = "stats_timestamp";	
 	
-	private final SharedPreferences preferences;
+	private final SharedPreferences mPreferences;
+	private final Context mContext;
 	
-	public PreferenceHelper(final Context context) {
-		this.preferences = PreferenceManager.getDefaultSharedPreferences(context);
+	public PreferenceHelper() {
+		this.mContext = TubeChaser.getContext();
+		this.mPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
 	}
+	
 	
     /**
      * Return a string representing the default launch activity
      */
 	public String defaultLaunchActivity() {
-		return preferences.getString(Settings.KEY_DEFAULT_LAUNCH_ACTIVITY, "HomeActivity");
+		return mPreferences.getString(Settings.KEY_DEFAULT_LAUNCH_ACTIVITY, "HomeActivity");
 	}
 	
     /**
@@ -72,7 +78,7 @@ public class PreferenceHelper {
      */
 	public int numberOfDepartures() {
 		
-		String val = preferences.getString(Settings.KEY_NUMBER_OF_DEPARTURES, "3");
+		String val = mPreferences.getString(Settings.KEY_NUMBER_OF_DEPARTURES, "3");
 		
 		if (val.matches("All")) {
 			return 99;
@@ -88,31 +94,74 @@ public class PreferenceHelper {
      * Return a boolean for whether stats sending is enabled
      */
 	public boolean isSendStatsEnabled() {
-		return preferences.getBoolean(Settings.KEY_SEND_STATS, Settings.KEY_SEND_STATS_DEFAULT_VALUE);
+		return mPreferences.getBoolean(Settings.KEY_SEND_STATS, Settings.KEY_SEND_STATS_DEFAULT_VALUE);
 	}
 	
-	
     /**
-     * Return a boolean representing that this is the first launch
+     * Return a boolean for whether the National Rail API code is set
      */
-	public boolean isFirstLaunch() {
-		return preferences.getBoolean(KEY_FIRST_LAUNCH, true);
+	public boolean isNationalRailAPIEnabled() {
+		boolean enabled = false;
+		String val = mPreferences.getString(Settings.KEY_NAT_RAIL_API, null);
+		
+		if (val != null) {
+			if (val.length() > 1) {
+				enabled = true;
+			}
+		}
+		
+		return enabled;
+	}
+	
+	
+    /**
+     * Return an string representing the stored National Rail API code
+     */
+	public String getNationalRailAPICode() {
+		return mPreferences.getString(Settings.KEY_NAT_RAIL_API, null);
+	}	
+	
+	
+    /**
+     * Return a boolean representing that this is the first launch for this version
+     */
+	public boolean isFirstLaunchThisVersion() {
+		long lastVersion = mPreferences.getLong(KEY_FIRST_LAUNCH_VERSION, 0);
+		
+		try {
+			PackageInfo pi = mContext.getPackageManager().getPackageInfo(mContext.getPackageName(), 0);
+			if (lastVersion < pi.versionCode) {
+				return true;
+			}
+		} catch (NameNotFoundException e) {
+			// Nothing
+		}
+		
+		return false;
 	}
 	
     /**
-     * Set a boolean signalling this is not the first launch
+     * Set a long signalling the lastest version of the application launched
      */	
-	public void setFirstLaunch() {
-		SharedPreferences.Editor editor = preferences.edit();
-		editor.putBoolean(KEY_FIRST_LAUNCH, false);
-		editor.commit();
-	}	
+	public void setFirstLaunchThisVersion() {
+		
+		try {
+			PackageInfo pi = mContext.getPackageManager().getPackageInfo(mContext.getPackageName(), 0);
+			SharedPreferences.Editor editor = mPreferences.edit();
+			editor.putLong(KEY_FIRST_LAUNCH_VERSION, pi.versionCode);
+			editor.commit();
+		} catch (NameNotFoundException e) {
+			// Nothing
+		}
+	}
+		
+		
 
     /**
      * Return a long representing the last update
      */
 	public long getLastUpdateTimestamp() {
-		return preferences.getLong(KEY_LAST_UPDATE, 0);
+		return mPreferences.getLong(KEY_LAST_UPDATE, 0);
 	}
 	
     /**
@@ -120,7 +169,7 @@ public class PreferenceHelper {
      */	
 	public void setLastUpdateTimestamp() {
 		Date now = new Date();
-		SharedPreferences.Editor editor = preferences.edit();	
+		SharedPreferences.Editor editor = mPreferences.edit();	
 		editor.putLong(KEY_LAST_UPDATE, now.getTime());
 		editor.commit();
 	}
@@ -129,7 +178,7 @@ public class PreferenceHelper {
      * Reset the last stats send date
      */	
 	public void resetLastUpdateTimestamp() {
-		SharedPreferences.Editor editor = preferences.edit();	
+		SharedPreferences.Editor editor = mPreferences.edit();	
 		editor.putLong(KEY_LAST_UPDATE, 0);
 		editor.commit();
 	}	
@@ -138,7 +187,7 @@ public class PreferenceHelper {
      * Return a long representing the last stats send date
      */
 	public long getStatsTimestamp() {
-		return preferences.getLong(KEY_STATS_TIMESTAMP, 0);
+		return mPreferences.getLong(KEY_STATS_TIMESTAMP, 0);
 	}
 	
     /**
@@ -146,7 +195,7 @@ public class PreferenceHelper {
      */	
 	public void setStatsTimestamp() {
 		Date now = new Date();
-		SharedPreferences.Editor editor = preferences.edit();
+		SharedPreferences.Editor editor = mPreferences.edit();
 		editor.putLong(KEY_STATS_TIMESTAMP, now.getTime());
 		editor.commit();
 	}	
@@ -155,14 +204,14 @@ public class PreferenceHelper {
      * Return a string representing the starred station/lines
      */
 	public String getStarredStationsString() {
-		return preferences.getString(KEY_STARRED_STATIONS_STRING, "");
+		return mPreferences.getString(KEY_STARRED_STATIONS_STRING, "");
 	}	
 	
     /**
      * Set a string representing the starred station/lines
      */	
 	public void setStarredStationsString(String stationsString) {
-		SharedPreferences.Editor editor = preferences.edit();
+		SharedPreferences.Editor editor = mPreferences.edit();
 		editor.putString(KEY_STARRED_STATIONS_STRING, stationsString);
 		editor.commit();
 	}
@@ -186,7 +235,7 @@ public class PreferenceHelper {
 	
     /**
      * Append the new station to the end of the station string
-     * and set it in the preferences.
+     * and set it in the mPreferences.
      */	
 	public void starStation(long stationId, long lineId) {
 		if (!isStarred(stationId, lineId)) {
@@ -200,7 +249,7 @@ public class PreferenceHelper {
 	
     /**
      * Generate a new station string, removing the given station/line
-     * and set it in the preferences.
+     * and set it in the mPreferences.
      */	
 	public void unstarStation(long stationId, long lineId) {
 		if (isStarred(stationId, lineId)) {

@@ -39,7 +39,7 @@ public class NextDeparture implements Comparable <NextDeparture> {
 
 	private String destination;
 	private String location;
-	private int time;
+	private int time = 0;
 
 	public void setDestination(String destination) {
 		this.destination = destination;
@@ -69,7 +69,9 @@ public class NextDeparture implements Comparable <NextDeparture> {
 	 */
 	public String humanMinutesAway() {
 	
-		if (time < 0) {
+		// Because of how we set the minutes and seconds, for National Rail parsing
+		// it could be up to -60 seconds difference, so allow for it
+		if (time < -60) {
 			return "Err";
 		}
 		else if (time < 60) {
@@ -90,14 +92,14 @@ public class NextDeparture implements Comparable <NextDeparture> {
 	 */
 	public int compareTo(NextDeparture otherDeparture) {
 
-		int thisTramMinutes = this.time;
-		int otherTramMinutes = otherDeparture.getTime();
+		int thisTime = this.time;
+		int otherTime = otherDeparture.getTime();
 		
-		// Test the difference between this, and the given NextTram obj
-		if(thisTramMinutes < otherTramMinutes) {
+		// Test the difference between this, and the given NextDeparture obj
+		if(thisTime < otherTime) {
 			return -1;
 		} 
-		else if(thisTramMinutes > otherTramMinutes) {
+		else if(thisTime > otherTime) {
 			return 1;
 		}
 		return 0; 

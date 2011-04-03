@@ -1,0 +1,11 @@
+[{"pk": 1001, "model": "app.line", "fields": {"colour": "996633", "shortname": "bakerloo", "code": "01BAK", "type": "tube", "name": "Bakerloo"}},
+{"pk": 1002, "model": "app.line", "fields": {"colour": "CC3333", "shortname": "central", "code": "01CEN", "type": "tube", "name": "Central"}},
+{"pk": 1003, "model": "app.line", "fields": {"colour": "FFCC00", "shortname": "circle", "code": "01CIR", "type": "tube", "name": "Circle"}},
+{"pk": 1004, "model": "app.line", "fields": {"colour": "006633", "shortname": "district", "code": "01DIS", "type": "tube", "name": "District"}},
+{"pk": 1005, "model": "app.line", "fields": {"colour": "CC9999", "shortname": "hammersmith", "code": "01HAM", "type": "tube", "name": "Hammersmith & City"}},
+{"pk": 1006, "model": "app.line", "fields": {"colour": "868F98", "shortname": "jubilee", "code": "01JUB", "type": "tube", "name": "Jubilee"}},
+{"pk": 1007, "model": "app.line", "fields": {"colour": "660066", "shortname": "metropolitan", "code": "01MET", "type": "tube", "name": "Metropolitan"}},
+{"pk": 1008, "model": "app.line", "fields": {"colour": "000000", "shortname": "northern", "code": "01NTN", "type": "tube", "name": "Northern"}},
+{"pk": 1009, "model": "app.line", "fields": {"colour": "000099", "shortname": "piccadilly", "code": "01PIC", "type": "tube", "name": "Piccadilly"}},
+{"pk": 1010, "model": "app.line", "fields": {"colour": "0099CC", "shortname": "victoria", "code": "01VIC", "type": "tube", "name": "Victoria"}},
+{"pk": 1011, "model": "app.line", "fields": {"colour": "66CCCC", "shortname": "waterloo", "code": "01WAC", "type": "tube", "name": "Waterloo & City"}}]

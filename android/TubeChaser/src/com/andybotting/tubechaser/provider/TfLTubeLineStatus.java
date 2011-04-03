@@ -67,12 +67,47 @@ public class TfLTubeLineStatus {
 	public void updateTubeStatus (Context context) throws TubeChaserProviderException {
 	
 		TubeChaserProvider provider = new TubeChaserProvider();
-		PreferenceHelper preferenceHelper = new PreferenceHelper(context);	
+		PreferenceHelper preferenceHelper = new PreferenceHelper();	
 
 		try {
 			
+//			<?xml version="1.0" encoding="utf-8"?>
+//			<ArrayOfLineStatus xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://webservices.lul.co.uk/">
+//			  <LineStatus ID="0" StatusDetails="">
+//			    <BranchDisruptions />
+//			    <Line ID="1" Name="Bakerloo" />
+//			    <Status ID="GS" CssClass="GoodService" Description="Good Service" IsActive="true">
+//			      <StatusType ID="1" Description="Line" />
+//			    </Status>
+//			  </LineStatus>
+//			  <LineStatus ID="1" StatusDetails="Due to a signal failure at West Ruislip and an earlier signal failure at Queensway.">
+//			    <BranchDisruptions />
+//			    <Line ID="2" Name="Central" />
+//			    <Status ID="MD" CssClass="GoodService" Description="Minor Delays" IsActive="true">
+//			      <StatusType ID="1" Description="Line" />
+//			    </Status>
+//			  </LineStatus>
+//			  <LineStatus ID="10" StatusDetails="">
+//			    <BranchDisruptions />
+//			    <Line ID="7" Name="Circle" />
+//			    <Status ID="GS" CssClass="GoodService" Description="Good Service" IsActive="true">
+//			      <StatusType ID="1" Description="Line" />
+//			    </Status>
+//			  </LineStatus>
+//			  <LineStatus ID="2" StatusDetails="Due to the earlier late finish of engineering work.">
+//			    <BranchDisruptions />
+//			    <Line ID="9" Name="District" />
+//			    <Status ID="MD" CssClass="GoodService" Description="Minor Delays" IsActive="true">
+//			      <StatusType ID="1" Description="Line" />
+//			    </Status>
+//			  </LineStatus>
+//			</ArrayOfLineStatus>
+			
+			
 			// Update Lines
 			URL url = new URL(LINES_STATUS_URL);
+			
+			if (LOGV) Log.v(TAG, "Fetching URL (" + url  +")");
 			
 			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 			DocumentBuilder db = dbf.newDocumentBuilder();
@@ -94,7 +129,7 @@ public class TfLTubeLineStatus {
 				Element nameElement = (Element) lineList.item(0);
 				
 				String lineID = nameElement.getAttribute("ID");      // Line ID="4"
-				String lineName = nameElement.getAttribute("Name");	 // Name="Jubilee"
+				//String lineName = nameElement.getAttribute("Name");	 // Name="Jubilee"
 				
 				// Status
 				NodeList statusList = lineStatusElement.getElementsByTagName("Status");
@@ -103,7 +138,7 @@ public class TfLTubeLineStatus {
 				String statusCode = statusElement.getAttribute("ID");           // ID="MD"
 				String status = statusElement.getAttribute("Description");      // Description="Minor Delays"
 				String statusClass = statusElement.getAttribute("CssClass");    // CssClass="GoodService"
-				String statusIsActive = statusElement.getAttribute("IsActive"); // IsActive="true"
+				//String statusIsActive = statusElement.getAttribute("IsActive"); // IsActive="true"
 				
 				// Loop through our lines, until we find a match
 				for (Line line : lines) {
@@ -132,7 +167,7 @@ public class TfLTubeLineStatus {
 		} 
 		catch (Exception e) {
 			//System.out.println("XML Pasing Excpetion = " + e);
-			throw new TubeChaserProviderException(e.getMessage());
+			throw new TubeChaserProviderException(e);
 		}
 		
 	}

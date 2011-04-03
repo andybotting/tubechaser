@@ -51,6 +51,7 @@ public class TubeChaserContract {
     public static final String PATH_LINE_STATIONS = "line_stations";
     public static final String PATH_SEARCH = "search";    
     public static final String PATH_STARRED = "starred";
+    public static final String PATH_CODE = "code";
 	
 	// Database column definitions
 	interface LinesColumns {
@@ -79,8 +80,15 @@ public class TubeChaserContract {
 		String STATUS_CODE = "status_code";
 		String STATUS_DESC = "status_desc";
 		String STEPFREE = "stepfree";
-	 }
-	 
+	}
+	
+	interface LineStationsColumns {
+		String ID = "_id";
+		String STATION_ID = "station_id";
+		String LINE_ID = "line_id";
+		String CODE = "station_code";
+	}	 
+	
 
     /**
      * Lines
@@ -162,6 +170,16 @@ public class TubeChaserContract {
         		.appendPath(PATH_LINES)
         		.appendPath(String.valueOf(lineId))
         		.appendPath(PATH_STARRED)
+        		.build();
+        }
+        
+        // Return a "stations/*/lines" uri for a given "/stations/*" Uri
+        public static Uri buildCodeUri(long stationId, long lineId) {
+        	return CONTENT_URI.buildUpon()
+        		.appendPath(String.valueOf(stationId))
+        		.appendPath(PATH_LINES)
+        		.appendPath(String.valueOf(lineId))
+        		.appendPath(PATH_CODE)
         		.build();
         }
         

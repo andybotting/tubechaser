@@ -38,15 +38,15 @@ import android.util.Log;
 
 public class TubeChaserProviderException extends Exception {
     private static final String TAG = "TubeChaserException";
-    private static final boolean LOGV = Log.isLoggable(TAG, Log.DEBUG);
+    private static final boolean LOGV = Log.isLoggable(TAG, Log.INFO);
 	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 3269967255843824178L;
 
-	public TubeChaserProviderException(String msg){
-		super(msg);
-		if (LOGV) Log.v(TAG, "Generating exception (" + msg + ")");
+	public TubeChaserProviderException(Exception e){
+		super(e);
+		if (LOGV) Log.v(TAG, "Generating exception (" + e + ")");
 	}
 }

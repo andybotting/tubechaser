@@ -53,14 +53,16 @@ import com.andybotting.tubechaser.objects.Platform;
 
 import android.util.Log;
 
-public class TfLTubeStationDepartures {
+public class TfLTubeDepartures implements ServiceDepartures {
 	
     private static final String TAG = "TfLTubeLineStatus";
     private static final boolean LOGV = Log.isLoggable(TAG, Log.INFO);
 
 	private static final String DEPARTURES_URL = "http://cloud.tfl.gov.uk/TrackerNet/PredictionDetailed/%s/%s";
+	
+	private String mLineCode;
     
-	public DepartureBoard getNextDepartures (String lineCode, String stationCode) throws TubeChaserProviderException {	
+	public DepartureBoard getNextDepartures (String stationCode) throws TubeChaserProviderException {	
 		 
 		// <?xml version="1.0" encoding="utf-8"?>
 		// <ROOT xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://trackernet.lul.co.uk">
@@ -80,8 +82,11 @@ public class TfLTubeStationDepartures {
 		// </ROOT>		 
 		try {	
 			 
-			DepartureBoard departureBoard = new DepartureBoard();		
-			URL url = new URL(String.format(DEPARTURES_URL, lineCode, stationCode));
+			DepartureBoard departureBoard = new DepartureBoard();
+			
+			if (LOGV) Log.v(TAG, "Fetching URL (" + DEPARTURES_URL  +")");
+			
+			URL url = new URL(String.format(DEPARTURES_URL, mLineCode, stationCode));
 				
 			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 			DocumentBuilder db = dbf.newDocumentBuilder();
@@ -94,7 +99,7 @@ public class TfLTubeStationDepartures {
 			Node stationNode = stationNodeList.item(0);
 		 	Element stationElement = (Element) stationNode;
 		 	
-		 	String currentTime = stationElement.getAttribute("CurTime");  // "16:48:55"
+		 	//String currentTime = stationElement.getAttribute("CurTime");  // "16:48:55"
 		
 		 	// Platform
 		 	// <P N="Eastbound - Platform 2" Num="2" TrackCode="TDDQWEK">
@@ -108,7 +113,7 @@ public class TfLTubeStationDepartures {
 					
 				Element platformElement = (Element) platformNode;
 				String platformName = platformElement.getAttribute("N");
-				String platformMessage = platformElement.getAttribute("Mess");
+				//String platformMessage = platformElement.getAttribute("Mess");
 				String platformNumber = platformElement.getAttribute("Num");
 				
 				platform.setPlatformNumber(platformNumber);
@@ -137,37 +142,35 @@ public class TfLTubeStationDepartures {
 				NodeList departureNodeList = platformElement.getElementsByTagName("T");
 				
 				for (int k = 0; k < departureNodeList.getLength(); k++) {
-					
-					
-					
+
 					Node departureNode = departureNodeList.item(k);
 					Element departureElement = (Element) departureNode;
 					
-					String departureLCID = departureElement.getAttribute("LCID");
-					String departureSetNo = departureElement.getAttribute("SetNo");
-					String departureTripNo = departureElement.getAttribute("TripNo");
+					//String departureLCID = departureElement.getAttribute("LCID");
+					//String departureSetNo = departureElement.getAttribute("SetNo");
+					//String departureTripNo = departureElement.getAttribute("TripNo");
 					String departureSecondsTo = departureElement.getAttribute("SecondsTo");
-					String departureTimeTo = departureElement.getAttribute("TimeTo");
+					//String departureTimeTo = departureElement.getAttribute("TimeTo");
 					String departureLocation = departureElement.getAttribute("Location");
 					String departureDestination = departureElement.getAttribute("Destination");
-					String departureDestCode =  departureElement.getAttribute("DestCode");
-					String departureOrder = departureElement.getAttribute("Order");
-					String departureDepartTime = departureElement.getAttribute("DepartTime");
-					String departureDepartInterval = departureElement.getAttribute("DepartInterval");
-					String departureDeparted = departureElement.getAttribute("Departed");
-					String departureDirection = departureElement.getAttribute("Direction");
-					String departureIsStalled = departureElement.getAttribute("IsStalled");
-					String departureTrackCode = departureElement.getAttribute("TrackCode");
+					//String departureDestCode =  departureElement.getAttribute("DestCode");
+					//String departureOrder = departureElement.getAttribute("Order");
+					//String departureDepartTime = departureElement.getAttribute("DepartTime");
+					//String departureDepartInterval = departureElement.getAttribute("DepartInterval");
+					//String departureDeparted = departureElement.getAttribute("Departed");
+					//String departureDirection = departureElement.getAttribute("Direction");
+					//String departureIsStalled = departureElement.getAttribute("IsStalled");
+					//String departureTrackCode = departureElement.getAttribute("TrackCode");
 					String departureLineCode = departureElement.getAttribute("LN");
 
 					// Only add entries that match our requested line! Stupid TfL API! 
-					if (lineCode.matches(departureLineCode)) {
+					if (mLineCode.matches(departureLineCode)) {
 						NextDeparture nextDeparture = new NextDeparture();
 						nextDeparture.setDestination(departureDestination);
 						nextDeparture.setLocation(departureLocation);
 						nextDeparture.setTime(Integer.parseInt(departureSecondsTo));
 
-						if (LOGV) Log.v(TAG, ("  -> " + departureDestination + " (" + departureDestCode + "): " + departureSecondsTo + " at " + departureLocation));
+						if (LOGV) Log.v(TAG, "Found Tube departure -> " + departureDestination + ": " + departureSecondsTo + "");
 
 						platform.addNextDeparture(nextDeparture);
 					}
@@ -183,10 +186,19 @@ public class TfLTubeStationDepartures {
 			
 		}
 		catch (Exception e) {
-			throw new TubeChaserProviderException(e.getMessage());
+			throw new TubeChaserProviderException(e);
 		}
-			
-
-
-	 }
+		
+	}
+	
+	/**
+	 * Set the line code for the line we're interested in.
+	 * @param lineCode
+	 */
+	public void setLine(String lineCode) {
+		mLineCode = lineCode;
+	}
+	
+	
+	
 }

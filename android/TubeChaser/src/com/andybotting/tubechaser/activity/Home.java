@@ -189,20 +189,13 @@ public class Home extends Activity {
         mInfoLoadingView = findViewById(R.id.info_window_loading);
         
         mContext = this.getBaseContext();
-		mPreferenceHelper = new PreferenceHelper(this);	
+		mPreferenceHelper = new PreferenceHelper();	
         mProvider = new TubeChaserProvider();
-        
-        // Try to get lines to stop a FC on first load
-		try {
-			mLines = mProvider.getLines(mContext);
-		} catch (Exception e) {
-			// Ignore
-		}
 
         checkStats();
        
-        // Show about dialog window on first launch
-		if (mPreferenceHelper.isFirstLaunch())
+		// Show about dialog window on first launch (or just after an upgrade)
+		if (mPreferenceHelper.isFirstLaunchThisVersion())
 			showAbout();
 		
 		long lastUpdate = mPreferenceHelper.getLastUpdateTimestamp();
@@ -327,7 +320,7 @@ public class Home extends Activity {
 			new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int whichButton) {
 					// Set first launch flag in DB
-					mPreferenceHelper.setFirstLaunch();
+					mPreferenceHelper.setFirstLaunchThisVersion();
 				}
 			});
 		dialogBuilder.setCancelable(false);

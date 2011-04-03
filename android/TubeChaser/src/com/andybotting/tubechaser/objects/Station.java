@@ -45,7 +45,6 @@ import android.net.Uri;
 public class Station {
 	private int id;
 	private String name;
-	private String code;
 	private String linesString;
 	private String tflId;
 	private double latitude;
@@ -71,14 +70,6 @@ public class Station {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-	
-	public String getCode() {
-		return code;
-	}
-
-	public void setCode(String code) {
-		this.code = code;
 	}
 	
 	public String getLinesString() {

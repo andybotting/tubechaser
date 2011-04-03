@@ -32,57 +32,27 @@
  * limitations under the License.
  */
 
-package com.andybotting.tubechaser.objects;
+package com.andybotting.tubechaser;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import android.app.Application;
+import android.content.Context;
 
+/**
+ * This class is primarily used to provide an application context for 
+ * getting access to application resources, like DB and assets
+ * @author andy
+ */
+public class TubeChaser extends Application {
 
-public class DepartureBoard {
+    private static TubeChaser instance;
 
-	private Station tubeStation;
-	private Date lastUpdated;
-	private List<Platform> platforms = new ArrayList<Platform>(); 
-	
-	public void setTubeStation(Station tubeStation) {
-		this.tubeStation = tubeStation;
-	}
-	
-	public Station getTubeStation() {
-		return tubeStation;
-	}
+    public TubeChaser() {
+        instance = this;
+    }
 
-	public void setLastUpdated(Date lastUpdated) {
-		this.lastUpdated = lastUpdated;
-	}
-	
-	public Date getLastUpdated() {
-		return lastUpdated;
-	}
-	
-	public void setPlatforms(List<Platform> platforms) {
-		this.platforms = platforms;
-	}
-	
-	public void addPlatform(Platform platform) {
-		this.platforms.add(platform);
-	}
-	
-	public List<Platform> getPlatforms() {
-		return platforms;
-	}
-	
-	public int numberOfPlatforms() {
-		return platforms.size();
-	}
-	
-	public Platform getPlatform(int location) {
-		return platforms.get(location);
-	}
-
-	public String toString() {
-		return String.format("DepartureBoard %s", platforms);
-	}
+    public static Context getContext() {
+        return instance;
+    }
 
 }
+

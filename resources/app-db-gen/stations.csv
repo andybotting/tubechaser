@@ -1,0 +1,360 @@
+"_id","name","lines","tfl_id","latitude","longitude","status","status_desc","status_code","stepfree","line_ids"
+0,"Baker Street","Bakerloo, Circle, Hammersmith & City, Jubilee and Metropolitan Lines",10,51.522236,-0.15708,,,,0,"0:2:4:5:6"
+1,"Charing Cross","Bakerloo and Northern Lines",44,51.507108,-0.122963,,,,0,"0:7"
+2,"Edgware Road","Bakerloo Line",70,51.51956,-0.169068,,,,0,0
+3,"Elephant & Castle","Bakerloo and Northern Lines",72,51.49467,-0.10047,,,,0,"0:7"
+4,"Embankment","Bakerloo, Circle, District and Northern Lines",74,51.50717,-0.12195,,,,0,"0:2:3:7"
+5,"Harlesden","Bakerloo Line and Overground",99,51.53628278,-0.257622488,,,,0,"0:12"
+6,"Harrow & Wealdstone","Bakerloo Line and Overground",100,51.59205973,-0.334725352,,,,0,"0:12"
+7,"Kensal Green","Bakerloo Line and Overground",121,51.53060655,-0.224253545,,,,0,"0:12"
+8,"Kenton","Bakerloo Line and Overground",124,51.58173809,-0.316870809,,,,0,"0:12"
+9,"Kilburn Park","Bakerloo Line",127,51.53495818,-0.193963023,,,,0,0
+10,"Lambeth North","Bakerloo Line",132,51.49894,-0.11216,,,,0,0
+11,"Maida Vale","Bakerloo Line",141,51.52989409,-0.185888819,,,,0,0
+12,"Marylebone","Bakerloo Line",145,51.52266,-0.162996,,,,0,0
+13,"North Wembley","Bakerloo Line and Overground",161,51.56258091,-0.304072648,,,,0,"0:12"
+14,"Oxford Circus","Bakerloo, Central and Victoria Lines",172,51.51517,-0.14119,,,,0,"0:1:9"
+15,"Paddington","Bakerloo Line",173,51.5151846554,-0.1755388079,,,,0,0
+16,"Piccadilly Circus","Bakerloo and Piccadilly Lines",177,51.51022,-0.13392,,,,0,"0:8"
+17,"Queen's Park","Bakerloo Line and Overground",183,51.534179,-0.205257721,,,,0,"0:12"
+18,"Regent's Park","Bakerloo Line",189,51.52344,-0.14713,,,,0,0
+19,"South Kenton","Bakerloo Line and Overground",209,51.57044666,-0.308566354,,,,0,"0:12"
+20,"Stonebridge Park","Bakerloo Line and Overground",223,51.54402388,-0.275978856,,,,0,"0:12"
+21,"Warwick Avenue","Bakerloo Line",251,51.52329728,-0.183777837,,,,0,0
+22,"Waterloo","Bakerloo, Jubilee, Northern and Waterloo & City Lines",252,51.50322,-0.11328,,,,0,"0:5:7:10"
+23,"Wembley Central","Bakerloo Line and Overground",254,51.55122817,-0.29577538,,,,0,"0:12"
+24,"Willesden Junction","Bakerloo Line and Overground",269,51.53032031,-0.229378995,,,,0,"0:12"
+25,"Bank","Central, Northern and Waterloo & City Lines and DLR",12,51.5134047,-0.08905843,,,,0,"1:7:10:11"
+26,"Barkingside","Central Line",15,51.58543,0.08854,,,,0,1
+27,"Bethnal Green","Central Line",21,51.52718,-0.05504,,,,0,1
+28,"Bond Street","Central and Jubilee Lines",24,51.51461,-0.14897,,,,0,"1:5"
+29,"Buckhurst Hill","Central Line",32,51.62611,0.04705,,,,0,1
+30,"Chancery Lane","Central Line",43,51.51836,-0.11115,,,,0,1
+31,"Chigwell","Central Line",46,51.61795,0.07511,,,,0,1
+32,"Debden","Central Line",59,51.64535,0.08364,,,,0,1
+33,"Ealing Broadway","Central and District Lines",61,51.51482,-0.30118,,,,0,"1:3"
+34,"East Acton","Central Line",64,51.51753,-0.24827,,,,0,1
+35,"Epping","Central Line",75,51.69365,0.11495,,,,0,1
+36,"Fairlop","Central Line",78,51.59634,0.09125,,,,0,1
+37,"Gants Hill","Central Line",84,51.57649,0.06637,,,,0,1
+38,"Grange Hill","Central Line",89,51.61326,0.09258,,,,0,1
+39,"Greenford","Central Line",92,51.542346,-0.345903,,,,0,1
+40,"Hainault","Central Line",94,51.60288,0.09332,,,,0,1
+41,"Hanger Lane","Central Line",98,51.53,-0.2929,,,,0,1
+42,"Holborn","Central and Piccadilly Lines",111,51.51711,-0.12055,,,,0,"1:8"
+43,"Holland Park","Central Line",112,51.50722,-0.20553,,,,0,1
+44,"Lancaster Gate","Central Line",133,51.512083,-0.175067,,,,0,1
+45,"Leyton","Central Line",136,51.556483,-0.005669,,,,0,1
+46,"Leytonstone","Central Line",137,51.56828,0.00739,,,,0,1
+47,"Liverpool Street","Central, Circle, Hammersmith & City and Metropolitan Lines",138,51.517675,-0.082458,,,,0,"1:2:4:6"
+48,"Loughton","Central Line",140,51.6417,0.05583,,,,0,1
+49,"Marble Arch","Central Line",144,51.513597,-0.15869195,,,,0,1
+50,"Mile End","Central, District and Hammersmith & City Lines",146,51.525306,-0.033471,,,,0,"1:3:4"
+51,"Newbury Park","Central Line",156,51.57565,0.08927,,,,0,1
+52,"North Acton","Central Line",157,51.5237,-0.26019,,,,0,1
+53,"Northolt","Central Line",163,51.548467,-0.36968,,,,0,1
+54,"Notting Hill Gate","Central and Circle Lines",167,51.509028,-0.1962847,,,,0,"1:2"
+55,"Perivale","Central Line",176,51.536673,-0.32391,,,,0,1
+56,"Queensway","Central Line",185,51.510484,-0.18705,,,,0,1
+57,"Redbridge","Central Line",188,51.57618,0.04542,,,,0,1
+58,"Roding Valley","Central Line",192,51.61691,0.04264,,,,0,1
+59,"Ruislip Gardens","Central Line",196,51.560711,-0.410587,,,,0,1
+60,"Shepherd's Bush","Central Line and Overground",201,51.50474,-0.21881,,,,0,"1:12"
+61,"Snaresbrook","Central Line",205,51.58002,0.02133,,,,0,1
+62,"South Ruislip","Central Line",210,51.556795,-0.398708,,,,0,1
+63,"South Woodford","Central Line",212,51.59088,0.02726,,,,0,1
+64,"St. Paul's","Central Line",218,51.515285,-0.097598,,,,0,1
+65,"Stratford","Central and Jubilee Lines, DLR and Overground",224,51.541146,-0.002675,,,,0,"1:5:11:12"
+66,"Theydon Bois","Central Line",230,51.67246,0.10354,,,,0,1
+67,"Tottenham Court Road","Central and Northern Lines",233,51.51672074,-0.13093911,,,,0,"1:7"
+68,"Wanstead","Central Line",248,51.57565,0.02864,,,,0,1
+69,"West Acton","Central Line",256,51.51818,-0.28064,,,,0,1
+70,"West Ruislip","Central Line",263,51.569324,-0.43674,,,,0,1
+71,"White City","Central Line",266,51.512206,-0.224226,,,,0,1
+72,"Woodford","Central Line",273,51.60582,0.03328,,,,0,1
+73,"Aldgate","Circle and Metropolitan Lines",2,51.51394,-0.07537,,,,0,"2:6"
+74,"Barbican","Circle, Hammersmith & City and Metropolitan Lines",13,51.520865,-0.097758,,,,0,"2:4:6"
+75,"Bayswater","Circle Line",17,51.51224,-0.187569,,,,0,2
+76,"Blackfriars","Circle and District Lines",22,51.5114403,-0.1041905,,,,0,"2:3"
+77,"Cannon Street","Circle and District Lines",39,51.51141,-0.09047,,,,0,"2:3"
+78,"Edgware Road","Circle, District and Hammersmith & City Lines",71,51.520195,-0.166986,,,,0,"2:3:4"
+79,"Euston Square","Circle, Hammersmith & City and Metropolitan Lines",77,51.52584,-0.1357,,,,0,"2:4:6"
+80,"Farringdon","Circle, Hammersmith & City and Metropolitan Lines",79,51.520086,-0.104789,,,,0,"2:4:6"
+81,"Great Portland Street","Circle, Hammersmith & City and Metropolitan Lines",90,51.52391,-0.14397,,,,0,"2:4:6"
+82,"High Street Kensington","Circle and District Lines",107,51.5003459144,-0.192351664,,,,0,"2:3"
+83,"King's Cross St. Pancras","Circle, Hammersmith & City, Metropolitan, Northern, Piccadilly and Victoria Lines",128,51.53057,-0.12399,,,,0,"2:4:6:7:8:9"
+84,"Mansion House","Circle and District Lines",143,51.51256,-0.09397,,,,0,"2:3"
+85,"Monument","Circle and District Lines",148,51.510165,-0.085991,,,,0,"2:3"
+86,"Moorgate","Circle, Hammersmith & City, Metropolitan and Northern Lines",150,51.51817,-0.08859,,,,0,"2:4:6:7"
+87,"Sloane Square","Circle and District Lines",204,51.49258474,-0.156090904,,,,0,"2:3"
+88,"South Kensington","Circle, District and Piccadilly Lines",208,51.494066,-0.172791,,,,0,"2:3:8"
+89,"St. James's Park","Circle and District Lines",216,51.49971,-0.13394,,,,0,"2:3"
+90,"Temple","Circle and District Lines",229,51.51114,-0.11341,,,,0,"2:3"
+91,"Tower Hill","Circle and District Lines",236,51.50991,-0.076813,,,,0,"2:3"
+92,"Victoria","Circle, District and Victoria Lines",246,51.49662869,-0.14400853,,,,0,"2:3:9"
+93,"Westminster","Circle, District and Jubilee Lines",265,51.50121,-0.12489,,,,0,"2:3:5"
+94,"Acton Town","District and Piccadilly Lines",1,51.5025,-0.278126,,,,0,"3:8"
+95,"Aldgate East","District and Hammersmith & City Lines",3,51.51514,-0.07178,,,,0,"3:4"
+96,"Barking","District and Hammersmith & City Lines and Overground",14,51.54079,0.08018,,,,0,"3:4:12"
+97,"Barons Court","District and Piccadilly Lines",16,51.490281,-0.21434,,,,0,"3:8"
+98,"Becontree","District Line",18,51.54029,0.1262,,,,0,3
+99,"Bow Road","District and Hammersmith & City Lines",28,51.52709,-0.02482,,,,0,"3:4"
+100,"Bromley-by-Bow","District and Hammersmith & City Lines",31,51.52466,-0.01282,,,,0,"3:4"
+101,"Chiswick Park","District Line",47,51.49466,-0.26866,,,,0,3
+102,"Dagenham East","District Line",57,51.54396,0.16439,,,,0,3
+103,"Dagenham Heathway","District Line",58,51.54173,0.14543,,,,0,3
+104,"Ealing Common","District and Piccadilly Lines",62,51.50997,-0.28825,,,,0,"3:8"
+105,"Earl's Court","District and Piccadilly Lines",63,51.491521,-0.193906,,,,0,"3:8"
+106,"East Ham","District and Hammersmith & City Lines",66,51.53931,0.0526,,,,0,"3:4"
+107,"East Putney","District Line",67,51.459015,-0.211138,,,,0,3
+108,"Elm Park","District Line",73,51.54969,0.19779,,,,0,3
+109,"Fulham Broadway","District Line",83,51.48033,-0.19488,,,,0,3
+110,"Gloucester Road","Cicle, District and Piccadilly Lines",85,51.49408266,-0.17295341,,,,0,"2:3:8"
+111,"Gunnersbury","District Line and Overground",93,51.49126844,-0.275554312,,,,0,3
+112,"Hammersmith","District and Piccadilly Lines",95,51.492328,-0.222825,,,,0,"3:8"
+113,"Hornchurch","District Line",114,51.55387,0.21797,,,,0,3
+114,"Kew Gardens","District Line and Overground",125,51.47725641,-0.284980014,,,,0,"3:12"
+115,"Kensington (Olympia)","District Line and Overground",122,51.49675,-0.20931,,,,0,"3:12"
+116,"Parsons Green","District Line",175,51.47488,-0.20205,,,,0,3
+117,"Plaistow","District and Hammersmith & City Lines",180,51.53122,0.01659,,,,0,"3:4"
+118,"Putney Bridge","District Line",182,51.46868,-0.2088141,,,,0,3
+119,"Ravenscourt Park","District Line",186,51.49419,-0.2356,,,,0,3
+120,"Richmond","District Line and Overground",190,51.4632474,-0.300618047,,,,0,"3:12"
+121,"Southfields","District Line",213,51.444941,-0.206466,,,,0,3
+122,"Stamford Brook","District Line",219,51.494935,-0.24619,,,,0,3
+123,"Stepney Green","District and Hammersmith & City Lines",221,51.521884,-0.046546,,,,0,"3:4"
+124,"Turnham Green","District and Piccadilly Lines",238,51.495143,-0.25406,,,,0,"3:8"
+125,"Upminster","District Line",240,51.55925,0.25177,,,,0,3
+126,"Upminster Bridge","District Line",241,51.55847,0.23509,,,,0,3
+127,"Upney","District Line",242,51.53824,0.09998,,,,0,3
+128,"Upton Park","District and Hammersmith & City Lines",243,51.53514,0.03373,,,,0,"3:4"
+129,"West Brompton","District Line and Overground",257,51.48681,-0.19475,,,,0,"3:12"
+130,"West Ham","District, Hammersmith & City and Jubilee Lines",259,51.527917,0.004141,,,,0,"3:4:5"
+131,"West Kensington","District Line",262,51.49085,-0.20532,,,,0,3
+132,"Whitechapel","District and Hammersmith & City Lines and Overground",267,51.51946,-0.05951,,,,0,"3:4:12"
+133,"Wimbledon","District Line",270,51.422,-0.20544,,,,0,3
+134,"Wimbledon Park","District Line",271,51.43391,-0.19864,,,,0,3
+135,"Hammersmith","Hammersmith & City Line",96,51.494190748,-0.225964953,,,,0,4
+136,"Bermondsey","Jubilee Line",20,51.49813,-0.0635,,,,0,5
+137,"Canada Water","Jubilee Line and Overground",36,51.49787,-0.04967,,,,0,"5:12"
+138,"Canary Wharf","Jubilee Line and DLR",37,51.50362,-0.01987,,,,0,"5:11"
+139,"Canning Town","Jubilee Line and DLR",38,51.514,0.0083,,,,0,"5:11"
+140,"Canons Park","Jubilee Line",40,51.6081,-0.29487,,,,0,5
+141,"Dollis Hill","Jubilee Line",60,51.5525,-0.23884,,,,0,5
+142,"Finchley Road","Jubilee and Metropolitan Lines",81,51.546701,-0.179867,,,,0,"5:6"
+143,"Green Park","Jubilee, Piccadilly and Victoria Lines",91,51.50674,-0.14276,,,,0,"5:8:9"
+144,"Kilburn","Jubilee Line",126,51.5471715,-0.205002,,,,0,5
+145,"Kingsbury","Jubilee Line",129,51.58422,-0.2788,,,,0,5
+146,"London Bridge","Jubilee and Northern Lines",139,51.505353,-0.084826,,,,0,"5:7"
+147,"Neasden","Jubilee Line",153,51.55427,-0.25042,,,,0,5
+148,"North Greenwich","Jubilee Line",159,51.50056,0.0036,,,,0,5
+149,"Queensbury","Jubilee Line",184,51.59437,-0.28655,,,,0,5
+150,"Southwark","Jubilee Line",215,51.50384,-0.10478,,,,0,5
+151,"St. John's Wood","Jubilee Line",217,51.53472,-0.17428,,,,0,5
+152,"Stanmore","Jubilee Line",220,51.61895,-0.30241,,,,0,5
+153,"Swiss Cottage","Jubilee Line",228,51.54333,-0.17436,,,,0,5
+154,"Wembley Park","Jubilee and Metropolitan Lines",255,51.56355598,-0.279770242,,,,0,"5:6"
+155,"West Hampstead","Jubilee Line and Overground",260,51.54716,-0.19275,,,,0,"5:12"
+156,"Willesden Green","Jubilee Line",268,51.54919,-0.22106,,,,0,5
+157,"Amersham","Metropolitan Line",5,51.67435,-0.60732,,,,0,6
+158,"Chalfont & Latimer","Metropolitan Line",41,51.66822,-0.56053,,,,0,6
+159,"Chorleywood","Metropolitan Line",48,51.65429872,-0.518373353,,,,0,6
+160,"Croxley","Metropolitan Line",56,51.64733268,-0.441479115,,,,0,6
+161,"Eastcote","Metropolitan and Piccadilly Lines",68,51.57676,-0.39629,,,,0,"6:8"
+162,"Harrow on the Hill","Metropolitan Line",101,51.579335,-0.337052,,,,0,6
+163,"Hillingdon","Metropolitan and Piccadilly Lines",110,51.55364,-0.45062,,,,0,"6:8"
+164,"Ickenham","Metropolitan and Piccadilly Lines",119,51.56147,-0.44257,,,,0,"6:8"
+165,"Moor Park","Metropolitan Line",149,51.62970512,-0.432070848,,,,0,6
+166,"North Harrow","Metropolitan Line",160,51.58503612,-0.362595264,,,,0,6
+167,"Northwick Park","Metropolitan Line",164,51.57850117,-0.317857023,,,,0,6
+168,"Northwood","Metropolitan Line",165,51.61098984,-0.423584422,,,,0,6
+169,"Northwood Hills","Metropolitan Line",166,51.60043795,-0.408812575,,,,0,6
+170,"Pinner","Metropolitan Line",179,51.59270271,-0.380539158,,,,0,6
+171,"Rayners Lane","Metropolitan and Piccadilly Lines",187,51.57534,-0.3724,,,,0,"6:8"
+172,"Rickmansworth","Metropolitan Line",191,51.64027898,-0.473521454,,,,0,6
+173,"Ruislip","Metropolitan and Piccadilly Lines",195,51.57146,-0.42157,,,,0,"6:8"
+174,"Ruislip Manor","Metropolitan and Piccadilly Lines",197,51.57349,-0.41185,,,,0,"6:8"
+175,"Uxbridge","Metropolitan and Piccadilly Lines",244,51.54687,-0.47725,,,,0,"6:8"
+176,"Watford","Metropolitan Line",253,51.65741058,-0.41745306,,,,0,6
+177,"West Harrow","Metropolitan Line",261,51.5795432,-0.353144584,,,,0,6
+178,"Angel","Northern Line",6,51.53253,-0.10579,,,,0,7
+179,"Archway","Northern Line",7,51.56536,-0.13474,,,,0,7
+180,"Balham","Northern Line",11,51.44344113,-0.152945844,,,,0,7
+181,"Belsize Park","Northern Line",19,51.55036,-0.16465,,,,0,7
+182,"Borough","Northern Line",25,51.50095,-0.09446,,,,0,7
+183,"Brent Cross","Northern Line",29,51.57693,-0.21414,,,,0,7
+184,"Burnt Oak","Northern Line",33,51.603,-0.26427,,,,0,7
+185,"Camden Town","Northern Line",35,51.5393,-0.14316,,,,0,7
+186,"Chalk Farm","Northern Line",42,51.5439,-0.15384,,,,0,7
+187,"Clapham Common","Northern Line",49,51.46156,-0.13802,,,,0,7
+188,"Clapham North","Northern Line",50,51.46522,-0.1295,,,,0,7
+189,"Clapham South","Northern Line",51,51.45292257,-0.147562148,,,,0,7
+190,"Colindale","Northern Line",53,51.59556,-0.24996,,,,0,7
+191,"Colliers Wood","Northern Line",54,51.41823649,-0.17800983,,,,0,7
+192,"East Finchley","Northern Line",65,51.5872974705,-0.1649563231,,,,0,7
+193,"Edgware","Northern Line",69,51.61385,-0.27515,,,,0,7
+194,"Euston","Northern and Victoria Lines and Overground",76,51.52774,-0.13303,,,,0,"7:9:12"
+195,"Finchley Central","Northern Line",80,51.60102,-0.1924,,,,0,7
+196,"Golders Green","Northern Line",86,51.57249,-0.1941,,,,0,7
+197,"Goodge Street","Northern Line",88,51.5206,-0.13441,,,,0,7
+198,"Hampstead","Northern Line",97,51.55645,-0.17851,,,,0,7
+199,"Hendon Central","Northern Line",105,51.58346,-0.22653,,,,0,7
+200,"High Barnet","Northern Line",106,51.6506519032,-0.194138166,,,,0,7
+201,"Highgate","Northern Line",109,51.57722,-0.14553,,,,0,7
+202,"Kennington","Northern Line",120,51.48823,-0.10587,,,,0,7
+203,"Kentish Town","Northern Line",123,51.55046,-0.14067,,,,0,7
+204,"Leicester Square","Northern and Piccadilly Lines",135,51.51148,-0.12849,,,,0,"7:8"
+205,"Mill Hill East","Northern Line",147,51.60892,-0.20965,,,,0,7
+206,"Morden","Northern Line",151,51.40222413,-0.194599126,,,,0,7
+207,"Mornington Crescent","Northern Line",152,51.53427,-0.13901,,,,0,7
+208,"Old Street","Northern Line",169,51.52618,-0.08751,,,,0,7
+209,"Oval","Northern Line",171,51.48214,-0.11284,,,,0,7
+210,"South Wimbledon","Northern Line",211,51.41543048,-0.192262754,,,,0,7
+211,"Stockwell","Northern and Victoria Lines",222,51.47224,-0.1227,,,,0,"7:9"
+212,"Tooting Bec","Northern Line",231,51.43578971,-0.159635693,,,,0,7
+213,"Tooting Broadway","Northern Line",232,51.42780008,-0.167910811,,,,0,7
+214,"Totteridge & Whetstone","Northern Line",235,51.63022,-0.17917,,,,0,7
+215,"Tufnell Park","Northern Line",237,51.55663,-0.13813,,,,0,7
+216,"Warren Street","Northern and Victoria Lines",250,51.5245,-0.1381,,,,0,"7:9"
+217,"West Finchley","Northern Line",258,51.6092228122,-0.1887111523,,,,0,7
+218,"Woodside Park","Northern Line",274,51.6181717296,-0.1855788879,,,,0,7
+219,"Alperton","Piccadilly Line",4,51.54097,-0.30061,,,,0,8
+220,"Arnos Grove","Piccadilly Line",8,51.61625,-0.13355,,,,0,8
+221,"Arsenal","Piccadilly Line",9,51.55847,-0.10561,,,,0,8
+222,"Boston Manor","Piccadilly Line",26,51.495371,-0.325573,,,,0,8
+223,"Bounds Green","Piccadilly Line",27,51.607,-0.12418,,,,0,8
+224,"Caledonian Road","Piccadilly Line",34,51.5485,-0.11802,,,,0,8
+225,"Cockfosters","Piccadilly Line",52,51.65117,-0.14811,,,,0,8
+226,"Covent Garden","Piccadilly Line",55,51.51308,-0.12427,,,,0,8
+227,"Finsbury Park","Piccadilly and Victoria Lines",82,51.56498,-0.10543,,,,0,"8:9"
+228,"Hatton Cross","Piccadilly Line",102,51.466988,-0.423035,,,,0,8
+229,"Heathrow Terminal 4","Piccadilly Line",103,51.4594777,-0.44689658,,,,0,8
+230,"Heathrow Terminal 5","Piccadilly Line",284,51.47267,-0.48915,,,,0,8
+231,"Heathrow Terminals 123","Piccadilly Line",104,51.4712899,-0.4527438,,,,0,8
+232,"Holloway Road","Piccadilly Line",113,51.5529,-0.11278,,,,0,8
+233,"Hounslow Central","Piccadilly Line",115,51.47129,-0.365853,,,,0,8
+234,"Hounslow East","Piccadilly Line",116,51.47354,-0.356,,,,0,8
+235,"Hounslow West","Piccadilly Line",117,51.473689,-0.386471,,,,0,8
+236,"Hyde Park Corner","Piccadilly Line",118,51.50313,-0.15278,,,,0,8
+237,"Knightsbridge","Piccadilly Line",130,51.50169,-0.1603,,,,0,8
+238,"Manor House","Piccadilly Line",142,51.57038,-0.09601,,,,0,8
+239,"North Ealing","Piccadilly Line",158,51.51807,-0.28838,,,,0,8
+240,"Northfields","Piccadilly Line",162,51.499856,-0.313188,,,,0,8
+241,"Oakwood","Piccadilly Line",168,51.64739,-0.13192,,,,0,8
+242,"Osterley","Piccadilly Line",170,51.481569,-0.35196,,,,0,8
+243,"Park Royal","Piccadilly Line",174,51.52671,-0.28417,,,,0,8
+244,"Russell Square","Piccadilly Line",198,51.523243,-0.124336,,,,0,8
+245,"South Ealing","Piccadilly Line",206,51.500801,-0.307856,,,,0,8
+246,"South Harrow","Piccadilly Line",207,51.56461,-0.3521,,,,0,8
+247,"Southgate","Piccadilly Line",214,51.6324,-0.12765,,,,0,8
+248,"Sudbury Hill","Piccadilly Line",225,51.556998,-0.335949,,,,0,8
+249,"Sudbury Town","Piccadilly Line",226,51.55093,-0.31598,,,,0,8
+250,"Turnpike Lane","Piccadilly Line",239,51.59031,-0.10308,,,,0,8
+251,"Wood Green","Piccadilly Line",272,51.59709,-0.10939,,,,0,8
+252,"Blackhorse Road","Victoria Line and Overground",23,51.58698,-0.04104,,,,0,"9:12"
+253,"Brixton","Victoria Line",30,51.46239,-0.115421,,,,0,9
+254,"Highbury & Islington","Victoria Line and Overground",108,51.54502,-0.10752,,,,0,"9:12"
+255,"Pimlico","Victoria Line",178,51.489081,-0.133037,,,,0,9
+256,"Seven Sisters","Victoria Line",199,51.58318,-0.07495,,,,0,9
+257,"Tottenham Hale","Victoria Line",234,51.588878,-0.059808,,,,0,9
+258,"Vauxhall","Victoria Line",245,51.48603,-0.12369,,,,0,9
+259,"Walthamstow Central","Victoria Line",247,51.58293,-0.01996,,,,0,9
+"260","Goldhawk Road","Circle, Hammersmith & City",,51.5018407,-0.2266869,,,,,"2:4"
+261,"Ladbroke Grove","Circle, Hammersmith & City",,51.517235,-0.210886,,,,,"2:4"
+262,"Latimer Road","Circle, Hammersmith & City",,51.51358,-0.2178383,,,,,"2:4"
+263,"Royal Oak","Circle, Hammersmith & City",,51.519265,-0.1882696,,,,,"2:4"
+264,"Shepherd's Bush Market","Circle, Hammersmith & City",,51.505858,-0.2260351,,,,,"2:4"
+265,"Westbourne Park","Circle, Hammersmith & City",,51.520974,-0.200887,,,,,"2:4"
+266,"Wood Lane","Circle, Hammersmith & City",,51.509757,-0.2245331,,,,,"2:4"
+267,"Preston Road","Metropolitan Line",,51.572038,-0.2952563,,,,,"6"
+268,"Chesham","Metropolitan Line",,51.7050305,0.6112192,,,,,"6"
+269,"All Saints","DLR",,51.510301,-0.012832,,,,,"11"
+270,"Beckton","DLR",,51.514411,0.06164,,,,,"11"
+271,"Beckton Park","DLR",,51.508758,0.054778,,,,,"11"
+272,"Blackwall","DLR",,51.507903,-0.007438,,,,,"11"
+273,"Bow Church","DLR",,51.5289,-0.021,,,,,"11"
+276,"Crossharbour","DLR",,51.495086,-0.014543,,,,,"11"
+277,"Custom House","DLR",,51.509731,0.026013,,,,,"11"
+278,"Cutty Sark","DLR",,51.481713,-0.010811,,,,,"11"
+279,"Cyprus","DLR",,51.50836,0.06399,,,,,"11"
+280,"Deptford Bridge","DLR",,51.478016,-0.022496,,,,,"11"
+281,"Devons Road","DLR",,51.522274,-0.01708,,,,,"11"
+282,"East India","DLR",,51.509516,-0.002128,,,,,"11"
+283,"Elverson Road","DLR",,51.468768,-0.016265,,,,,"11"
+284,"Gallions Reach","DLR",,51.509111,0.071911,,,,,"11"
+285,"Greenwich","DLR",,51.478016,-0.015391,,,,,"11"
+286,"Heron Quays","DLR",,51.5046489,-0.0207681,,,,,"11"
+287,"Island Gardens","DLR",,51.488001,-0.011039,,,,,"11"
+288,"King George V","DLR",,51.50202,0.06299,,,,,"11"
+289,"Langdon Park","DLR",,51.5153017,-0.0141581,,,,,"11"
+290,"Lewisham","DLR",,51.465451214617,-0.01373291015625,,,,,"11"
+291,"Limehouse","DLR",,51.5125218101862,-0.039750337600708,,,,,"11"
+292,"London City Airport","DLR",,51.5037740712141,0.0482797622680664,,,,,"11"
+293,"Mudchute","DLR",,51.491185,-0.014595,,,,,"11"
+294,"Pontoon Dock","DLR",,51.50205,0.03308,,,,,"11"
+295,"Poplar","DLR",,51.507725,-0.016503,,,,,"11"
+296,"Prince Regent","DLR",,51.509471,0.033473,,,,,"11"
+297,"Pudding Mill Lane","DLR",,51.5339,-0.0142,,,,,"11"
+298,"Royal Albert","DLR",,51.508456,0.046148,,,,,"11"
+299,"Royal Victoria","DLR",,51.509156,0.018083,,,,,"11"
+300,"South Quay","DLR",,51.500413,-0.018636,,,,,"11"
+301,"Stratford","DLR",,51.54047,-0.005085,,,,,"11"
+302,"Tower Gateway","DLR",,51.510911,-0.073466,,,,,"11"
+303,"Westferry","DLR",,51.509576,-0.02699,,,,,"11"
+304,"West India Quay","DLR",,51.506723,-0.01988,,,,,"11"
+305,"West Silvertown","DLR",,51.50335,0.02208,,,,,"11"
+306,"Shadwell","DLR and Overground",,51.51163,-0.05625,,,,,"11:12"
+307,"Acton Central","Overground",,51.50856013,-0.262879534,,,,,"12"
+308,"Anerley","Overground",,51.4124143,-0.0657189,,,,,"12"
+309,"Brockley","Overground",,51.464615,-0.0375757,,,,,"12"
+310,"Brondesbury","Overground",,51.54505,-0.20297,,,,,"12"
+311,"Brondesbury Park","Overground",,51.5406,-0.21093,,,,,"12"
+312,"Bushey","Overground",,51.6456835,-0.3853154,,,,,"12"
+313,"Caledonian Rd & Barnsbury","Overground",,51.54326,-0.11544,,,,,"12"
+314,"Camden Road","Overground",,51.54192,-0.13981,,,,,"12"
+315,"Canonbury","Overground",,51.54822,-0.09632,,,,,"12"
+316,"Carpenders Park","Overground",,51.6278779,"-0.3855836",,,,,"12"
+317,"Clapham Junction","Overground",,51.465," -0.170567",,,,,"12"
+318,"Crouch Hill","Overground",,51.5713668,"-0.1171964",,,,,"12"
+319,"Crystal Palace","Overground",,51.4180781,"-0.0724976",,,,,"12"
+320,"Dalston Junction","Overground",,51.5460949,"-0.0749809",,,,,"12"
+321,"Dalston Kingsland","Overground",,51.5482299,"-0.0758596",,,,,"12"
+322,"Finchley Road & Frognal","Overground",,51.5501129,"-0.1837648",,,,,"12"
+323,"Forest Hill","Overground",,51.4397021,"-0.0530051",,,,,"12"
+324,"Gospel Oak","Overground",,51.5553898,"-0.1512685",,,,,"12"
+325,"Hackney Central","Overground",,51.5471173,"-0.0568803",,,,,"12"
+326,"Hackney Wick","Overground",,51.54348,-0.02474,,,,,"12"
+327,"Haggerston","Overground",,51.538562,"-0.0756192",,,,,"12"
+328,"Hampstead Heath","Overground",,51.55533,-0.16656,,,,,"12"
+329,"Harringay Green Lanes","Overground",,51.57719,"-0.09814",,,,,"12"
+330,"Hatch End","Overground",,51.6094756,"-0.3687823",,,,,"12"
+331,"Headstone Lane","Overground",,51.6024533,"-0.35688",,,,,"12"
+332,"Homerton","Overground",,51.5471307,"-0.0428805",,,,,"12"
+333,"Honor Oak Park","Overground",,51.4498236,"-0.0457194",,,,,"12"
+334,"Hoxton","Overground",,51.5308122,"-0.0757446",,,,,"12"
+335,"Imperial Wharf","Overground",,51.475066,"-0.182949",,,,,"12"
+336,"Kensal Rise","Overground",,51.53387,-0.22145,,,,,"12"
+337,"Kentish Town West","Overground",,51.54776,-0.14708,,,,,"12"
+338,"Kilburn High Road","Overground",,51.5376338,"-0.1918691",,,,,"12"
+339,"Leyton Midland Road","Overground",,51.5693762,"-0.007132",,,,,"12"
+340,"Leytonstone High Road","Overground",,51.5637491,"0.0081512",,,,,"12"
+341,"New Cross","Overground",,51.4766742,"-0.0325946",,,,,"12"
+342,"New Cross Gate","Overground",,51.4753374,"-0.0402996",,,,,"12"
+343,"Norwood Junction","Overground",,51.3972337,"-0.0748139",,,,,"12"
+344,"Penge West","Overground",,51.4174337,"-0.060795",,,,,"12"
+345,"Rotherhithe","Overground",,51.50097,"-0.0518632",,,,,"12"
+346,"Shoreditch High Street","Overground",,51.5234474,"-0.077107",,,,,"12"
+347,"South Acton","Overground",,51.49960784,-0.270187631,,,,,"12"
+348,"South Hampstead","Overground",,51.5415009,"-0.1790562",,,,,"12"
+349,"South Tottenham","Overground",,51.5804499,"-0.0719208",,,,,"12"
+350,"Surrey Quays","Overground",,51.4934729,"-0.0479871",,,,,"12"
+351,"Sydenham","Overground",,51.426938,"-0.0546293",,,,,"12"
+352,"Upper Holloway","Overground",,51.5636024,"-0.129666",,,,,"12"
+353,"Walthamstow Queen's Road","Overground",,51.5813757,"-0.0237389",,,,,"12"
+354,"Wanstead Park","Overground",,51.5517725,"0.0261864",,,,,"12"
+355,"Wapping","Overground",,51.504372,"-0.0559468",,,,,"12"
+356,"Watford High Street","Overground",,51.652563,"-0.39143085",,,,,"12"
+357,"Watford Junction","Overground",,51.663745,"-0.3958511",,,,,"12"
+358,"West Croydon","Overground",,51.3793615,"-0.1013660",,,,,"12"
+359,"Woodgrange Park","Overground",,51.549294,"0.0445193",,,,,"12"
+360,"Woolwich Arsenal","DLR",,51.48989, 0.07006,,,,,"11"

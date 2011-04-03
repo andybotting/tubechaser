@@ -34,6 +34,7 @@
 
 package com.andybotting.tubechaser.activity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.app.ListActivity;
@@ -68,7 +69,7 @@ import com.andybotting.tubechaser.provider.TubeChaserProviderException;
 public class LineOverview extends ListActivity {
 	
     private static final String TAG = "TubeChaser";
-    private static final boolean LOGV = Log.isLoggable(TAG, Log.DEBUG);
+    private static final boolean LOGV = Log.isLoggable(TAG, Log.INFO);
     
     private static final int UPDATE_MINS = 10;
 
@@ -109,7 +110,7 @@ public class LineOverview extends ListActivity {
 		});
      
         mContext = this.getBaseContext();
-        mPreferenceHelper = new PreferenceHelper(this);
+        mPreferenceHelper = new PreferenceHelper();
         mProvider = new TubeChaserProvider();
         
         long lastUpdate = mPreferenceHelper.getLastUpdateTimestamp();
@@ -125,6 +126,7 @@ public class LineOverview extends ListActivity {
     
     public void updateLinesOverview() {
     	mLines = mProvider.getLines(mContext);
+    	
     	mListAdapter = new LinesListAdapter();
         setListAdapter(mListAdapter);
         
@@ -221,8 +223,8 @@ public class LineOverview extends ListActivity {
                 pv = convertView;
             }
             
-            Line line = (Line) mLines.get(position);
-            
+			Line line = (Line) mLines.get(position);
+			
             ((TextView)pv.findViewById(R.id.line_name)).setText(line.getLineName());
             
 			// Parse our 6-char hex value into an int for android

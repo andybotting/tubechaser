@@ -41,6 +41,7 @@ import java.util.List;
 
 import com.andybotting.tubechaser.objects.Line;
 import com.andybotting.tubechaser.objects.Station;
+import com.andybotting.tubechaser.provider.TubeChaserContract.LineStationsColumns;
 import com.andybotting.tubechaser.provider.TubeChaserContract.Lines;
 import com.andybotting.tubechaser.provider.TubeChaserContract.LinesColumns;
 import com.andybotting.tubechaser.provider.TubeChaserContract.Stations;
@@ -82,11 +83,13 @@ public class TubeChaserProvider extends ContentProvider {
     private static final int STATIONS_ID_LINES = 202;
     private static final int STATIONS_STARRED = 203;
     private static final int STATIONS_SEARCH = 204;
-    private static final int STATIONS_ID_LINES_ID_STAR = 205;
+    
+    private static final int STATIONS_ID_LINES_ID_CODE = 301;
     
     // Projection Maps
     public static final HashMap<String, String> sLinesProjection;
     public static final HashMap<String, String> sStationsProjection;
+    public static final HashMap<String, String> sLineStationsProjection;
     public static final HashMap<String, String> sSearchProjection; 
     
     /**
@@ -103,7 +106,7 @@ public class TubeChaserProvider extends ContentProvider {
         matcher.addURI(authority, "stations", STATIONS);
         matcher.addURI(authority, "stations/starred", STATIONS_STARRED);
         matcher.addURI(authority, "stations/search/*", STATIONS_SEARCH);
-        matcher.addURI(authority, "stations/*/lines/*/starred", STATIONS_ID_LINES_ID_STAR);
+        matcher.addURI(authority, "stations/*/lines/*/code", STATIONS_ID_LINES_ID_CODE);
         matcher.addURI(authority, "stations/*/lines", STATIONS_ID_LINES);
         matcher.addURI(authority, "stations/*", STATIONS_ID);
         
@@ -136,7 +139,6 @@ public class TubeChaserProvider extends ContentProvider {
 	    map = new HashMap<String, String>();
 	    map.put(BaseColumns._ID, 			Tables.STATIONS + "." + BaseColumns._ID);
 	    map.put(StationsColumns.NAME, 		Tables.STATIONS + "." + StationsColumns.NAME);
-	    map.put(StationsColumns.CODE, 		Tables.STATIONS + "." + StationsColumns.CODE);
 	    map.put(StationsColumns.LINES, 		Tables.STATIONS + "." + StationsColumns.LINES);
 	    map.put(StationsColumns.TFL_ID,		Tables.STATIONS + "." + StationsColumns.TFL_ID);	    
 	    map.put(StationsColumns.LATITUDE, 	Tables.STATIONS + "." + StationsColumns.LATITUDE);
@@ -147,6 +149,14 @@ public class TubeChaserProvider extends ContentProvider {
 	    map.put(StationsColumns.STEPFREE, 	Tables.STATIONS + "." + StationsColumns.STEPFREE);
 	    sStationsProjection = map;
 
+	    // Line Stations
+	    map = new HashMap<String, String>();
+	    map.put(BaseColumns._ID, 				Tables.LINES_STATIONS + "." + BaseColumns._ID);
+	    map.put(LineStationsColumns.STATION_ID, Tables.LINES_STATIONS + "." + LineStationsColumns.STATION_ID);
+	    map.put(LineStationsColumns.LINE_ID, 	Tables.LINES_STATIONS + "." + LineStationsColumns.LINE_ID);
+	    map.put(LineStationsColumns.CODE, 		Tables.LINES_STATIONS + "." + LineStationsColumns.CODE);	
+	    sLineStationsProjection = map;
+	    
 	    // Search
 	    map = new HashMap<String, String>();
 	    map.put(BaseColumns._ID, 							BaseColumns._ID);
@@ -193,7 +203,7 @@ public class TubeChaserProvider extends ContentProvider {
             	return Stations.CONTENT_TYPE;
             case STATIONS_SEARCH:
             	return Stations.CONTENT_TYPE;
-            case STATIONS_ID_LINES_ID_STAR:
+            case STATIONS_ID_LINES_ID_CODE:
                 return Stations.CONTENT_ITEM_TYPE;	
             case SEARCH_SUGGEST:
             	return Stations.CONTENT_ITEM_TYPE;
@@ -258,6 +268,15 @@ public class TubeChaserProvider extends ContentProvider {
 	            qb.appendWhere(Tables.STATIONS + "." + BaseColumns._ID + " = " + stationId);
 	            break;
 	        }
+	        case STATIONS_ID_LINES_ID_CODE: {
+                final List<String> segments = uri.getPathSegments();
+                final long stationId = Long.parseLong(segments.get(1));
+                final long lineId = Long.parseLong(segments.get(3));
+	        	qb.setTables(Tables.LINES_STATIONS);
+	            qb.setProjectionMap(sLineStationsProjection);
+	            qb.appendWhere(LineStationsColumns.STATION_ID + " = " + stationId + " AND " + LineStationsColumns.LINE_ID + " = " + lineId);
+	            break;	        	
+	        }
 	        case STATIONS_SEARCH: {
 	        	String query = null;
                 if (uri.getPathSegments().size() > 1)
@@ -282,7 +301,7 @@ public class TubeChaserProvider extends ContentProvider {
 	            break;
 	        }
         }
-        
+
         Cursor c = qb.query(mDB, projection, selection, selectionArgs, null, null, sortOrder, limit);
         c.setNotificationUri(getContext().getContentResolver(), notificationUri);
         return c;
@@ -364,7 +383,7 @@ public class TubeChaserProvider extends ContentProvider {
 		line.setCode(c.getString(col_code));
 		line.setTfLID(c.getString(col_tfl_id));
 		line.setColour(c.getString(col_colour));
-		line.setType(c.getString(col_type));
+		line.setType(c.getInt(col_type));
 		line.setStatus(c.getString(col_status));
 		line.setStatusCode(c.getString(col_status_code));
 		line.setStatusDesc(c.getString(col_status_desc));
@@ -381,7 +400,6 @@ public class TubeChaserProvider extends ContentProvider {
     	
 		int col_id = c.getColumnIndexOrThrow(StationsColumns.ID);
 		int col_name = c.getColumnIndexOrThrow(StationsColumns.NAME);
-		int col_code = c.getColumnIndexOrThrow(StationsColumns.CODE);
 		int col_lines = c.getColumnIndexOrThrow(StationsColumns.LINES);
 		int col_tfl_id = c.getColumnIndexOrThrow(StationsColumns.TFL_ID);
 		int col_latitude = c.getColumnIndexOrThrow(StationsColumns.LATITUDE);
@@ -395,7 +413,6 @@ public class TubeChaserProvider extends ContentProvider {
 	
 		station.setId(c.getInt(col_id));
 		station.setName(c.getString(col_name));
-		station.setCode(c.getString(col_code));
 		station.setTflId(c.getString(col_tfl_id));
 		station.setLinesString(c.getString(col_lines));
 		station.setLatitude(c.getDouble(col_latitude));
@@ -541,7 +558,7 @@ public class TubeChaserProvider extends ContentProvider {
 	 */
 	public List<Station> getStarredStations(Context context) {
 		List<Station> stations = new ArrayList<Station>();
-		PreferenceHelper preferenceHelper = new PreferenceHelper(context);	
+		PreferenceHelper preferenceHelper = new PreferenceHelper();	
 
 		String starredStationsString = preferenceHelper.getStarredStationsString();
 		if (!starredStationsString.matches("")) {
@@ -566,6 +583,28 @@ public class TubeChaserProvider extends ContentProvider {
 		}
 		
 		return stations;
-	}	
+	}
+	
+	
+	/**
+	 * Get the 3-letter station code for the Line/Station combination.
+	 * Each service (tube, overground, dlr) has it's own code.
+	 */
+	public String getLineStationCode(Context context, Uri uri) {
+		
+		String station_code = null;
+		Cursor c = context.getContentResolver().query(uri, null, null, null, null);
+
+		if (c.moveToFirst()) {		
+			int col_station_code = c.getColumnIndexOrThrow(LineStationsColumns.CODE);
+			station_code = c.getString(col_station_code);
+			
+			// If the code is blank, return null
+			if (station_code.length() < 2)
+				return null;
+		}
+		c.close();
+		return station_code;
+	}
 
 }

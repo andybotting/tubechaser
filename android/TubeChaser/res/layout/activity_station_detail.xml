@@ -116,8 +116,10 @@
 	    android:layout_width="fill_parent"
 	    android:layout_height="fill_parent">
 		<TextView
+			android:id="@+id/empty_text"
 			android:layout_width="fill_parent"
 			android:layout_height="fill_parent"
+			android:padding="30dip"
 			android:gravity="center"
             android:textSize="@dimen/text_size_small"
 			android:text="@string/label_no_results" />

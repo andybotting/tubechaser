@@ -40,19 +40,22 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
+import android.preference.EditTextPreference;
 import android.preference.ListPreference;
 import android.preference.PreferenceActivity;
 
 public class Settings extends PreferenceActivity implements OnSharedPreferenceChangeListener {
 	public static final String KEY_DEFAULT_LAUNCH_ACTIVITY = "defaultLaunchActivity";
 	public static final String KEY_NUMBER_OF_DEPARTURES = "numberOfDepartures";
-	
 	public static final String KEY_SEND_STATS = "sendUsageStats";
+	public static final String KEY_NAT_RAIL_API = "nationalRailAPICode";
+	
 	public static final boolean KEY_SEND_STATS_DEFAULT_VALUE = false;
 	
 	private ListPreference mDefaultLaunchActivity;
 	private ListPreference mNumberOfDepartures;
 	private CheckBoxPreference mSendStats;
+	//private EditTextPreference mNationalRailAPICode;
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +67,7 @@ public class Settings extends PreferenceActivity implements OnSharedPreferenceCh
         mDefaultLaunchActivity = (ListPreference)getPreferenceScreen().findPreference(KEY_DEFAULT_LAUNCH_ACTIVITY);
         mSendStats = (CheckBoxPreference)getPreferenceScreen().findPreference(KEY_SEND_STATS);
         mNumberOfDepartures = (ListPreference)getPreferenceScreen().findPreference(KEY_NUMBER_OF_DEPARTURES);
+        //mNationalRailAPICode = (EditTextPreference)getPreferenceScreen().findPreference(KEY_NUMBER_OF_DEPARTURES);
     }
     
     @Override
@@ -74,6 +78,7 @@ public class Settings extends PreferenceActivity implements OnSharedPreferenceCh
         setPreferenceSummary(getPreferenceScreen().getSharedPreferences(), KEY_DEFAULT_LAUNCH_ACTIVITY);
         setPreferenceSummary(getPreferenceScreen().getSharedPreferences(), KEY_NUMBER_OF_DEPARTURES);
         setPreferenceSummary(getPreferenceScreen().getSharedPreferences(), KEY_SEND_STATS);
+        setPreferenceSummary(getPreferenceScreen().getSharedPreferences(), KEY_NAT_RAIL_API);
         
         // Set up a listener whenever a key changes            
         getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
@@ -111,7 +116,8 @@ public class Settings extends PreferenceActivity implements OnSharedPreferenceCh
 			// Send Stats
 			mSendStats.setSummary(sharedPreferences.getBoolean(key, KEY_SEND_STATS_DEFAULT_VALUE) ? 
 					"Send anonymous usage statistics." : "Don't send anonymous usage statistics.");
-		}   
+		}	
+		
     }
     
     private String getFriendlyDefaultActivityName(SharedPreferences sharedPreferences){

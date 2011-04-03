@@ -36,7 +36,7 @@
     <string name="app_name">Tube Chaser</string>
     
     <!-- First run dialog text -->
-    <string name="about_msg">Tube Chaser is an unofficial London Underground status application for Android.\n\nSee the project web site at\nhttp://tubechaser.andybotting.com\n\nFollow @tube_chaser on Twitter for latest updates.\n\nPlease file bug reports and feature requests from the Tube Chaser web site.\n\nDon\'t forget to enable \'Send usage stats\' in the settings and check out the results at\nhttp://tubechaser.andybotting.com/stats\n\nThanks to Google for example code and the Tango project for icons.\n\nThis application is provided with no warranty, and is licensed under GPLv3.</string>
+	<string name="about_msg">Tube Chaser is an unofficial London Underground and DLR status application for Android with real-time departure information.\n\nFollow @tube_chaser on Twitter for latest updates.\n\nLatest Changes in v0.4\n\n - Support for DLR\n - Status information for Overground\n - Fixes\n\nSee the project web site at\nhttp://tubechaser.andybotting.com\n\nPlease file bug reports and feature requests from the Tube Chaser web site.\n\nDon\'t forget to enable \'Send usage stats\' in the settings and check out the results at\nhttp://tubechaser.andybotting.com/stats\n\nThanks to Google for example code and the Tango project for icons.\n\nThis application is provided with no warranty, and is licensed under GPLv3.</string>
     
     <!-- Menu item labels -->
 	<string name="menu_item_refresh">Refresh</string>
@@ -70,10 +70,12 @@
 
     <string name="label_no_results">No Results</string>
     <string name="label_loading">Loading...</string>  
+    <string name="label_info_unavailable">Departure information unavailable for this station.</string>  
     
     <string name="dialog_finding_stations">Finding Stations...</string>	
-    
-    <string name="dialog_no_favourites">You currently have no favourite stations.\n\nTo add favourite station simply click the favourite star when viewing a station.\n\nDo you want to search for a station now?</string>	
+    <string name="dialog_error_downloading">Error obtaining departure information</string>      
+    <string name="dialog_no_favourites">You currently have no favourite stations.\n\nTo add favourite station simply click the favourite star when viewing a station.\n\nDo you want to search for a station now?</string>
+
     
     <string name="title_settings">Tube Chaser Settings</string>
     <string name="title_favourite_stations">Favourite Stations</string>

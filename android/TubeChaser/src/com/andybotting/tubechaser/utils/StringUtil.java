@@ -64,7 +64,39 @@ public class StringUtil {
 		  
 		  return result;
 	  }
-	
-	
+
+	  /**
+	   * Convert a string to properly formatted title case
+	   * @param A string
+	   * @return String, properly formatted in title case.
+	   */	  
+	  public static String titleCase(String string){
+		  
+		  String result = "";
+		  String[] words = string.split(" ");
+		  
+		  for (int i = 0; i < words.length; i++){
+			 String word = words[i];
+			 String wordResult = "";
+			 for (int j = 0; j < word.length(); j++){
+				 String next = word.substring(j, j + 1);
+				 if (j == 0){
+					 wordResult += next.toUpperCase();
+				 } else {
+					 wordResult += next.toLowerCase();
+				 }
+			 }
+			 
+			 if (i < words.length) {
+				 result += " " + wordResult;
+			 } else {
+				 result += wordResult;
+			 }
+			
+		  }
+		  
+		  return result;
+		
+	  }
 	
 }

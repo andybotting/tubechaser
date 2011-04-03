@@ -70,19 +70,25 @@ public class InfoWindow {
 		
 		
     	for (Line line : lines) {
-    		if (line.getStatusCode().contains("SD")) {
+    		
+    		if (line.getStatus().contains("Severe")) {
     			severeDelays.add(line);
     		}
-    		else if (line.getStatusCode().contains("MD")) {
+    		else if (line.getStatus().contains("Minor")) {
     			minorDelays.add(line);
     		}
     		else if (line.getStatus().contains("closure")) {
     			closures.add(line);
     		}
-    		else if (line.getStatus().contains("Closed")) {
+    		else if (line.getStatus().contains("Closure")) {
     			closures.add(line);
     		}
-    		else if (line.getStatusCode().contains("GS")) {
+    		else if (line.getStatus().contains("Closed")) {
+    			if (line.getId() != Line.LINE_WATERLOO_AND_CITY) {
+    				closures.add(line);
+    			}
+    		}
+    		else if (line.getStatus().contains("Good")) {
     			goodService.add(line);
     		}
     	} 

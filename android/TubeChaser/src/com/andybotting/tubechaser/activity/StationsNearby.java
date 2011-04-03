@@ -71,7 +71,7 @@ import android.widget.TextView;
 public class StationsNearby extends ListActivity implements LocationListener {
 
     private static final String TAG = "StationsNearby";
-    private static final boolean LOGV = Log.isLoggable(TAG, Log.DEBUG);
+    private static final boolean LOGV = Log.isLoggable(TAG, Log.INFO);
 
 	private final int MAX_STATIONS = 10;
 	

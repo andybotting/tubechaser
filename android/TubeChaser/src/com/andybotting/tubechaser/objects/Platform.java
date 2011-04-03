@@ -80,8 +80,10 @@ public class Platform {
 	}
 	
 	public String toString() {
-		return String.format("Platform %s: %s", platformNumber, direction);
+		if (direction != null) {
+			return String.format("Platform %s: %s", platformNumber, direction);
+		}
+		return String.format("Platform %s", platformNumber);
 	}
-
 
 }

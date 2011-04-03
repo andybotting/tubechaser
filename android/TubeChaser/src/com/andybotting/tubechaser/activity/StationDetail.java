@@ -53,7 +53,10 @@ import com.andybotting.tubechaser.objects.NextDeparture;
 import com.andybotting.tubechaser.objects.Line;
 import com.andybotting.tubechaser.objects.Platform;
 import com.andybotting.tubechaser.objects.Station;
-import com.andybotting.tubechaser.provider.TfLTubeStationDepartures;
+import com.andybotting.tubechaser.provider.DLRDepartures;
+import com.andybotting.tubechaser.provider.NatRailDepartures;
+import com.andybotting.tubechaser.provider.ServiceDepartures;
+import com.andybotting.tubechaser.provider.TfLTubeDepartures;
 import com.andybotting.tubechaser.provider.TubeChaserProvider;
 import com.andybotting.tubechaser.provider.TubeChaserProviderException;
 import com.andybotting.tubechaser.provider.TubeChaserContract.Stations;
@@ -66,6 +69,7 @@ import android.app.ExpandableListActivity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.DialogInterface.OnCancelListener;
 import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationManager;
@@ -109,11 +113,13 @@ public class StationDetail extends ExpandableListActivity {
 	private CompoundButton mStarredButton;
 
 	private DepartureBoard mDepartureBoard;
-	private TfLTubeStationDepartures mTfLTubeStationDepartures;
-	
+
 	private String mErrorMessage;
 	private int mErrorRetry = 0;
+	
+	// Maximum errors before failing and showing dialog
 	private final int MAX_ERRORS = 3;
+	
 	private boolean mFirstDepartureReqest = true;
 	private Uri mLineUri;
 	private boolean mStarred;
@@ -125,11 +131,10 @@ public class StationDetail extends ExpandableListActivity {
         Uri stationUri = getIntent().getData();
         
         mContext = this.getBaseContext();
-        mPreferenceHelper = new PreferenceHelper(this);
+        mPreferenceHelper = new PreferenceHelper();
         mProvider = new TubeChaserProvider();
         
         mStation = mProvider.getStation(mContext, stationUri);
-        mTfLTubeStationDepartures = new TfLTubeStationDepartures();
         mDepartureBoard = new DepartureBoard(); // just so it's not null
 
         // Get the line, if given in last activity
@@ -159,10 +164,11 @@ public class StationDetail extends ExpandableListActivity {
 
     }
     
+
     /**
-     * SHow line select dialog
+     * Show line select dialog
      */
-	public void showLineSelect(final List<Line> lines) {
+	private void showLineSelect(final List<Line> lines) {
 		
 		// Build alert dialog
 		AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
@@ -174,13 +180,21 @@ public class StationDetail extends ExpandableListActivity {
 		}
 		
 		dialogBuilder.setItems(items, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
+				public void onClick(DialogInterface dialog, int which) {
             	mLine = lines.get(which);
             	displayStation();
             }
-        }).create();
+        });
 
-		dialogBuilder.setCancelable(false);
+		dialogBuilder.setOnCancelListener(new OnCancelListener() {
+			@Override
+			public void onCancel(DialogInterface dialog) {
+				// Just end our activity if no line is selected
+				StationDetail.this.finish();
+			}
+		});
+		
+		dialogBuilder.create();
 		dialogBuilder.show();
 	}
 
@@ -225,7 +239,6 @@ public class StationDetail extends ExpandableListActivity {
         if (mLine == null)
         	mLine = mProvider.getLine(mContext, mLineUri);
 
-        
 		// Set the title bar text
         ((TextView) findViewById(R.id.title_text)).setText(mLine.getLineName());
 		
@@ -239,10 +252,7 @@ public class StationDetail extends ExpandableListActivity {
         ((TextView) findViewById(R.id.station_lines)).setText(mLine.getLineName());
 
         // Get Favourite
-        //mStarUri = Stations.buildStarUri(mStation.getId(), mLine.getId());
-        //mStarred = mProvider.getStarred(mContext, mStarUri);
         mStarred = mPreferenceHelper.isStarred(mStation.getId(), mLine.getId());
-        
         
         // Star button
         mStarredButton = (CompoundButton) findViewById(R.id.star_button);
@@ -257,6 +267,21 @@ public class StationDetail extends ExpandableListActivity {
    
         new GetDepartures().execute();
     }
+    
+    
+    /**
+     * Set the empty text view text
+     * @param text
+     * @return
+     */
+    private void setEmptyText(String text) {
+		// Line Code is null so set the empty view text to
+		// a nice friendly message
+		TextView emptyText = (TextView) findViewById(R.id.empty_text);
+		if (emptyText != null)
+			emptyText.setText(text);
+    }    
+
 
     /**
      * Toggle the station 'starred' status 
@@ -355,6 +380,35 @@ public class StationDetail extends ExpandableListActivity {
 		findViewById(R.id.title_refresh_progress).setVisibility(isRefreshing ? View.VISIBLE : View.GONE);
 	}
 
+	
+	/**
+	 * Return the correct class for departure information for this line
+	 * @return departure service
+	 */
+	private ServiceDepartures getDepartureService() {
+		
+		ServiceDepartures departures = null;
+		
+		switch (mLine.getType()) {
+		  case Line.TYPE_TUBE: 
+			  departures = new TfLTubeDepartures();
+			  departures.setLine(mLine.getCode());
+			  break;
+		  case Line.TYPE_DLR: 
+			  departures = new DLRDepartures();
+			  break;
+		  case Line.TYPE_OVERGROUND:
+		  case Line.TYPE_NATIONAL_RAIL:
+			  PreferenceHelper preferenceHelper = new PreferenceHelper();
+			  if (preferenceHelper.isNationalRailAPIEnabled()) {
+				  departures = new NatRailDepartures();
+			  }
+			  break;
+		}
+		return departures;
+	}
+	
+	
 	/**
 	 * Get the departures as a background task 
 	 */
@@ -369,13 +423,32 @@ public class StationDetail extends ExpandableListActivity {
 		@Override
 		protected DepartureBoard doInBackground(final DepartureBoard... params) {
 			try {
-				mDepartureBoard = mTfLTubeStationDepartures.getNextDepartures(mLine.getCode(), mStation.getCode());
+				Uri lineStationCodeUri = Stations.buildCodeUri(mStation.getId(), mLine.getId());
+				String lineStationCode = mProvider.getLineStationCode(mContext, lineStationCodeUri);
+				
+				String errorMessage = null;
+				ServiceDepartures departures = getDepartureService();
+				
+				// Departure information not available for DLR
+				if (departures == null)
+					errorMessage = "Departure information is not available for the " + mLine.getLineName();
+
+				// lineStationCode is non-existant, so we don't support it
+				if (lineStationCode == null)
+					errorMessage = "Departure information is not available for " + mStation.getName();
+				
+				// Some error in this process, so we show it
+				if (errorMessage != null)
+					setEmptyText(errorMessage);
+				else
+					mDepartureBoard = departures.getNextDepartures(lineStationCode);
+				
 			} 
 			catch (TubeChaserProviderException e) {
 				// Retry a couple of times before error
 				if (mErrorRetry < MAX_ERRORS) {
 					mErrorRetry++;
-					if (LOGV) Log.v(TAG, "Error " + mErrorRetry + " of " + MAX_ERRORS + ": " + e.getMessage());
+					if (LOGV) Log.v(TAG, "Error " + mErrorRetry + " of " + MAX_ERRORS + ": " + e);
 					this.doInBackground(params);
 				}
 				else {
@@ -390,8 +463,8 @@ public class StationDetail extends ExpandableListActivity {
 		@Override
 		protected void onPostExecute(DepartureBoard mDepartureBoard) {
         	if (mErrorRetry == MAX_ERRORS) {
-            	// Display a toast with the error
-        		UIUtils.popToast(mContext, "Error downloading departure information (" + mErrorMessage + ")");
+            	// Toast: Unable to download departure information
+        		UIUtils.popToast(mContext, R.string.dialog_error_downloading +" (" + mErrorMessage + ")");
         		mErrorMessage = null;
         		mErrorRetry = 0;
         	}
@@ -402,24 +475,12 @@ public class StationDetail extends ExpandableListActivity {
 				
 				for (Platform platform : platforms) {
 					List<NextDeparture> nextDepartures = platform.getNextDepartures();
-					int numberOfDepartures = nextDepartures.size(); 
 					Collections.sort(nextDepartures);
-					
-					if (LOGV) Log.v(TAG, "Platforms size pre-removal:" + platform.getNextDepartures().size());
-						
 				    while (nextDepartures.size() > numberOfDeparturesToShow) {
 				    	nextDepartures.remove(nextDepartures.size()-1);
 				    }
-					
-				}
-				
-				
-				for (Platform platform : platforms) {
-					if (LOGV) Log.v(TAG, "Platforms size post-removal:" + platform.getNextDepartures().size());
 				}
 
-				
-				
         		updateDeparturesList();
 
         		// Upload stats

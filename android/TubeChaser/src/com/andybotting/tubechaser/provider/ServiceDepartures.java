@@ -32,57 +32,14 @@
  * limitations under the License.
  */
 
-package com.andybotting.tubechaser.objects;
+package com.andybotting.tubechaser.provider;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import com.andybotting.tubechaser.objects.DepartureBoard;
 
+public interface ServiceDepartures {
+	
+	DepartureBoard getNextDepartures(String stationCode) throws TubeChaserProviderException;
 
-public class DepartureBoard {
-
-	private Station tubeStation;
-	private Date lastUpdated;
-	private List<Platform> platforms = new ArrayList<Platform>(); 
+	void setLine(String code);
 	
-	public void setTubeStation(Station tubeStation) {
-		this.tubeStation = tubeStation;
-	}
-	
-	public Station getTubeStation() {
-		return tubeStation;
-	}
-
-	public void setLastUpdated(Date lastUpdated) {
-		this.lastUpdated = lastUpdated;
-	}
-	
-	public Date getLastUpdated() {
-		return lastUpdated;
-	}
-	
-	public void setPlatforms(List<Platform> platforms) {
-		this.platforms = platforms;
-	}
-	
-	public void addPlatform(Platform platform) {
-		this.platforms.add(platform);
-	}
-	
-	public List<Platform> getPlatforms() {
-		return platforms;
-	}
-	
-	public int numberOfPlatforms() {
-		return platforms.size();
-	}
-	
-	public Platform getPlatform(int location) {
-		return platforms.get(location);
-	}
-
-	public String toString() {
-		return String.format("DepartureBoard %s", platforms);
-	}
-
 }
