@@ -51,11 +51,11 @@
 	<CheckBoxPreference android:key="sendUsageStats"
 		android:title="Send Usage Stats" 
 		android:defaultValue="false" />
-		
-	<EditTextPreference
-		android:key="nationalRailAPICode"
-		android:title="National Rail Code"
-		android:summary="National Rail API Code"
-		android:defaultValue="" />		
+
+<!--	<EditTextPreference-->
+<!--		android:key="nationalRailAPICode"-->
+<!--		android:title="National Rail Code"-->
+<!--		android:summary="National Rail API Code"-->
+<!--		android:defaultValue="" />		-->
 
 </PreferenceScreen>

@@ -68,8 +68,10 @@ public class InfoWindow {
 		String statusTitle;
 		int statusImage;
 		
-		
-    	for (Line line : lines) {
+			
+    	for (int i=0; i < lines.size(); i++) {
+    		
+    		Line line = lines.get(i); 
     		
     		if (line.getStatus().contains("Severe")) {
     			severeDelays.add(line);
@@ -84,7 +86,12 @@ public class InfoWindow {
     			closures.add(line);
     		}
     		else if (line.getStatus().contains("Closed")) {
-    			if (line.getId() != Line.LINE_WATERLOO_AND_CITY) {
+    			if (line.getId() == Line.LINE_WATERLOO_AND_CITY) {
+    				// If this is Waterloo and City, we'll just remove it completely
+    				// so goodService.size() == lines.size() on nights and weekends
+    				lines.remove(i);
+    			}
+    			else {
     				closures.add(line);
     			}
     		}
