@@ -85,10 +85,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.CompoundButton;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
+import android.widget.ImageView;
+import android.widget.ListAdapter;
 import android.widget.TextView;
 
 public class StationDetail extends ExpandableListActivity {
@@ -170,32 +174,31 @@ public class StationDetail extends ExpandableListActivity {
      */
 	private void showLineSelect(final List<Line> lines) {
 		
-		// Build alert dialog
-		AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
-		dialogBuilder.setTitle("Select Line");
+		ListAdapter adapter = new LinesListAdapter(mContext, -1, lines);
 
-		String[] items = new String[lines.size()];
-		for(int i=0; i<lines.size(); i++) {
-			items[i] = lines.get(i).getName();
-		}
+		final AlertDialog.Builder ad = new AlertDialog.Builder(this);
+		ad.setTitle("Select Line");
 		
-		dialogBuilder.setItems(items, new DialogInterface.OnClickListener() {
+		ad.setSingleChoiceItems(adapter, -1, new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int which) {
-            	mLine = lines.get(which);
-            	displayStation();
-            }
-        });
-
-		dialogBuilder.setOnCancelListener(new OnCancelListener() {
-			@Override
-			public void onCancel(DialogInterface dialog) {
-				// Just end our activity if no line is selected
-				StationDetail.this.finish();
+					mLine = lines.get(which);
+					dialog.dismiss();
+					displayStation();
+				}
 			}
-		});
+		);
+
+		ad.setOnCancelListener(new OnCancelListener() {
+				@Override
+				public void onCancel(DialogInterface dialog) {
+					// Just end our activity if no line is selected
+					StationDetail.this.finish();
+				}
+			}
+		);		
 		
-		dialogBuilder.create();
-		dialogBuilder.show();
+		ad.create();
+		ad.show();
 	}
 
     /**
@@ -501,6 +504,56 @@ public class StationDetail extends ExpandableListActivity {
         	updateRefreshStatus(false);
 		}
 	}
+	
+	
+	
+	
+	public class LinesListAdapter extends ArrayAdapter {
+
+		List<Line> lines;
+		
+		public LinesListAdapter(Context context, int textViewResourceId, List<Line> lines) {
+			super(context, textViewResourceId, lines);
+			this.lines = lines;
+		}
+	
+		public int getCount() {
+			return lines.size();
+		}
+
+		public Object getItem(int position) {
+			return position;
+		}
+
+		public long getItemId(int position) {
+			return position;
+		}
+
+		public View getView(int position, View convertView, ViewGroup parent) {
+			View pv;
+            if(convertView == null) {
+    			LayoutInflater inflater = getLayoutInflater();
+    			pv = inflater.inflate(R.layout.lines_select_row, parent, false);
+            }
+            else {
+                pv = convertView;
+            }
+            
+			Line line = (Line) lines.get(position);
+			
+            ((TextView)pv.findViewById(R.id.line_name)).setText(line.getLineName());
+            
+			// Parse our 6-char hex value into an int for android
+			int colour = Color.parseColor("#" + line.getColour());
+			((View)pv.findViewById(R.id.line_colour)).setBackgroundColor(colour);
+            
+            return pv;
+			
+
+		}
+	}
+	
+	
 	
 	/**
 	 * Departures list adapter
