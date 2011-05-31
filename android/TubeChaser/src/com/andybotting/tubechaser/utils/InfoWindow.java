@@ -61,6 +61,7 @@ public class InfoWindow {
 		List<Line> goodService = new ArrayList<Line>();
     	List<Line> severeDelays = new ArrayList<Line>();
     	List<Line> minorDelays = new ArrayList<Line>();
+		List<Line> suspended = new ArrayList<Line>();
 		List<Line> closures = new ArrayList<Line>();
 		
 		// Info window items
@@ -79,11 +80,11 @@ public class InfoWindow {
     		else if (line.getStatus().contains("Minor")) {
     			minorDelays.add(line);
     		}
-    		else if (line.getStatus().contains("closure")) {
+    		else if (line.getStatus().contains("losure")) {
     			closures.add(line);
     		}
-    		else if (line.getStatus().contains("Closure")) {
-    			closures.add(line);
+    		else if (line.getStatus().contains("uspended")) {
+    			suspended.add(line);
     		}
     		else if (line.getStatus().contains("Closed")) {
     			if (line.getId() == Line.LINE_WATERLOO_AND_CITY) {
@@ -108,19 +109,33 @@ public class InfoWindow {
 			statusMessage = "There is a Good Service on all lines.";
 			infoViews.add(buildView(statusTitle, statusMessage, statusImage));
 		}
+
 		else {
+			if (goodService.size() > lines.size()-2 ) {
+				// If we have most lines good service
+				statusTitle = "Good Service";
+				statusImage = R.drawable.info_window_good;
+				statusMessage = "There is a " + statusTitle + " on all other lines.";
+				infoViews.add(buildView(statusTitle, statusMessage, statusImage));				
+			}
 			if (!severeDelays.isEmpty()) {
 				statusTitle = "Severe Delays";
 				statusImage = R.drawable.info_window_severe;
-				statusMessage = buildLines(severeDelays) + (severeDelays.size() > 1 ? " have " : " has ") + statusTitle;	
+				statusMessage = buildLines(severeDelays) + (severeDelays.size() > 1 ? " have " : " has ") + "severe delays.";	
 				infoViews.add(buildView(statusTitle, statusMessage, statusImage));
 			}
 			if (!minorDelays.isEmpty()) {
 				statusTitle = "Minor Delays";
 				statusImage = R.drawable.info_window_minor;
-				statusMessage = buildLines(minorDelays) + (minorDelays.size() > 1 ? " have " : " has ") + statusTitle;
+				statusMessage = buildLines(minorDelays) + (minorDelays.size() > 1 ? " have " : " has ") + "minor delays.";
 				infoViews.add(buildView(statusTitle, statusMessage, statusImage));
 			}
+			if (!suspended.isEmpty()) {
+				statusTitle = "Suspended";
+				statusImage = R.drawable.info_window_closure;
+				statusMessage = buildLines(suspended) + (suspended.size() > 1 ? " are " : " is ") + "suspended.";
+				infoViews.add(buildView(statusTitle, statusMessage, statusImage));
+			}			
 			if (!closures.isEmpty()) {
 				statusTitle = "Line Closures";
 				statusImage = R.drawable.info_window_closure;
@@ -128,8 +143,6 @@ public class InfoWindow {
 				infoViews.add(buildView(statusTitle, statusMessage, statusImage));
 			}
 		}
-		
-		
 		return infoViews;
 	}
 
