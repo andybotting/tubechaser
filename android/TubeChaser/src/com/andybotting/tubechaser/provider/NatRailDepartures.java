@@ -56,13 +56,11 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import com.andybotting.tubechaser.TubeChaser;
 import com.andybotting.tubechaser.objects.DepartureBoard;
 import com.andybotting.tubechaser.objects.NextDeparture;
 import com.andybotting.tubechaser.objects.Platform;
 import com.andybotting.tubechaser.utils.PreferenceHelper;
 
-import android.content.Context;
 import android.util.Log;
 
 public class NatRailDepartures implements ServiceDepartures {

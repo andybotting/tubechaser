@@ -92,6 +92,10 @@ public class StationsNearby extends ListActivity implements LocationListener {
 	private boolean mIsListeningForNetworkLocation;
 	private boolean mIsCalculatingStationDistances;
     
+	
+	/**
+	 * On activity create
+	 */
 	@Override
 	public void onCreate(Bundle icicle) {
 		super.onCreate(icicle);	  
@@ -129,11 +133,24 @@ public class StationsNearby extends ListActivity implements LocationListener {
 		// Get the location
 		mLocationManager = (LocationManager)getSystemService(LOCATION_SERVICE);
 		
+		displayNearbyStations();
+	}
+	
+	
+	/**
+	 * Display the nearby stations
+	 */
+	private void displayNearbyStations() {
+		
+		// Start listening for location updates
+		startLocationListening(true);
+		mShowBusy = true;
+		
 	  	Location location = mLocationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
 	  	
-	  	if (LOGV) Log.v(TAG, "Location Services Enabled: " + 
-	  			" Network:" + mLocationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER) +
-	  			" GPS:" + mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER));
+	  	if (LOGV) Log.v(TAG, "Location Services Enabled:" + 
+	  			" Network=" + mLocationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER) +
+	  			" GPS=" + mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER));
 	  	
 	  	if (location != null) {		
 	  		new StationDistanceCalculator(location).execute();			
@@ -146,9 +163,13 @@ public class StationsNearby extends ListActivity implements LocationListener {
 	  	    }
 	  	    
 	  	}
-	
 	}
 	
+	
+	
+	/**
+	 * Build an alert dialog when no location services are enabled
+	 */
     private void buildAlertNoLocationServices() {
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("You do not have GPS or Wireless network location services enabled.\n\nWould you like to enable them now?")
@@ -169,6 +190,9 @@ public class StationsNearby extends ListActivity implements LocationListener {
     }
 	
 	
+    /**
+     * Take the user to the system location settings
+     */
     private void launchGPSOptions() {
         final ComponentName toLaunch = new ComponentName("com.android.settings","com.android.settings.SecuritySettings");
         final Intent intent = new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
@@ -179,26 +203,29 @@ public class StationsNearby extends ListActivity implements LocationListener {
     }  
 	
 	
-	
+    /**
+     * On activity resume, refresh our nearest stations
+     */
     @Override
-    protected void onStop() {
-        //mSensorManager.unregisterListener(mListener);
-        super.onStop();
+    protected void onResume() {
+        super.onResume();
+        displayNearbyStations();
     }
-	
+    
+    
+    /**
+     * On activity pause, stop listening for location updates
+     */
     @Override
     protected void onPause() {
     	super.onPause();
         stopLocationListening();
 	}
     
-    @Override
-    protected void onResume() {
-        super.onResume();
-        startLocationListening(true);
-        //mSensorManager.registerListener(mListener, SensorManager.SENSOR_ORIENTATION, SensorManager.SENSOR_DELAY_GAME);
-    }
-    
+
+    /**
+     * On activity destroy, stop listening for location updates
+     */
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -206,8 +233,9 @@ public class StationsNearby extends ListActivity implements LocationListener {
     }
 	
 
-
-
+    /**
+     * On station click
+     */
     protected void onListItemClick(ListView l, View v, int position, long id) {
         final Uri stationUri = mAdapter.getStationItem(position).getUri();
         final Intent intent = new Intent(Intent.ACTION_VIEW, stationUri);
@@ -215,19 +243,26 @@ public class StationsNearby extends ListActivity implements LocationListener {
     }
     
     
+    /**
+     * Background task to find the closest stations
+     * @author andy
+     *
+     */
 	private class StationDistanceCalculator extends AsyncTask<Station, Void, ArrayList<Station>> {
 		
 		private final Location mLocation;
 		private boolean mRefreshListOnly;
 		
-		public StationDistanceCalculator(Location location){
+		public StationDistanceCalculator(Location location) {
 			mLocation = location;
 		}
 		
-		// Can use UI thread here
+		
+		/**
+		 * Set up the background task
+		 */
 		protected void onPreExecute() {
 			mIsCalculatingStationDistances = true;
-			mRefreshListOnly = !mShowBusy;			
 			if (mShowBusy) {
 				// Show the dialog window
 				mListView.setVisibility(View.GONE);
@@ -237,7 +272,10 @@ public class StationsNearby extends ListActivity implements LocationListener {
 			}
 		}
 		
-		// Automatically done on worker thread (separate from UI thread)
+
+		/**
+		 * Background tast with no UI access
+		 */
 		protected ArrayList<Station> doInBackground(final Station... params) {
 			ArrayList<Station> sortedStations = new ArrayList<Station>();
 			SortedMap<Double, Station> sortedStationList = new TreeMap<Double, Station>();
@@ -267,19 +305,21 @@ public class StationsNearby extends ListActivity implements LocationListener {
 			return sortedStations;
 		}    
     
-		// Can use UI thread here
+		/**
+		 * After background task has completed, access the UI
+		 */
 		protected void onPostExecute(final ArrayList<Station> sortedStations) {
 		
-			if (mRefreshListOnly) {
-				// Just update the list
-				StationsListAdapter stationsListAdapter = (StationsListAdapter)getListAdapter();
-				stationsListAdapter.updateStationList(sortedStations, mLocation);
-			}
-			else {
+//			if (mRefreshListOnly) {
+//				// Just update the list
+//				StationsListAdapter stationsListAdapter = (StationsListAdapter)getListAdapter();
+//				stationsListAdapter.updateStationList(sortedStations, mLocation);
+//			}
+//			else {
 				// Refresh the entire list
 				mAdapter = new StationsListAdapter(sortedStations, mLocation);
 				setListAdapter(mAdapter);	
-			}
+//			}
 			
 			// If we've just been showing the loading screen
 			if (mListView.getVisibility() == View.GONE) {
@@ -292,6 +332,12 @@ public class StationsNearby extends ListActivity implements LocationListener {
 	}    
     
     
+	
+	/**
+	 * List adapter for the nearby stations
+	 * @author andy
+	 *
+	 */
 	private class StationsListAdapter extends BaseAdapter {
 
 		private ArrayList<Station> mStations;
@@ -347,6 +393,9 @@ public class StationsNearby extends ListActivity implements LocationListener {
 	}
 	
 	
+	/**
+	 * On a location change
+	 */
     public void onLocationChanged(Location location) {
 
     	if (location != null) { 
@@ -372,6 +421,11 @@ public class StationsNearby extends ListActivity implements LocationListener {
     }
     
     
+    /**
+     * Should we calculate a new distance
+     * @param location
+     * @return
+     */
     private boolean shouldCalculateNewDistance(Location location){
 		boolean result = false;
 		
@@ -386,6 +440,9 @@ public class StationsNearby extends ListActivity implements LocationListener {
     }
     
     
+    /**
+     * Stop listening for location updates
+     */
     private void stopLocationListening() {
     	if (mLocationManager != null) {
     		mLocationManager.removeUpdates(this);
@@ -393,16 +450,22 @@ public class StationsNearby extends ListActivity implements LocationListener {
 	}
 
     
+    /**
+     * Start listening for location updates
+     * @param subscribeToNetworkLocation
+     */
     private void startLocationListening(boolean subscribeToNetworkLocation) {
     	if (mLocationManager != null) {
     		mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 10, this);
         	mIsListeningForNetworkLocation = subscribeToNetworkLocation;
         	
         	if(subscribeToNetworkLocation)       		
-        	mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 20, this);
+        		mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 20, this);
     	}
 	}
 
+    
+    
 	@Override
 	public void onProviderDisabled(String provider) {}
 

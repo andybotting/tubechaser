@@ -61,7 +61,7 @@ public class TubeChaserDatabase extends SQLiteOpenHelper {
 	private static final String DATABASE_INTERNAL_PATH = "/data/data/"+ AUTHORITY + "/databases/";
     
 	// Match the DB version with the app version code
-	private static final int DATABASE_VERSION = 400;
+	private static final int DATABASE_VERSION = 491;
 	
 	private SQLiteDatabase mDB = null;
 	private Context mContext;
