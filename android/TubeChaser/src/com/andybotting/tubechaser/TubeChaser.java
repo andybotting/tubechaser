@@ -51,6 +51,8 @@ public class TubeChaser extends Application {
     }
 
     public static Context getContext() {
+    	if (instance == null)
+    		instance = new TubeChaser();
         return instance;
     }
 
