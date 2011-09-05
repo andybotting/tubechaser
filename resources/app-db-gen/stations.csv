@@ -129,7 +129,7 @@
 127,"Upney","District Line",242,51.53824,0.09998,,,,0,3
 128,"Upton Park","District and Hammersmith & City Lines",243,51.53514,0.03373,,,,0,"3:4"
 129,"West Brompton","District Line and Overground",257,51.48681,-0.19475,,,,0,"3:12"
-130,"West Ham","District, Hammersmith & City and Jubilee Lines",259,51.527917,0.004141,,,,0,"3:4:5"
+130,"West Ham","District, Hammersmith & City, Jubilee Lines and DLR",259,51.527917,0.004141,,,,0,"3:4:5:11"
 131,"West Kensington","District Line",262,51.49085,-0.20532,,,,0,3
 132,"Whitechapel","District and Hammersmith & City Lines and Overground",267,51.51946,-0.05951,,,,0,"3:4:12"
 133,"Wimbledon","District Line",270,51.422,-0.20544,,,,0,3
@@ -357,3 +357,7 @@
 358,"West Croydon","Overground",,51.3793615,"-0.1013660",,,,,"12"
 359,"Woodgrange Park","Overground",,51.549294,"0.0445193",,,,,"12"
 360,"Woolwich Arsenal","DLR",,51.48989, 0.07006,,,,,"11"
+361,"Abbey Road","DLR",,51.532, 0.004,,,,,"11"
+362,"Star Lane","DLR",,51.5207, 0.0042,,,,,"11"
+363,"Stratford High Street","DLR",,51.5422, -0.0033,,,,,"11"
+364,"Stratford International","DLR",,51.5448, -0.0086,,,,,"11"
