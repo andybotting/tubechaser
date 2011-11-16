@@ -13,6 +13,14 @@ handlers:
   script: djangoappengine/deferred/handler.py
   login: admin
 
+- url: /favicon.ico
+  static_files: static/img/favicon.ico
+  upload: static/img/favicon.ico
+
+- url: /robots.txt
+  static_files: static/misc/robots.txt
+  upload: static/misc/robots.txt
+
 - url: /static
   static_dir: static
 

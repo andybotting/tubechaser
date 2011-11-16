@@ -1,6 +1,5 @@
 cron:
 - description: Generate Tiles
   url: /generate_tiles_job_I2bmxS2RAfVmt7C3DBeNHh75Ug/
-  schedule: every day 03:00
+  schedule: every tue,thu,sat 3:00
   timezone: Europe/London
-

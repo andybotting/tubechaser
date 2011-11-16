@@ -21,6 +21,7 @@ import tile_utils
 import chart_utils
 import utils
 
+PERIODS = ['week', 'month']
 
 """ Index page
 """
@@ -159,7 +160,10 @@ def list_charts(request):
 
 """ Chart handler
 """
-def make_chart(request, type, days=None):
+def make_chart(request, type, days='week'):
+
+	if days not in PERIODS:
+		raise Http404
 
 	charts = {  'app_version': 'Application Version',
 				'home_function': 'Home Function',
